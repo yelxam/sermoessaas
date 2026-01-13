@@ -5,8 +5,14 @@ require('dotenv').config();
 const sequelize = process.env.DATABASE_URL
   ? new Sequelize(process.env.DATABASE_URL, {
     dialect: 'postgres',
-    dialectModule: pg, // Pass the pg module directly
+    dialectModule: pg,
     logging: false,
+    pool: {
+      max: 1, // Minimize connections per lambda instance
+      min: 0,
+      acquire: 30000,
+      idle: 0 // Close connections immediately after use
+    },
     dialectOptions: {
       ssl: {
         require: true,
