@@ -29,6 +29,14 @@ if (process.env.NODE_ENV !== 'production' || process.env.SYNC_DB === 'true') {
         .catch(err => console.error('Database connection error:', err));
 }
 
+app.get('/', (req, res) => {
+    res.json({ message: 'Sermoes API is running' });
+});
+
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date() });
+});
+
 // Start Server (only if not running on Vercel)
 if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
     const PORT = process.env.PORT || 3000;
