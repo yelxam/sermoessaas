@@ -48,6 +48,22 @@ export default function Dashboard() {
                 </header>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                    {/* SuperAdmin Quick Link */}
+                    {user?.email === 'admin@sermon.ai' && (
+                        <Link to="/admin" className="bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:shadow-2xl transition transform hover:-translate-y-1 overflow-hidden relative border-2 border-white/20">
+                            <div className="absolute top-0 right-0 p-4 opacity-10">
+                                <PlusCircle size={100} className="rotate-45" />
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-bold mb-2">Painel de Controle</h3>
+                                <p className="text-amber-50 text-sm">Gerenciar todas as empresas e planos do sistema.</p>
+                            </div>
+                            <div className="mt-4 flex items-center font-bold">
+                                Acessar Administração <ChevronRight className="ml-2 w-4 h-4" />
+                            </div>
+                        </Link>
+                    )}
+
                     {/* Quick Action: New Sermon */}
                     <Link to="/sermons/new" className="group bg-gradient-to-br from-indigo-600 to-indigo-700 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:shadow-2xl transition transform hover:-translate-y-1 overflow-hidden relative">
                         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
