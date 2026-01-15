@@ -26,11 +26,8 @@ export default function Login() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 dark:from-slate-900 dark:to-slate-950 p-4">
             <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-full max-w-md animate-in fade-in zoom-in duration-300 border dark:border-slate-800">
-                <div className="flex justify-center mb-4">
-                    <Logo className="h-16" showText={false} />
-                </div>
-                <div className="text-center mb-8">
-                    <h1 className="text-2xl font-black text-[#1E3A8A] dark:text-white uppercase tracking-tighter" style={{ fontFamily: "'Outfit', sans-serif" }}>VerboCast</h1>
+                <div className="flex justify-center mb-8">
+                    <Logo className="w-64" showText={false} />
                 </div>
                 <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-2">{t.auth.welcomeUser}</h2>
                 <p className="text-center text-gray-500 dark:text-gray-400 mb-8">{t.auth.accessAccount}</p>

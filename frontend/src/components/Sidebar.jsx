@@ -56,8 +56,8 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
             `}
         >
             {/* Header / Toggle */}
-            <div className={`flex items-center p-4 border-b border-white/10 h-20 transition-all duration-300 ${collapsed ? 'justify-center' : 'justify-between px-6'}`}>
-                <Logo className="h-10" showText={!collapsed} />
+            <div className={`flex items-center p-4 border-b border-white/10 h-24 transition-all duration-300 ${collapsed ? 'justify-center' : 'justify-between px-6'}`}>
+                <Logo className={collapsed ? "w-10" : "w-32"} showText={false} />
 
                 <button
                     onClick={() => setCollapsed(!collapsed)}

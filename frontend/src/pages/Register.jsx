@@ -61,11 +61,8 @@ export default function Register() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 dark:from-slate-900 dark:to-slate-950 p-4">
             <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-8 rounded-3xl shadow-2xl w-full max-w-md animate-in fade-in zoom-in duration-300 border dark:border-slate-800">
-                <div className="flex justify-center mb-4">
-                    <Logo className="h-16" showText={false} />
-                </div>
-                <div className="text-center mb-6">
-                    <h1 className="text-2xl font-black text-[#1E3A8A] dark:text-white uppercase tracking-tighter" style={{ fontFamily: "'Outfit', sans-serif" }}>VerboCast</h1>
+                <div className="flex justify-center mb-8">
+                    <Logo className="w-64" showText={false} />
                 </div>
 
                 <div className="mb-8">
