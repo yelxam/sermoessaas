@@ -132,6 +132,7 @@ Required Structure:
 
         const newSermon = await Sermon.create({
             user_id: req.user.id,
+            company_id: user.company_id,
             book,
             chapter,
             verses,

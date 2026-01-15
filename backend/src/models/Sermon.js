@@ -16,17 +16,25 @@ const Sermon = sequelize.define('Sermon', {
             key: 'id',
         },
     },
+    company_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: require('./Company'),
+            key: 'id',
+        },
+    },
     book: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     chapter: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     verses: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     theme: {
         type: DataTypes.STRING,
@@ -59,8 +67,12 @@ const Sermon = sequelize.define('Sermon', {
     tableName: 'sermons'
 });
 
-// Association
+// Associations
 User.hasMany(Sermon, { foreignKey: 'user_id' });
 Sermon.belongsTo(User, { foreignKey: 'user_id' });
+
+const Company = require('./Company');
+Company.hasMany(Sermon, { foreignKey: 'company_id' });
+Sermon.belongsTo(Company, { foreignKey: 'company_id' });
 
 module.exports = Sermon;
