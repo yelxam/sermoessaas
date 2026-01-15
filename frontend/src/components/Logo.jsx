@@ -1,13 +1,13 @@
 import React from 'react';
 import logoImg from '../assets/logo.png';
 
-const Logo = ({ className = "", showText = true }) => {
+const Logo = ({ className = "h-10" }) => {
     return (
-        <div className={`flex items-center justify-center ${className}`}>
+        <div className={`flex items-center justify-center overflow-hidden ${className}`}>
             <img
                 src={logoImg}
                 alt="VerboCast Logo"
-                className="max-w-full h-auto object-contain"
+                className="h-full w-auto object-contain block"
             />
         </div>
     );
