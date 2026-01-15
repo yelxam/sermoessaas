@@ -231,3 +231,26 @@ exports.translateSermon = async (req, res) => {
         res.status(500).json({ msg: 'Translation Error' });
     }
 };
+
+exports.updateSermon = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { theme, content, audience, tone, duration } = req.body;
+
+        const sermon = await Sermon.findOne({ where: { id, user_id: req.user.id } });
+        if (!sermon) return res.status(404).json({ msg: 'Sermon not found' });
+
+        await sermon.update({
+            theme,
+            content,
+            audience,
+            tone,
+            duration
+        });
+
+        res.json(sermon);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+};

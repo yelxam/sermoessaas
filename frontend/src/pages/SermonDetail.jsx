@@ -2,7 +2,17 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import api from '../services/api';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Trash2, Printer } from 'lucide-react';
+import {
+    ArrowLeft,
+    Trash2,
+    Printer,
+    Edit3,
+    Share2,
+    Save,
+    X,
+    Copy,
+    CheckCircle
+} from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export default function SermonDetail() {
@@ -11,6 +21,10 @@ export default function SermonDetail() {
     const [sermon, setSermon] = useState(null);
     const [translatedContent, setTranslatedContent] = useState(null);
     const [isTranslating, setIsTranslating] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [isSharing, setIsSharing] = useState(false);
+    const [editForm, setEditForm] = useState({ theme: '', content: '' });
+    const [copySuccess, setCopySuccess] = useState(false);
     const { t, language } = useLanguage();
 
     useEffect(() => {
@@ -18,7 +32,10 @@ export default function SermonDetail() {
             try {
                 const res = await api.get(`/sermons/${id}`);
                 setSermon(res.data);
-                // Clear separate translations when loading new sermon
+                setEditForm({
+                    theme: res.data.theme || '',
+                    content: res.data.content || ''
+                });
                 setTranslatedContent(null);
             } catch (err) {
                 console.error(err);
@@ -28,12 +45,10 @@ export default function SermonDetail() {
         fetchSermon();
     }, [id]);
 
-    // Auto-translation effect
     useEffect(() => {
         const translateIfNeeded = async () => {
-            if (!sermon) return;
+            if (!sermon || isEditing) return;
 
-            // Map simple codes to full names expected by backend/LLM
             const langMap = {
                 pt: 'Português',
                 es: 'Español',
@@ -43,14 +58,11 @@ export default function SermonDetail() {
             };
             const currentLangName = langMap[language] || 'Português';
 
-            // If sermon language matches current system language, reset translation
-            // Note: simple string check, backend stores 'Português', 'English', etc.
             if (sermon.language === currentLangName) {
                 setTranslatedContent(null);
                 return;
             }
 
-            // Trigger translation
             setIsTranslating(true);
             try {
                 const res = await api.post(`/sermons/${id}/translate`, { targetLanguage: currentLangName });
@@ -63,7 +75,7 @@ export default function SermonDetail() {
         };
 
         translateIfNeeded();
-    }, [sermon, language, id]);
+    }, [sermon, language, id, isEditing]);
 
     const handleDelete = async () => {
         if (window.confirm(t.sermonDetail.confirmDelete)) {
@@ -77,6 +89,25 @@ export default function SermonDetail() {
         }
     };
 
+    const handleSaveEdit = async () => {
+        try {
+            const res = await api.put(`/sermons/${id}`, editForm);
+            setSermon(res.data);
+            setIsEditing(false);
+            setTranslatedContent(null); // Re-translate if needed
+        } catch (err) {
+            console.error(err);
+            alert('Erro ao salvar alterações');
+        }
+    };
+
+    const handleCopyLink = () => {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url);
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 2000);
+    };
+
     if (!sermon) return <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center dark:text-gray-100">...</div>;
 
     return (
@@ -88,40 +119,78 @@ export default function SermonDetail() {
                             <button onClick={() => navigate('/sermons')} className="flex items-center text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 transition">
                                 <ArrowLeft className="w-4 h-4 mr-2" /> {t.sermonDetail.back}
                             </button>
-                            <div className="flex space-x-3">
-                                <button onClick={() => window.print()} className="flex items-center space-x-2 px-4 py-2 bg-gray-200 dark:bg-slate-800 hover:bg-gray-300 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-200 rounded-lg transition">
-                                    <Printer className="w-4 h-4" /> <span>{t.sermonDetail.print}</span>
-                                </button>
-                                <button onClick={handleDelete} className="flex items-center space-x-2 px-4 py-2 bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 rounded-lg transition">
-                                    <Trash2 className="w-4 h-4" /> <span>{t.sermonDetail.delete}</span>
-                                </button>
+                            <div className="flex space-x-2">
+                                {!isEditing ? (
+                                    <>
+                                        <button onClick={() => setIsSharing(true)} className="p-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg hover:bg-indigo-100 transition" title={t.sermonDetail.share}>
+                                            <Share2 className="w-5 h-5" />
+                                        </button>
+                                        <button onClick={() => setIsEditing(true)} className="p-2 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-lg hover:bg-amber-100 transition" title={t.sermonDetail.edit}>
+                                            <Edit3 className="w-5 h-5" />
+                                        </button>
+                                        <button onClick={() => window.print()} className="p-2 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-200 transition" title={t.sermonDetail.print}>
+                                            <Printer className="w-5 h-5" />
+                                        </button>
+                                        <button onClick={handleDelete} className="p-2 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-100 transition" title={t.sermonDetail.delete}>
+                                            <Trash2 className="w-5 h-5" />
+                                        </button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <button onClick={handleSaveEdit} className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                                            <Save className="w-4 h-4" /> <span>Salvar</span>
+                                        </button>
+                                        <button onClick={() => setIsEditing(false)} className="flex items-center space-x-2 px-4 py-2 bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-300 transition">
+                                            <X className="w-4 h-4" /> <span>Cancelar</span>
+                                        </button>
+                                    </>
+                                )}
                             </div>
                         </div>
 
                         <div className="bg-white dark:bg-slate-900 shadow-xl rounded-2xl overflow-hidden print:shadow-none border dark:border-slate-800">
                             <div className="bg-indigo-600 dark:bg-indigo-700 p-8 text-white print:bg-white print:text-black print:p-0 print:mb-4">
-                                <div className="flex justify-between items-start">
-                                    <div>
-                                        <span className="bg-white/20 text-indigo-50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide print:hidden">{sermon.language}</span>
-                                        <h1 className="text-3xl font-bold mt-4 mb-2">{sermon.theme || t.sermonDetail.untitled}</h1>
-                                        <p className="text-indigo-100 text-lg print:text-gray-600">{sermon.book} {sermon.chapter}:{sermon.verses}</p>
+                                {isEditing ? (
+                                    <div className="space-y-4">
+                                        <input
+                                            type="text"
+                                            className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-indigo-200 focus:outline-none focus:ring-2 focus:ring-white/30 text-2xl font-bold"
+                                            value={editForm.theme}
+                                            onChange={(e) => setEditForm({ ...editForm, theme: e.target.value })}
+                                            placeholder="Título do Sermão"
+                                        />
+                                        <p className="text-indigo-100 text-lg">{sermon.book} {sermon.chapter}:{sermon.verses}</p>
                                     </div>
-                                    <div className="text-right text-indigo-200 text-sm print:hidden">
-                                        <p>{t.sermonDetail.audience}: {sermon.audience}</p>
-                                        <p>{t.sermonDetail.tone}: {sermon.tone}</p>
-                                        <p>{t.sermonDetail.duration}: {sermon.duration}</p>
+                                ) : (
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <span className="bg-white/20 text-indigo-50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide print:hidden">{sermon.language}</span>
+                                            <h1 className="text-3xl font-bold mt-4 mb-2">{sermon.theme || t.sermonDetail.untitled}</h1>
+                                            <p className="text-indigo-100 text-lg print:text-gray-600">{sermon.book} {sermon.chapter}:{sermon.verses}</p>
+                                        </div>
+                                        <div className="text-right text-indigo-200 text-sm print:hidden">
+                                            <p>{t.sermonDetail.audience}: {sermon.audience}</p>
+                                            <p>{t.sermonDetail.tone}: {sermon.tone}</p>
+                                            <p>{t.sermonDetail.duration}: {sermon.duration}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
 
                             <div className="p-8 lg:p-12 print:p-0">
-                                {isTranslating ? (
+                                {isEditing ? (
+                                    <textarea
+                                        className="w-full min-h-[500px] p-6 bg-slate-50 dark:bg-slate-950 border dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all dark:text-gray-300 leading-relaxed font-sans text-lg"
+                                        value={editForm.content}
+                                        onChange={(e) => setEditForm({ ...editForm, content: e.target.value })}
+                                    />
+                                ) : isTranslating ? (
                                     <div className="flex flex-col items-center justify-center py-20 text-indigo-500 animate-pulse">
                                         <div className="text-4xl mb-4">🌍</div>
                                         <p>Traduzindo sermão... / Translating...</p>
                                     </div>
                                 ) : (
-                                    <div className="prose prose-indigo max-w-none text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+                                    <div className="prose prose-indigo max-w-none text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line text-lg">
                                         {translatedContent || sermon.content}
                                     </div>
                                 )}
@@ -129,6 +198,45 @@ export default function SermonDetail() {
                         </div>
                     </div>
                 </div>
+
+                {/* Share Modal */}
+                {isSharing && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-md p-8 shadow-2xl">
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="text-xl font-bold dark:text-white">{t.sermonDetail.shareSermon}</h3>
+                                <button onClick={() => setIsSharing(false)} className="text-gray-400 hover:text-gray-600">
+                                    <X className="w-6 h-6" />
+                                </button>
+                            </div>
+
+                            <div className="space-y-6">
+                                <p className="text-slate-600 dark:text-slate-400 text-sm">
+                                    Compartilhe o link do seu sermão com sua equipe ou congregação.
+                                </p>
+
+                                <div className="flex items-center gap-2 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl border dark:border-slate-700">
+                                    <input
+                                        type="text"
+                                        readOnly
+                                        value={window.location.href}
+                                        className="bg-transparent flex-1 text-sm outline-none overflow-hidden text-ellipsis dark:text-gray-300"
+                                    />
+                                    <button
+                                        onClick={handleCopyLink}
+                                        className={`p-2 rounded-lg transition-all ${copySuccess ? 'bg-green-500 text-white' : 'bg-white dark:bg-slate-700 text-indigo-600 shadow-sm'}`}
+                                    >
+                                        {copySuccess ? <CheckCircle className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                                    </button>
+                                </div>
+
+                                <button onClick={() => setIsSharing(false)} className="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition">
+                                    Concluído
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </Layout>
     );

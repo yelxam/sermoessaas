@@ -1,0 +1,15 @@
+# Garantir que o index.html seja o arquivo carregado primeiro
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  
+  # Forçar HTTPS (Opcional, mas recomendado)
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Se o arquivo ou pasta física não existir, não faz nada (o HashRouter resolve o resto)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>

@@ -7,6 +7,7 @@ const auth = require('../middlewares/authMiddleware');
 router.get('/', auth, sermonController.getSermons);
 router.post('/generate', auth, sermonController.generateSermon);
 router.get('/:id', auth, sermonController.getSermonById);
+router.put('/:id', auth, sermonController.updateSermon);
 router.delete('/:id', auth, sermonController.deleteSermon);
 router.post('/:id/translate', auth, sermonController.translateSermon);
 
