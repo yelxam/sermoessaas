@@ -50,8 +50,8 @@ const LandingPage = () => {
         <div className="min-h-screen bg-white dark:bg-slate-950">
             {/* Navbar */}
             <nav className="fixed top-0 w-full z-50 glass-panel !rounded-none border-t-0 border-x-0">
-                <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-                    <Logo className="h-14" />
+                <div className="container mx-auto px-6 h-28 flex items-center justify-between">
+                    <Logo className="h-20" />
 
                     <div className="hidden md:flex items-center gap-8 text-slate-600 dark:text-slate-300 font-medium text-sm">
                         <button onClick={() => scrollToSection('funcionalidades')} className="hover:text-indigo-600 transition-colors">Funcionalidades</button>
