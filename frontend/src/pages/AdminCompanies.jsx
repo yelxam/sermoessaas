@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import Sidebar from '../components/Sidebar';
-import { Building2, Save, X, Edit3, ShieldAlert, CreditCard, ListFilter } from 'lucide-react';
+import Layout from '../components/Layout';
+import { Building2, Save, X, Edit3, ShieldAlert } from 'lucide-react';
 
 export default function AdminCompanies() {
     const [companies, setCompanies] = useState([]);
@@ -55,10 +55,8 @@ export default function AdminCompanies() {
     if (loading) return <div className="min-h-screen flex items-center justify-center dark:bg-slate-950"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div></div>;
 
     return (
-        <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
-            <Sidebar />
-
-            <main className="flex-1 p-4 md:p-8 lg:p-12">
+        <Layout>
+            <div className="container mx-auto px-6 py-8">
                 <div className="max-w-6xl mx-auto">
                     <div className="flex items-center gap-4 mb-8">
                         <div className="p-3 bg-indigo-600 rounded-2xl shadow-lg shadow-indigo-200 dark:shadow-none">
@@ -132,89 +130,89 @@ export default function AdminCompanies() {
                         </div>
                     </div>
                 </div>
-            </main>
 
-            {/* Edit Modal */}
-            {editingCompany && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-                    <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl w-full max-w-lg overflow-hidden border dark:border-slate-800">
-                        <div className="p-8 pb-0 flex justify-between items-center">
-                            <h2 className="text-2xl font-black dark:text-white flex items-center gap-3">
-                                <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl">
-                                    <Building2 className="w-6 h-6 text-indigo-600" />
-                                </div>
-                                Editar Empresa
-                            </h2>
-                            <button onClick={() => setEditingCompany(null)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
-                                <X className="w-6 h-6" />
-                            </button>
-                        </div>
-
-                        <form onSubmit={handleUpdate} className="p-8 space-y-6">
-                            <div>
-                                <label className="label-text">Nome do Ministério/Empresa</label>
-                                <input
-                                    type="text"
-                                    className="input-field"
-                                    value={editForm.name}
-                                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                                    required
-                                />
+                {/* Edit Modal */}
+                {editingCompany && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+                        <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl w-full max-w-lg overflow-hidden border dark:border-slate-800">
+                            <div className="p-8 pb-0 flex justify-between items-center">
+                                <h2 className="text-2xl font-black dark:text-white flex items-center gap-3">
+                                    <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl">
+                                        <Building2 className="w-6 h-6 text-indigo-600" />
+                                    </div>
+                                    Editar Empresa
+                                </h2>
+                                <button onClick={() => setEditingCompany(null)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                                    <X className="w-6 h-6" />
+                                </button>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <form onSubmit={handleUpdate} className="p-8 space-y-6">
                                 <div>
-                                    <label className="label-text">Plano</label>
-                                    <select
-                                        className="input-field !pr-10 appearance-none bg-no-repeat"
-                                        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`, backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
-                                        value={editForm.plan}
-                                        onChange={(e) => {
-                                            const p = plans.find(pl => pl.name === e.target.value);
-                                            setEditForm({
-                                                ...editForm,
-                                                plan: e.target.value,
-                                                max_sermons: p ? p.max_sermons : editForm.max_sermons
-                                            });
-                                        }}
-                                    >
-                                        {plans.map(p => (
-                                            <option key={p.id} value={p.name}>{p.name}</option>
-                                        ))}
-                                        <option value="Personalizado">Personalizado</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="label-text">Limite Sermões (-1 = ∞)</label>
+                                    <label className="label-text">Nome do Ministério/Empresa</label>
                                     <input
-                                        type="number"
+                                        type="text"
                                         className="input-field"
-                                        value={editForm.max_sermons}
-                                        onChange={(e) => setEditForm({ ...editForm, max_sermons: parseInt(e.target.value) })}
+                                        value={editForm.name}
+                                        onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                                         required
                                     />
                                 </div>
-                            </div>
 
-                            <div className="pt-4 flex gap-3">
-                                <button
-                                    type="button"
-                                    onClick={() => setEditingCompany(null)}
-                                    className="flex-1 px-6 py-4 font-bold rounded-2xl border border-slate-200 dark:border-slate-800 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
-                                >
-                                    Cancelar
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="flex-1 btn-primary !py-4 flex items-center justify-center gap-2"
-                                >
-                                    <Save className="w-5 h-5" /> Salvar Alterações
-                                </button>
-                            </div>
-                        </form>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="label-text">Plano</label>
+                                        <select
+                                            className="input-field !pr-10 appearance-none bg-no-repeat"
+                                            style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`, backgroundPosition: 'right 1rem center', backgroundSize: '1.2rem' }}
+                                            value={editForm.plan}
+                                            onChange={(e) => {
+                                                const p = plans.find(pl => pl.name === e.target.value);
+                                                setEditForm({
+                                                    ...editForm,
+                                                    plan: e.target.value,
+                                                    max_sermons: p ? p.max_sermons : editForm.max_sermons
+                                                });
+                                            }}
+                                        >
+                                            {plans.map(p => (
+                                                <option key={p.id} value={p.name}>{p.name}</option>
+                                            ))}
+                                            <option value="Personalizado">Personalizado</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="label-text">Limite Sermões (-1 = ∞)</label>
+                                        <input
+                                            type="number"
+                                            className="input-field"
+                                            value={editForm.max_sermons}
+                                            onChange={(e) => setEditForm({ ...editForm, max_sermons: parseInt(e.target.value) })}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="pt-4 flex gap-3">
+                                    <button
+                                        type="button"
+                                        onClick={() => setEditingCompany(null)}
+                                        className="flex-1 px-6 py-4 font-bold rounded-2xl border border-slate-200 dark:border-slate-800 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="flex-1 btn-primary !py-4 flex items-center justify-center gap-2"
+                                    >
+                                        <Save className="w-5 h-5" /> Salvar Alterações
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )}
+            </div>
+        </Layout>
     );
 }

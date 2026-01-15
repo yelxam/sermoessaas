@@ -122,12 +122,12 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
                                     key={lang.code}
                                     onClick={() => setLanguage(lang.code)}
                                     className={`
-                                        p-1 rounded transition border border-transparent
+                                        p-1 rounded transition border border-transparent flex items-center justify-center
                                         ${language === lang.code ? 'border-indigo-500 bg-white/10' : 'opacity-50 hover:opacity-100'}
                                     `}
                                     title={lang.label}
                                 >
-                                    <img src={lang.flag} alt={lang.code} className="w-full h-auto rounded-sm object-cover" />
+                                    <img src={lang.flag} alt={lang.code} className="w-full h-5 rounded-sm object-cover" />
                                 </button>
                             ))}
                         </div>
