@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Company = require('../models/Company');
+const Plan = require('../models/Plan');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const sequelize = require('../config/database');
@@ -7,7 +8,13 @@ const sequelize = require('../config/database');
 exports.register = async (req, res) => {
     const t = await sequelize.transaction();
     try {
-        const { name, email, password, companyName } = req.body;
+        const { name, email, password, companyName, planId } = req.body;
+
+        // Basic validation
+        if (!name || !email || !password) {
+            await t.rollback();
+            return res.status(400).json({ msg: 'Please provide name, email and password' });
+        }
 
         // Check if user exists
         let user = await User.findOne({ where: { email } });
@@ -16,9 +23,21 @@ exports.register = async (req, res) => {
             return res.status(400).json({ msg: 'User already exists' });
         }
 
-        // Create Company
+        // Fetch Plan details - Robust check
+        let planDetails = null;
+        if (planId && !isNaN(planId)) {
+            try {
+                planDetails = await Plan.findByPk(planId);
+            } catch (pErr) {
+                console.error("Plan lookup failed, defaulting to Free:", pErr.message);
+            }
+        }
+
+        // Create Company with selected plan or default to free
         const newCompany = await Company.create({
-            name: companyName || `${name}'s Company`,
+            name: companyName || `${name.split(' ')[0]}'s Ministry`,
+            plan: planDetails ? planDetails.name : 'Free',
+            max_sermons: planDetails ? planDetails.max_sermons : 3,
         }, { transaction: t });
 
         // Hash password
@@ -44,19 +63,36 @@ exports.register = async (req, res) => {
             },
         };
 
+        if (!process.env.JWT_SECRET) {
+            console.error("JWT_SECRET is missing!");
+            return res.status(500).json({ msg: "Server configuration error" });
+        }
+
         jwt.sign(
             payload,
             process.env.JWT_SECRET,
             { expiresIn: '5d' },
             (err, token) => {
                 if (err) throw err;
-                res.json({ token, user: { id: user.id, name: user.name, email: user.email, company_id: user.company_id, role: user.role } });
+                res.json({
+                    token,
+                    user: {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        company_id: user.company_id,
+                        role: user.role
+                    }
+                });
             }
         );
     } catch (err) {
-        await t.rollback();
-        console.error(err.message);
-        res.status(500).send('Server Error');
+        if (t) await t.rollback();
+        console.error("REGISTRATION ERROR:", err);
+        res.status(500).json({
+            msg: 'Error creating account. Please try again.',
+            error: process.env.NODE_ENV === 'development' ? err.message : undefined
+        });
     }
 };
 

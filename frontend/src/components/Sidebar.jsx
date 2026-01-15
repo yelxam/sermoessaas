@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
+import Logo from './Logo';
 
 export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
     const location = useLocation();
@@ -54,13 +55,8 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
             `}
         >
             {/* Header / Toggle */}
-            <div className={`flex items-center p-4 border-b border-white/10 h-20 transition-all duration-300 ${collapsed ? 'justify-center' : 'justify-between'}`}>
-                <div className={`flex items-center space-x-3 transition-opacity duration-200 ${collapsed ? 'hidden' : 'flex'}`}>
-                    <div className="bg-indigo-600 p-2 rounded-lg">
-                        <BookOpen className="w-6 h-6" />
-                    </div>
-                    <span className="font-bold text-xl tracking-tight whitespace-nowrap">VerboCast</span>
-                </div>
+            <div className={`flex items-center p-4 border-b border-white/10 h-20 transition-all duration-300 ${collapsed ? 'justify-center' : 'justify-between px-6'}`}>
+                <Logo className="h-10" showText={!collapsed} />
 
                 <button
                     onClick={() => setCollapsed(!collapsed)}

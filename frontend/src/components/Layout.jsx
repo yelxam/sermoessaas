@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import { Menu, X, BookOpen } from 'lucide-react';
+import Logo from './Logo';
 
 export default function Layout({ children }) {
     const [collapsed, setCollapsed] = useState(false);
@@ -10,12 +11,7 @@ export default function Layout({ children }) {
         <div className="flex bg-slate-50 dark:bg-slate-950 min-h-screen transition-colors duration-300">
             {/* MOBILE HEADER */}
             <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 z-40">
-                <div className="flex items-center space-x-2">
-                    <div className="bg-indigo-600 p-1.5 rounded-lg text-white">
-                        <BookOpen size={20} />
-                    </div>
-                    <span className="font-bold text-lg dark:text-white">VerboCast</span>
-                </div>
+                <Logo className="h-8" />
                 <button
                     onClick={() => setMobileOpen(true)}
                     className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"

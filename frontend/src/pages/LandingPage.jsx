@@ -12,6 +12,7 @@ import {
     Check,
     Loader2
 } from 'lucide-react';
+import Logo from '../components/Logo';
 
 const LandingPage = () => {
     const [plans, setPlans] = useState([]);
@@ -50,14 +51,7 @@ const LandingPage = () => {
             {/* Navbar */}
             <nav className="fixed top-0 w-full z-50 glass-panel !rounded-none border-t-0 border-x-0">
                 <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-none">
-                            <BookOpen className="text-white w-6 h-6" />
-                        </div>
-                        <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">
-                            VerboCast
-                        </span>
-                    </div>
+                    <Logo className="h-12" />
 
                     <div className="hidden md:flex items-center gap-8 text-slate-600 dark:text-slate-300 font-medium text-sm">
                         <button onClick={() => scrollToSection('funcionalidades')} className="hover:text-indigo-600 transition-colors">Funcionalidades</button>
@@ -221,10 +215,10 @@ const LandingPage = () => {
                                     </ul>
 
                                     <Link
-                                        to="/register"
+                                        to={`/register?plan=${plan.id}`}
                                         className={`w-full py-4 rounded-xl font-bold text-center transition-all ${idx === 1
-                                                ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-200 dark:shadow-none'
-                                                : 'bg-indigo-50 dark:bg-slate-900 text-indigo-600 hover:bg-indigo-100 dark:hover:bg-slate-800'
+                                            ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-200 dark:shadow-none'
+                                            : 'bg-indigo-50 dark:bg-slate-900 text-indigo-600 hover:bg-indigo-100 dark:hover:bg-slate-800'
                                             }`}
                                     >
                                         Assinar Agora
@@ -294,10 +288,7 @@ const LandingPage = () => {
             {/* Footer */}
             <footer className="py-12 border-t border-slate-100 dark:border-slate-800">
                 <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <div className="flex items-center gap-2">
-                        <BookOpen className="text-indigo-600 w-6 h-6" />
-                        <span className="text-xl font-bold">VerboCast</span>
-                    </div>
+                    <Logo className="h-8" />
                     <p className="text-slate-500 text-xs">© 2026 VerboCast AI. Preparando corações para a mensagem bíblica.</p>
                     <div className="flex gap-6 text-slate-500 text-xs font-medium uppercase tracking-widest">
                         <a href="#" className="hover:text-indigo-600 transition-colors">Privacidade</a>

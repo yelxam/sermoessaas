@@ -11,7 +11,8 @@ import {
     Save,
     X,
     Copy,
-    CheckCircle
+    CheckCircle,
+    MessageCircle
 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -106,6 +107,18 @@ export default function SermonDetail() {
         navigator.clipboard.writeText(url);
         setCopySuccess(true);
         setTimeout(() => setCopySuccess(false), 2000);
+    };
+
+    const handleWhatsAppShare = () => {
+        if (!sermon) return;
+
+        const title = sermon.theme || t.sermonDetail.untitled;
+        const textToShare = `*${title}*\n\n${translatedContent || sermon.content}`;
+        const encodedText = encodeURIComponent(textToShare);
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedText}`;
+
+        window.open(whatsappUrl, '_blank');
+        setIsSharing(false);
     };
 
     if (!sermon) return <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center dark:text-gray-100">...</div>;
@@ -210,10 +223,23 @@ export default function SermonDetail() {
                                 </button>
                             </div>
 
-                            <div className="space-y-6">
+                            <div className="space-y-4">
                                 <p className="text-slate-600 dark:text-slate-400 text-sm">
-                                    Compartilhe o link do seu sermão com sua equipe ou congregação.
+                                    Escolha como deseja compartilhar sua mensagem inspiradora:
                                 </p>
+
+                                <button
+                                    onClick={handleWhatsAppShare}
+                                    className="w-full flex items-center justify-center gap-3 py-4 bg-[#25D366] text-white font-bold rounded-2xl hover:bg-[#20bd5a] transition-all shadow-lg shadow-green-200 dark:shadow-none"
+                                >
+                                    <MessageCircle className="w-6 h-6 fill-white" />
+                                    Enviar via WhatsApp
+                                </button>
+
+                                <div className="relative py-2">
+                                    <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200 dark:border-slate-800"></div></div>
+                                    <div className="relative flex justify-center text-xs uppercase"><span className="bg-white dark:bg-slate-900 px-2 text-slate-500">Ou use o link</span></div>
+                                </div>
 
                                 <div className="flex items-center gap-2 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl border dark:border-slate-700">
                                     <input
@@ -229,10 +255,6 @@ export default function SermonDetail() {
                                         {copySuccess ? <CheckCircle className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                                     </button>
                                 </div>
-
-                                <button onClick={() => setIsSharing(false)} className="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition">
-                                    Concluído
-                                </button>
                             </div>
                         </div>
                     </div>

@@ -5,6 +5,7 @@ const auth = require('../middlewares/authMiddleware');
 
 // All routes here are protected// CRUD
 router.get('/', auth, sermonController.getSermons);
+router.post('/', auth, sermonController.createSermon);
 router.post('/generate', auth, sermonController.generateSermon);
 router.get('/:id', auth, sermonController.getSermonById);
 router.put('/:id', auth, sermonController.updateSermon);

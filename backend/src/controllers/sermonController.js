@@ -232,6 +232,70 @@ exports.translateSermon = async (req, res) => {
     }
 };
 
+exports.createSermon = async (req, res) => {
+    try {
+        const { theme, content, audience, tone, duration } = req.body;
+
+        // 1. Check Plan Limits
+        const user = await User.findByPk(req.user.id, {
+            include: [{ model: Company }]
+        });
+
+        if (!user || !user.Company) {
+            return res.status(400).json({ msg: 'User company not found' });
+        }
+
+        const startOfMonth = new Date();
+        startOfMonth.setDate(1);
+        startOfMonth.setHours(0, 0, 0, 0);
+
+        // A. Check User Specific Limit
+        if (user.sermon_limit !== null) {
+            const userUsage = await Sermon.count({
+                where: {
+                    user_id: user.id,
+                    created_at: { [Op.gte]: startOfMonth }
+                }
+            });
+
+            if (user.sermon_limit !== -1 && userUsage >= user.sermon_limit) {
+                return res.status(403).json({
+                    msg: `Limite mensal de usuário atingido (${userUsage}/${user.sermon_limit}).`
+                });
+            }
+        } else {
+            // B. Check Company Limit
+            const companyUsage = await Sermon.count({
+                where: {
+                    company_id: user.company_id,
+                    created_at: { [Op.gte]: startOfMonth }
+                }
+            });
+
+            if (user.Company.max_sermons !== -1 && companyUsage >= user.Company.max_sermons) {
+                return res.status(403).json({
+                    msg: `Limite mensal da organização atingido (${companyUsage}/${user.Company.max_sermons}).`
+                });
+            }
+        }
+
+        const newSermon = await Sermon.create({
+            theme,
+            content,
+            audience,
+            tone,
+            duration,
+            user_id: req.user.id,
+            company_id: req.user.company_id
+        });
+
+        res.json(newSermon);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+};
+
 exports.updateSermon = async (req, res) => {
     try {
         const { id } = req.params;
