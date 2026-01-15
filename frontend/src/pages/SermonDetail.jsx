@@ -172,14 +172,18 @@ export default function SermonDetail() {
                                             onChange={(e) => setEditForm({ ...editForm, theme: e.target.value })}
                                             placeholder="Título do Sermão"
                                         />
-                                        <p className="text-indigo-100 text-lg">{sermon.book} {sermon.chapter}:{sermon.verses}</p>
+                                        {(sermon.book && sermon.chapter) && (
+                                            <p className="text-indigo-100 text-lg">{sermon.book} {sermon.chapter}:{sermon.verses}</p>
+                                        )}
                                     </div>
                                 ) : (
                                     <div className="flex justify-between items-start">
                                         <div>
                                             <span className="bg-white/20 text-indigo-50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide print:hidden">{sermon.language}</span>
                                             <h1 className="text-3xl font-bold mt-4 mb-2">{sermon.theme || t.sermonDetail.untitled}</h1>
-                                            <p className="text-indigo-100 text-lg print:text-gray-600">{sermon.book} {sermon.chapter}:{sermon.verses}</p>
+                                            {(sermon.book && sermon.chapter) && (
+                                                <p className="text-indigo-100 text-lg print:text-gray-600">{sermon.book} {sermon.chapter}:{sermon.verses}</p>
+                                            )}
                                         </div>
                                         <div className="text-right text-indigo-200 text-sm print:hidden">
                                             <p>{t.sermonDetail.audience}: {sermon.audience}</p>

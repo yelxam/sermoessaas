@@ -55,9 +55,15 @@ export default function SermonList() {
                         {sermons.map(sermon => (
                             <Link key={sermon.id} to={`/sermons/${sermon.id}`} className="bg-white dark:bg-slate-900 group rounded-xl shadow-sm hover:shadow-md border border-gray-100 dark:border-slate-800 p-6 transition duration-200">
                                 <div className="flex justify-between items-start mb-4">
-                                    <div className="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wide">
-                                        {sermon.book} {sermon.chapter}:{sermon.verses}
-                                    </div>
+                                    {(sermon.book && sermon.chapter) ? (
+                                        <div className="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wide">
+                                            {sermon.book} {sermon.chapter}:{sermon.verses}
+                                        </div>
+                                    ) : (
+                                        <div className="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wide">
+                                            Manual
+                                        </div>
+                                    )}
                                 </div>
 
                                 <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">{sermon.theme || t.sermonList.untitled}</h3>
