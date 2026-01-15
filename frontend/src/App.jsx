@@ -10,6 +10,7 @@ import Team from './pages/Team';
 import Organization from './pages/Organization';
 import Plans from './pages/Plans';
 import LandingPage from './pages/LandingPage';
+import AdminCompanies from './pages/AdminCompanies';
 
 const ProtectedRoute = ({ children }) => {
     const token = localStorage.getItem('token');
@@ -70,6 +71,12 @@ function App() {
                         <Route path="/plans" element={
                             <ProtectedRoute>
                                 <Plans />
+                            </ProtectedRoute>
+                        } />
+
+                        <Route path="/admin" element={
+                            <ProtectedRoute>
+                                <AdminCompanies />
                             </ProtectedRoute>
                         } />
 

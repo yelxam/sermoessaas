@@ -35,8 +35,9 @@ exports.updateMyCompany = async (req, res) => {
 // Platform Admin (Manage All Companies)
 exports.getAllCompanies = async (req, res) => {
     try {
-        // In a real app, verify is_super_admin. Here allowing owners for demo flexibility
-        // if (req.user.role !== 'owner') ...
+        if (req.user.role !== 'owner') {
+            return res.status(403).json({ msg: 'Not authorized for this section' });
+        }
 
         const companies = await Company.findAll({ order: [['created_at', 'DESC']] });
         res.json(companies);
@@ -48,23 +49,49 @@ exports.getAllCompanies = async (req, res) => {
 
 exports.createCompany = async (req, res) => {
     try {
-        const { name, plan } = req.body;
+        if (req.user.role !== 'owner') {
+            return res.status(403).json({ msg: 'Not authorized' });
+        }
 
-        // Find the plan to determine limits
+        const { name, plan } = req.body;
         const Plan = require('../models/Plan');
         const selectedPlan = await Plan.findOne({ where: { name: plan || 'Free' } });
 
-        let max_sermons = 3; // Fallback
+        let max_sermons = 3;
         if (selectedPlan) {
             max_sermons = selectedPlan.max_sermons;
         }
 
         const newCompany = await Company.create({
             name,
-            plan: plan || 'Free', // Keep storing name string for now
+            plan: plan || 'Free',
             max_sermons
         });
         res.json(newCompany);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+};
+
+exports.updateCompany = async (req, res) => {
+    try {
+        if (req.user.role !== 'owner') {
+            return res.status(403).json({ msg: 'Not authorized' });
+        }
+
+        const { name, plan, max_sermons } = req.body;
+        const company = await Company.findByPk(req.params.id);
+
+        if (!company) return res.status(404).json({ msg: 'Company not found' });
+
+        await company.update({
+            name: name || company.name,
+            plan: plan || company.plan,
+            max_sermons: max_sermons !== undefined ? max_sermons : company.max_sermons
+        });
+
+        res.json(company);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

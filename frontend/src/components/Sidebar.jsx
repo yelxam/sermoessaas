@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
     BookOpen, Home, List, Plus, Users, Settings, CreditCard, LogOut,
-    ChevronLeft, ChevronRight, Globe, Sun, Moon
+    ChevronLeft, ChevronRight, Globe, Sun, Moon, ShieldAlert
 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
@@ -29,6 +29,7 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
     }
 
     if (user.email === 'admin@sermon.ai') {
+        navItems.push({ path: '/admin', label: 'Administração', icon: ShieldAlert });
         navItems.push({ path: '/plans', label: 'Planos', icon: CreditCard });
     }
 
