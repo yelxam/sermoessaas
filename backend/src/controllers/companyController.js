@@ -2,6 +2,7 @@ const Company = require('../models/Company');
 const Church = require('../models/Church');
 const User = require('../models/User');
 const Sermon = require('../models/Sermon');
+const sequelize = require('../config/database');
 
 // My Organization (Tenant)
 exports.getMyCompany = async (req, res) => {
