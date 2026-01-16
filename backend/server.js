@@ -24,9 +24,15 @@ app.use('/companies', require('./src/routes/companyRoutes'));
 app.use('/plans', require('./src/routes/planRoutes'));
 
 // Database connection & Sync logic
-sequelize.sync({ alter: true })
-    .then(() => console.log('Database connected and synced'))
-    .catch(err => console.error('Database connection error:', err));
+if (process.env.SYNC_DB === 'true') {
+    sequelize.sync({ alter: true })
+        .then(() => console.log('Database connected and synced'))
+        .catch(err => console.error('Database connection error:', err));
+} else {
+    sequelize.authenticate()
+        .then(() => console.log('Database connected'))
+        .catch(err => console.error('Database connection error:', err));
+}
 
 app.get('/', (req, res) => {
     res.json({ message: 'Sermoes API is running' });
