@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import Layout from '../components/Layout';
-import { Building2, Save, X, Edit3, ShieldAlert } from 'lucide-react';
+import { Building2, Save, X, Edit3, ShieldAlert, TrendingUp, Users, FileText, PieChart as PieChartIcon } from 'lucide-react';
+import {
+    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    PieChart, Pie, Cell, AreaChart, Area
+} from 'recharts';
 
 export default function AdminCompanies() {
     const [companies, setCompanies] = useState([]);
@@ -10,16 +14,25 @@ export default function AdminCompanies() {
     const [editingCompany, setEditingCompany] = useState(null);
     const [editForm, setEditForm] = useState({ name: '', plan: '', max_sermons: 0, active: true });
     const [msg, setMsg] = useState({ type: '', text: '' });
+    const [stats, setStats] = useState({
+        totalCompanies: 0,
+        totalUsers: 0,
+        totalSermons: 0,
+        companyDistribution: [],
+        sermonGrowth: []
+    });
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [compRes, planRes] = await Promise.all([
+                const [compRes, planRes, statsRes] = await Promise.all([
                     api.get('/companies'),
-                    api.get('/plans/public')
+                    api.get('/plans/public'),
+                    api.get('/companies/stats')
                 ]);
                 setCompanies(compRes.data);
                 setPlans(planRes.data);
+                setStats(statsRes.data);
             } catch (err) {
                 console.error("Erro ao carregar dados do admin", err);
                 setMsg({ type: 'error', text: 'Erro ao carregar empresas' });
@@ -74,6 +87,109 @@ export default function AdminCompanies() {
                             <p className="font-bold">{msg.text}</p>
                         </div>
                     )}
+
+                    {/* Stats Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border dark:border-slate-800 shadow-sm">
+                            <div className="flex justify-between items-start mb-4">
+                                <div className="p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl">
+                                    <Building2 className="w-6 h-6 text-indigo-600" />
+                                </div>
+                                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Empresas</span>
+                            </div>
+                            <div className="text-3xl font-black dark:text-white">{stats.totalCompanies}</div>
+                            <p className="text-sm text-slate-500 mt-1">Organizações Ativas</p>
+                        </div>
+
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border dark:border-slate-800 shadow-sm">
+                            <div className="flex justify-between items-start mb-4">
+                                <div className="p-3 bg-green-50 dark:bg-green-900/30 rounded-xl">
+                                    <Users className="w-6 h-6 text-green-600" />
+                                </div>
+                                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Usuários</span>
+                            </div>
+                            <div className="text-3xl font-black dark:text-white">{stats.totalUsers}</div>
+                            <p className="text-sm text-slate-500 mt-1">Pastores e Líderes</p>
+                        </div>
+
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border dark:border-slate-800 shadow-sm">
+                            <div className="flex justify-between items-start mb-4">
+                                <div className="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl">
+                                    <FileText className="w-6 h-6 text-blue-600" />
+                                </div>
+                                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Sermões</span>
+                            </div>
+                            <div className="text-3xl font-black dark:text-white">{stats.totalSermons}</div>
+                            <p className="text-sm text-slate-500 mt-1">Gerados com IA</p>
+                        </div>
+                    </div>
+
+                    {/* Charts Section */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                        {/* Sermon Growth Chart */}
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border dark:border-slate-800 shadow-sm min-h-[400px]">
+                            <h3 className="text-lg font-bold dark:text-white mb-6 flex items-center gap-2">
+                                <TrendingUp className="w-5 h-5 text-indigo-600" />
+                                Crescimento de Sermões (IA)
+                            </h3>
+                            <div className="h-[300px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart data={stats.sermonGrowth}>
+                                        <defs>
+                                            <linearGradient id="colorSermon" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.1} />
+                                                <stop offset="95%" stopColor="#4f46e5" stopOpacity={0} />
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#33415510" />
+                                        <XAxis
+                                            dataKey="date"
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{ fontSize: 10 }}
+                                            tickFormatter={(val) => new Date(val).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })}
+                                        />
+                                        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
+                                        <Tooltip
+                                            contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                            labelFormatter={(val) => new Date(val).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' })}
+                                        />
+                                        <Area type="monotone" dataKey="count" stroke="#4f46e5" fillOpacity={1} fill="url(#colorSermon)" strokeWidth={3} />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+
+                        {/* Company User Distribution */}
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border dark:border-slate-800 shadow-sm min-h-[400px]">
+                            <h3 className="text-lg font-bold dark:text-white mb-6 flex items-center gap-2">
+                                <PieChartIcon className="w-5 h-5 text-indigo-600" />
+                                Usuários por Organização
+                            </h3>
+                            <div className="h-[300px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={stats.companyDistribution}
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={60}
+                                            outerRadius={80}
+                                            paddingAngle={5}
+                                            dataKey="userCount"
+                                        >
+                                            {stats.companyDistribution.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={['#4f46e5', '#10b981', '#3b82f6', '#f59e0b', '#ef4444'][index % 5]} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip
+                                            contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                        />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+                    </div>
 
                     <div className="glass-panel overflow-hidden border dark:border-slate-800">
                         <div className="p-6 border-b dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 flex items-center justify-between font-bold">
