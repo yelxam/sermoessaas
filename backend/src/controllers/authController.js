@@ -6,22 +6,23 @@ const jwt = require('jsonwebtoken');
 const sequelize = require('../config/database');
 
 exports.register = async (req, res) => {
-    const t = await sequelize.transaction();
     try {
         const { name, email, password, companyName, planId } = req.body;
 
         // Basic validation
         if (!name || !email || !password) {
-            await t.rollback();
             return res.status(400).json({ msg: 'Please provide name, email and password' });
         }
 
         // Check if user exists
         let user = await User.findOne({ where: { email } });
         if (user) {
-            await t.rollback();
             return res.status(400).json({ msg: 'User already exists' });
         }
+
+        // Hash password EARLY (CPU intensive)
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         // Fetch Plan details - Robust check
         let planDetails = null;
@@ -33,26 +34,21 @@ exports.register = async (req, res) => {
             }
         }
 
-        // Create Company with selected plan or default to free
+        // Create Company
         const newCompany = await Company.create({
             name: companyName || `${name.split(' ')[0]}'s Ministry`,
             plan: planDetails ? planDetails.name : 'Free',
             max_sermons: planDetails ? planDetails.max_sermons : 3,
-        }, { transaction: t });
+        });
 
-        // Hash password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
+        // Create User
         user = await User.create({
             name,
             email,
             password: hashedPassword,
             company_id: newCompany.id,
             role: 'owner'
-        }, { transaction: t });
-
-        await t.commit();
+        });
 
         // Create Token
         const payload = {
@@ -87,7 +83,6 @@ exports.register = async (req, res) => {
             }
         );
     } catch (err) {
-        if (t) await t.rollback();
         console.error("REGISTRATION ERROR:", err);
         res.status(500).json({
             msg: 'Error creating account: ' + err.message,
