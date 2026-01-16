@@ -33,8 +33,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/health', (req, res) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.json({
         status: 'ok',
+        v: '1.0.3',
         timestamp: new Date(),
         db_url_present: !!process.env.DATABASE_URL,
         sync_db_on: process.env.SYNC_DB,

@@ -8,10 +8,10 @@ const sequelize = process.env.DATABASE_URL
     dialectModule: pg,
     logging: false,
     pool: {
-      max: 1, // Minimize connections per lambda instance
+      max: 3,
       min: 0,
-      acquire: 30000,
-      idle: 0 // Close connections immediately after use
+      acquire: 5000,
+      idle: 10000
     },
     dialectOptions: {
       ssl: {
