@@ -5,12 +5,14 @@ const auth = require('../middlewares/authMiddleware');
 
 // Platform / General
 router.get('/', auth, companyController.getAllCompanies);
+router.get('/stats', auth, companyController.getAdminStats);
 router.post('/', auth, companyController.createCompany);
 router.put('/:id', auth, companyController.updateCompany);
 
 // My Company context
 router.get('/me', auth, companyController.getMyCompany);
 router.put('/me', auth, companyController.updateMyCompany);
+router.put('/me/plan', auth, companyController.updateMyPlan);
 
 // Churches (My Company)
 router.get('/churches', auth, companyController.getChurches);

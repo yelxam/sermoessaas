@@ -107,6 +107,15 @@ exports.login = async (req, res) => {
             return res.status(400).json({ msg: 'Invalid Credentials' });
         }
 
+        // Check if company is active
+        const company = await Company.findByPk(user.company_id);
+        if (company && !company.active) {
+            return res.status(403).json({
+                msg: 'Sua conta está desativada. Por favor, entre em contato com o suporte ou verifique seu pagamento.',
+                inactive: true
+            });
+        }
+
         // Return token
         const payload = {
             user: {
