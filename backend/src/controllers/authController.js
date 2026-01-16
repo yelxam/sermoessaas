@@ -90,8 +90,8 @@ exports.register = async (req, res) => {
         if (t) await t.rollback();
         console.error("REGISTRATION ERROR:", err);
         res.status(500).json({
-            msg: 'Error creating account. Please try again.',
-            error: process.env.NODE_ENV === 'development' ? err.message : undefined
+            msg: 'Error creating account: ' + err.message,
+            error: err.message
         });
     }
 };
