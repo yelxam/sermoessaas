@@ -8,7 +8,7 @@ export default function AdminCompanies() {
     const [plans, setPlans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editingCompany, setEditingCompany] = useState(null);
-    const [editForm, setEditForm] = useState({ name: '', plan: '', max_sermons: 0 });
+    const [editForm, setEditForm] = useState({ name: '', plan: '', max_sermons: 0, active: true });
     const [msg, setMsg] = useState({ type: '', text: '' });
 
     useEffect(() => {
@@ -35,7 +35,8 @@ export default function AdminCompanies() {
         setEditForm({
             name: company.name,
             plan: company.plan,
-            max_sermons: company.max_sermons
+            max_sermons: company.max_sermons,
+            active: company.active !== undefined ? company.active : true
         });
         setMsg({ type: '', text: '' });
     };
@@ -102,12 +103,17 @@ export default function AdminCompanies() {
                                                 <div className="text-[10px] text-slate-400">ID: {company.id}</div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${company.plan === 'Pro' ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300' :
+                                                <div className="flex flex-col gap-1.5">
+                                                    <span className={`w-fit px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${company.plan === 'Pro' ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300' :
                                                         company.plan === 'Avançado' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' :
                                                             'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
-                                                    }`}>
-                                                    {company.plan}
-                                                </span>
+                                                        }`}>
+                                                        {company.plan}
+                                                    </span>
+                                                    <span className={`w-fit text-[9px] font-bold px-1.5 py-0.5 rounded uppercase ${company.active !== false ? 'text-green-500 bg-green-500/10' : 'text-red-500 bg-red-500/10'}`}>
+                                                        {company.active !== false ? 'Ativa' : 'Bloqueada'}
+                                                    </span>
+                                                </div>
                                             </td>
                                             <td className="px-6 py-4 font-bold text-slate-600 dark:text-slate-300">
                                                 {company.max_sermons === -1 ? 'Ilimitado' : company.max_sermons}
@@ -191,6 +197,22 @@ export default function AdminCompanies() {
                                             required
                                         />
                                     </div>
+                                </div>
+
+                                <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border dark:border-slate-800 flex items-center justify-between">
+                                    <div className="flex flex-col text-left">
+                                        <span className="font-bold dark:text-white">Status da Conta</span>
+                                        <span className="text-xs text-slate-500">Bloqueia o acesso de todos os usuários</span>
+                                    </div>
+                                    <label className="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            className="sr-only peer"
+                                            checked={editForm.active}
+                                            onChange={(e) => setEditForm({ ...editForm, active: e.target.checked })}
+                                        />
+                                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                                    </label>
                                 </div>
 
                                 <div className="pt-4 flex gap-3">
