@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import api from '../services/api';
-import { Building2, Save, MapPin, Phone, User, Trash2, PlusCircle, Globe } from 'lucide-react';
+import { Building2, Save, MapPin, Phone, User, Trash2, PlusCircle, Globe, CreditCard, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Organization() {
@@ -44,8 +44,13 @@ export default function Organization() {
                 churches: results[1].data,
                 allCompanies: isSuperAdmin ? results[2].data : []
             }));
+
             if (isSuperAdmin) {
                 setAvailablePlans(results[3].data);
+            } else {
+                // For regular owners, fetch public plans to change
+                const plansRes = await api.get('/plans/public');
+                setAvailablePlans(plansRes.data);
             }
 
         } catch (err) {
@@ -68,6 +73,29 @@ export default function Organization() {
             alert('Erro ao atualizar');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const changeMyPlan = async (planId) => {
+        if (!window.confirm("Deseja realmente alterar seu plano?")) return;
+        try {
+            setLoading(true);
+            await api.put('/companies/me/plan', { planId });
+            fetchData();
+            alert("Plano atualizado com sucesso!");
+        } catch (err) {
+            alert(err.response?.data?.msg || "Erro ao alterar plano");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const toggleCompanyActive = async (companyId, currentStatus) => {
+        try {
+            await api.put(`/companies/${companyId}`, { active: !currentStatus });
+            fetchData();
+        } catch (err) {
+            alert("Erro ao alterar status");
         }
     };
 
@@ -170,6 +198,43 @@ export default function Organization() {
                             </form>
                         </div>
 
+                        {/* Plan Management */}
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-indigo-50 dark:border-indigo-900/40 p-6">
+                            <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
+                                <CreditCard className="w-5 h-5 mr-2 text-indigo-500" />
+                                Plano e Assinatura
+                            </h2>
+                            <div className="space-y-4">
+                                <div className="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800/50">
+                                    <p className="text-sm text-indigo-600 dark:text-indigo-400 font-bold uppercase tracking-wider mb-1">Plano Atual</p>
+                                    <p className="text-2xl font-black text-indigo-900 dark:text-indigo-200 uppercase">{data.company.plan}</p>
+                                    <p className="text-xs text-indigo-500 mt-1">Limite: {data.company.max_sermons === -1 ? 'Ilimitado' : `${data.company.max_sermons} sermões/mês`}</p>
+                                </div>
+
+                                {currentUser?.role === 'owner' && (
+                                    <div className="space-y-3 pt-2">
+                                        <label className="label-text">Alterar para:</label>
+                                        <div className="grid grid-cols-1 gap-2">
+                                            {availablePlans.filter(p => p.name !== data.company.plan).map(p => (
+                                                <button
+                                                    key={p.id}
+                                                    onClick={() => changeMyPlan(p.id)}
+                                                    disabled={loading}
+                                                    className="flex justify-between items-center p-3 rounded-xl border-2 border-slate-100 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-400 transition-all text-left group"
+                                                >
+                                                    <div>
+                                                        <p className="font-bold text-slate-700 dark:text-slate-200">{p.name}</p>
+                                                        <p className="text-[10px] text-slate-500">R$ {p.price}/mês</p>
+                                                    </div>
+                                                    <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-indigo-500 transition-colors" />
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
                         {/* Super Admin Panel: All Companies */}
                         {isSuperAdmin && (
                             <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-orange-100 dark:border-orange-900/40 p-6">
@@ -184,9 +249,22 @@ export default function Organization() {
                                 </div>
                                 <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
                                     {data.allCompanies.map(c => (
-                                        <div key={c.id} className="flex justify-between items-center bg-slate-50 dark:bg-slate-800/40 p-2 rounded border border-gray-100 dark:border-slate-800 text-sm">
-                                            <span className="font-medium text-gray-700 dark:text-gray-200">{c.name}</span>
-                                            <span className="text-xs bg-gray-200 dark:bg-slate-700 px-2 py-0.5 rounded text-gray-600 dark:text-gray-400 uppercase">{c.plan}</span>
+                                        <div key={c.id} className="bg-slate-50 dark:bg-slate-800/40 p-3 rounded-xl border border-gray-100 dark:border-slate-800 space-y-2">
+                                            <div className="flex justify-between items-center">
+                                                <span className="font-bold text-gray-700 dark:text-gray-200">{c.name}</span>
+                                                <span className="text-[10px] bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded text-gray-600 dark:text-gray-400 uppercase font-black">{c.plan}</span>
+                                            </div>
+                                            <div className="flex justify-between items-center pt-1 border-t border-slate-200 dark:border-slate-700/50">
+                                                <span className={`text-[10px] font-bold uppercase ${c.active ? 'text-green-500' : 'text-red-500'}`}>
+                                                    {c.active ? 'Ativa' : 'Desativada'}
+                                                </span>
+                                                <button
+                                                    onClick={() => toggleCompanyActive(c.id, c.active)}
+                                                    className={`text-[10px] px-2 py-1 rounded font-bold transition-colors ${c.active ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-green-50 text-green-600 hover:bg-green-100'}`}
+                                                >
+                                                    {c.active ? 'Desativar' : 'Ativar'}
+                                                </button>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
