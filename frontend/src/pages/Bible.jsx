@@ -51,23 +51,14 @@ export default function Bible() {
         try {
             const res = await axios.get(`https://bible.helloao.org/api/${version}/books.json`);
             if (res.data && res.data.books) {
-                // Map HelloAO format to our format
-                const mappedBooks = res.data.books.map(b => ({
-                    name: b.name,
-                    abbrev: { pt: b.id },
-                    id: b.id,
-                    chapters: b.chapters,
-                    testament: b.id === 'MAT' || b.id === 'GEN' ? 'VT' : 'VT' // We need better logic for testament
-                }));
-
                 // Better testament logic based on standard list
                 const ntStartIdx = res.data.books.findIndex(b => b.id === 'MAT');
                 const finalizedBooks = res.data.books.map((b, idx) => ({
                     name: b.name,
                     abbrev: { pt: b.id },
                     id: b.id,
-                    chapters: b.chapters,
-                    testament: idx >= ntStartIdx ? 'NT' : 'VT'
+                    chapters: b.numberOfChapters,
+                    testament: (ntStartIdx !== -1 && idx >= ntStartIdx) ? 'NT' : 'VT'
                 }));
 
                 setBooks(finalizedBooks);
