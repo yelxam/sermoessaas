@@ -113,61 +113,29 @@ Required Structure:
         console.log(`Using AI Client: ${type}`);
 
         let content = "";
-        let inputTokens = 0;
-        let outputTokens = 0;
-        let aiModel = "";
-        let cost = 0;
-
-        // Pricing (USD per 1M tokens) - Update as needed
-        const PRICING = {
-            'gpt-4o': { input: 2.50, output: 10.00 },
-            'llama-3.3-70b-versatile': { input: 0.59, output: 0.79 },
-            'gpt-4o-mini': { input: 0.15, output: 0.60 }, // Example for other models if needed
-            'llama-3.1-8b-instant': { input: 0.05, output: 0.08 }
-        };
-
-        const calculateCost = (model, input, output) => {
-            const price = PRICING[model] || { input: 0, output: 0 };
-            return ((input * price.input) + (output * price.output)) / 1_000_000;
-        };
 
         if (type === 'groq') {
             console.log('Calling Groq API...');
-            aiModel = "llama-3.3-70b-versatile";
             const completion = await client.chat.completions.create({
                 messages: [
                     { role: "system", content: "You are a helpful assistant that writes sermons." },
                     { role: "user", content: systemInstruction }
                 ],
-                model: aiModel,
+                model: "llama-3.3-70b-versatile",
             });
             content = completion.choices[0].message.content;
-
-            if (completion.usage) {
-                inputTokens = completion.usage.prompt_tokens;
-                outputTokens = completion.usage.completion_tokens;
-                cost = calculateCost(aiModel, inputTokens, outputTokens);
-            }
-
         } else {
             console.log('Calling OpenAI API...');
-            aiModel = "gpt-4o";
             const completion = await client.chat.completions.create({
                 messages: [
                     { role: "system", content: "You are a helpful assistant that writes sermons." },
                     { role: "user", content: systemInstruction }
                 ],
-                model: aiModel,
+                model: "gpt-4o",
             });
             content = completion.choices[0].message.content;
-
-            if (completion.usage) {
-                inputTokens = completion.usage.prompt_tokens;
-                outputTokens = completion.usage.completion_tokens;
-                cost = calculateCost(aiModel, inputTokens, outputTokens);
-            }
         }
-        console.log(`AI Response received. Tokens: In=${inputTokens}, Out=${outputTokens}. Cost: $${cost.toFixed(6)}`);
+        console.log('AI Response received');
 
         const newSermon = await Sermon.create({
             user_id: req.user.id,
@@ -180,11 +148,7 @@ Required Structure:
             duration,
             tone,
             language: language || 'pt-BR',
-            content,
-            ai_model: aiModel,
-            input_tokens: inputTokens,
-            output_tokens: outputTokens,
-            cost: cost
+            content
         });
 
         // Fetch with User info for immediate UI update

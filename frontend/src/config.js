@@ -1,5 +1,4 @@
 export const config = {
-    // Quando você subir o backend para o Vercel, substitua 'http://localhost:3000' 
-    // pela URL que o Vercel te fornecer (ex: https://seu-backend.vercel.app)
-    apiUrl: 'http://localhost:3000/'
+    // Uses environment variable or falls back to localhost
+    apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:3000'
 };

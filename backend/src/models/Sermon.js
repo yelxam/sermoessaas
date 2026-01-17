@@ -60,22 +60,6 @@ const Sermon = sequelize.define('Sermon', {
         type: DataTypes.TEXT('long'), // Long text for the sermon content
         allowNull: false,
     },
-    ai_model: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    input_tokens: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-    },
-    output_tokens: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-    },
-    cost: {
-        type: DataTypes.DECIMAL(10, 6), // Stores cost with high precision (e.g., 0.002345)
-        defaultValue: 0,
-    },
 }, {
     timestamps: true,
     createdAt: 'created_at',
