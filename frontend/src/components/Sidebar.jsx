@@ -30,8 +30,8 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
     }
 
     if (user.email === 'admin@sermon.ai') {
-        navItems.push({ path: '/admin', label: 'Administração', icon: ShieldAlert });
-        navItems.push({ path: '/plans', label: 'Planos', icon: CreditCard });
+        navItems.push({ path: '/admin', label: t.dashboard.adminTitle.split(' ')[0], icon: ShieldAlert });
+        navItems.push({ path: '/plans', label: t.plans.title, icon: CreditCard });
     }
 
     const handleLogout = () => {

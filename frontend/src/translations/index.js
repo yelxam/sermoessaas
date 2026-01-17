@@ -45,7 +45,13 @@ export const translations = {
             seeAll: 'Ver todos',
             noSermons: 'Você ainda não tem sermões.',
             createFirst: 'Criar o Primeiro',
-            readSermon: 'Ler Sermão'
+            readSermon: 'Ler Sermão',
+            bibleTitle: 'Consultar Escrituras',
+            bibleDesc: 'Leia e copie versículos para seus sermões.',
+            bibleAction: 'Acessar Bíblia',
+            adminTitle: 'Painel de Administração',
+            adminDesc: 'Gerenciar todas as empresas e planos.',
+            adminAction: 'Acessar Admin'
         },
         createSermon: {
             title: 'Gerador de Sermões AI',
@@ -179,7 +185,11 @@ export const translations = {
             newTestament: 'Novo Testamento',
             selectBook: 'Selecione um Livro',
             selectChapter: 'Cap.',
-            allVerses: 'Todos os versículos'
+            allVerses: 'Todos os versículos',
+            errorBooks: 'O servidor da Bíblia está temporariamente indisponível.',
+            errorVerses: 'Não foi possível carregar os versículos. Tente outra versão.',
+            tryAgain: 'Tentar Novamente',
+            back: 'Voltar para os livros'
         }
     },
     es: {
@@ -227,7 +237,13 @@ export const translations = {
             seeAll: 'Ver todos',
             noSermons: 'Aún no tienes sermones.',
             createFirst: 'Crear el Primero',
-            readSermon: 'Leer Sermón'
+            readSermon: 'Leer Sermón',
+            bibleTitle: 'Consultar Escrituras',
+            bibleDesc: 'Lee y copia versículos para tus sermones.',
+            bibleAction: 'Acceder a la Biblia',
+            adminTitle: 'Panel de Administración',
+            adminDesc: 'Gestionar todas las empresas y planes.',
+            adminAction: 'Acceder a Admin'
         },
         createSermon: {
             title: 'Generador de Sermones IA',
@@ -357,7 +373,11 @@ export const translations = {
             newTestament: 'Nuevo Testamento',
             selectBook: 'Seleccione un Libro',
             selectChapter: 'Cap.',
-            allVerses: 'Todos los versículos'
+            allVerses: 'Todos los versículos',
+            errorBooks: 'El servidor de la Biblia no está disponible temporalmente.',
+            errorVerses: 'No se pudieron cargar os versículos. Intente con otra versión.',
+            tryAgain: 'Intentar de Nuevo',
+            back: 'Volver a los libros'
         }
     },
     en: {
@@ -405,7 +425,13 @@ export const translations = {
             seeAll: 'See all',
             noSermons: 'You don\'t have any sermons yet.',
             createFirst: 'Create the First',
-            readSermon: 'Read Sermon'
+            readSermon: 'Read Sermon',
+            bibleTitle: 'Consult Scriptures',
+            bibleDesc: 'Read and copy verses for your sermons.',
+            bibleAction: 'Access Bible',
+            adminTitle: 'Admin Dashboard',
+            adminDesc: 'Manage all companies and plans.',
+            adminAction: 'Access Admin'
         },
         createSermon: {
             title: 'AI Sermon Generator',
@@ -539,7 +565,11 @@ export const translations = {
             newTestament: 'New Testament',
             selectBook: 'Select a Book',
             selectChapter: 'Ch.',
-            allVerses: 'All verses'
+            allVerses: 'All verses',
+            errorBooks: 'Bible server is temporarily unavailable.',
+            errorVerses: 'Could not load verses. Try another version.',
+            tryAgain: 'Try Again',
+            back: 'Back to books'
         }
     },
     fr: {
@@ -583,7 +613,13 @@ export const translations = {
             seeAll: 'Voir tout',
             noSermons: 'Vous n\'avez pas encore de sermons.',
             createFirst: 'Créer le Premier',
-            readSermon: 'Lire le Sermon'
+            readSermon: 'Lire le Sermon',
+            bibleTitle: 'Consulter les Écritures',
+            bibleDesc: 'Lisez et copiez des versets pour vos sermons.',
+            bibleAction: 'Accéder à la Bible',
+            adminTitle: 'Tableau d\'administration',
+            adminDesc: 'Gérer toutes les entreprises et les plans.',
+            adminAction: 'Accéder à l\'Admin'
         },
         createSermon: {
             title: 'Générateur de Sermons IA',
@@ -714,7 +750,11 @@ export const translations = {
             newTestament: 'Nouveau Testament',
             selectBook: 'Sélectionnez un Livre',
             selectChapter: 'Ch.',
-            allVerses: 'Tous les versets'
+            allVerses: 'Tous les versets',
+            errorBooks: 'Le serveur biblique est temporairement indisponible.',
+            errorVerses: 'Impossible de charger les versets. Essayez une autre version.',
+            tryAgain: 'Réessayer',
+            back: 'Retour aux livres'
         }
     },
     de: {
@@ -758,7 +798,13 @@ export const translations = {
             seeAll: 'Alle ansehen',
             noSermons: 'Sie haben noch keine Predigten.',
             createFirst: 'Erste erstellen',
-            readSermon: 'Predigt lesen'
+            readSermon: 'Predigt lesen',
+            bibleTitle: 'Schriften konsultieren',
+            bibleDesc: 'Lesen und kopieren Sie Verse für Ihre Predigten.',
+            bibleAction: 'Bibel aufrufen',
+            adminTitle: 'Admin-Dashboard',
+            adminDesc: 'Alle Unternehmen und Pläne verwalten.',
+            adminAction: 'Admin-Bereich'
         },
         createSermon: {
             title: 'KI Predigt Generator',
@@ -889,7 +935,11 @@ export const translations = {
             newTestament: 'Neues Testament',
             selectBook: 'Wählen Sie ein Buch',
             selectChapter: 'Kap.',
-            allVerses: 'Alle Verse'
+            allVerses: 'Alle Verse',
+            errorBooks: 'Der Bibelserver ist vorübergehend nicht erreichbar.',
+            errorVerses: 'Verse konnten nicht geladen werden. Versuchen Sie eine andere Version.',
+            tryAgain: 'Erneut versuchen',
+            back: 'Zurück zu den Büchern'
         }
     }
 };

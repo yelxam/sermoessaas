@@ -7,7 +7,7 @@ import { BIBLE_BOOKS_PT } from '../translations/bibleData';
 
 export default function Bible() {
     const { t, language } = useLanguage();
-    const [books, setBooks] = useState(BIBLE_BOOKS_PT);
+    const [books, setBooks] = useState(() => (language === 'pt' ? BIBLE_BOOKS_PT : []));
     const [selectedBook, setSelectedBook] = useState(null);
     const [selectedChapter, setSelectedChapter] = useState(null);
     const [verses, setVerses] = useState([]);
@@ -60,6 +60,7 @@ export default function Bible() {
 
     useEffect(() => {
         handleBackToBooks();
+        setBooks([]); // Clear books while loading new version
         fetchBooks();
     }, [version]);
 
@@ -80,13 +81,17 @@ export default function Bible() {
                 }));
 
                 setBooks(finalizedBooks);
+            } else {
+                setBooks([]);
             }
         } catch (err) {
             console.error("Erro ao carregar livros", err);
-            setError("O servidor da Bíblia (HelloAO) está temporariamente indisponível.");
+            setError(t.bible.errorBooks);
             // Use BIBLE_BOOKS_PT as ultimate fallback if version is PT
             if (version.startsWith('por')) {
                 setBooks(BIBLE_BOOKS_PT);
+            } else {
+                setBooks([]);
             }
         } finally {
             setLoading(false);
@@ -110,7 +115,7 @@ export default function Bible() {
             setSelectedChapter(chapter);
         } catch (err) {
             console.error("Erro ao carregar versículos", err);
-            setError("Não foi possível carregar os versículos. Tente outra versão ou livro.");
+            setError(t.bible.errorVerses);
             setVerses([]);
         } finally {
             setLoadingVerses(false);
@@ -156,9 +161,17 @@ export default function Bible() {
 
                     <div className="flex items-center gap-3">
                         {error && (
-                            <div className="flex items-center gap-2 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 px-4 py-2 rounded-xl border border-amber-100 dark:border-amber-800 text-[10px] font-bold animate-pulse">
-                                <AlertCircle size={14} />
-                                {error}
+                            <div className="flex items-center gap-3 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 px-4 py-2 rounded-xl border border-amber-100 dark:border-amber-800 text-[10px] font-bold">
+                                <div className="flex items-center gap-2 animate-pulse">
+                                    <AlertCircle size={14} />
+                                    {error}
+                                </div>
+                                <button
+                                    onClick={() => fetchBooks()}
+                                    className="px-2 py-1 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition font-black uppercase tracking-tighter"
+                                >
+                                    {t.bible.tryAgain}
+                                </button>
                             </div>
                         )}
                         <select
@@ -211,7 +224,7 @@ export default function Bible() {
                                                         className="group p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl hover:bg-white dark:hover:bg-slate-800 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10 transition-all text-center"
                                                     >
                                                         <span className="block font-bold text-slate-700 dark:text-slate-200 text-sm group-hover:text-blue-600 transition-colors uppercase tracking-tight">{book.name}</span>
-                                                        <span className="text-[10px] text-slate-400 group-hover:text-blue-400 font-bold">{book.chapters} {t.bible.chapter.toLowerCase()}s</span>
+                                                        <span className="text-[10px] text-slate-400 group-hover:text-blue-400 font-bold">{book.chapters} {t.bible.chapter.toLowerCase()}{(book.chapters > 1 && language === 'pt') ? 's' : ''}</span>
                                                     </button>
                                                 ))}
                                             </div>
@@ -231,7 +244,7 @@ export default function Bible() {
                                                         className="group p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl hover:bg-white dark:hover:bg-slate-800 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10 transition-all text-center"
                                                     >
                                                         <span className="block font-bold text-slate-700 dark:text-slate-200 text-sm group-hover:text-blue-600 transition-colors uppercase tracking-tight">{book.name}</span>
-                                                        <span className="text-[10px] text-slate-400 group-hover:text-blue-400 font-bold">{book.chapters} {t.bible.chapter.toLowerCase()}s</span>
+                                                        <span className="text-[10px] text-slate-400 group-hover:text-blue-400 font-bold">{book.chapters} {t.bible.chapter.toLowerCase()}{(book.chapters > 1 && language === 'pt') ? 's' : ''}</span>
                                                     </button>
                                                 ))}
                                             </div>
@@ -289,7 +302,7 @@ export default function Bible() {
                                                     <h3 className="text-xl font-black dark:text-white uppercase tracking-tighter">
                                                         {selectedBook.name} {selectedChapter}
                                                     </h3>
-                                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{verses.length} {t.bible.verse.toLowerCase()}s</p>
+                                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{verses.length} {t.bible.verse.toLowerCase()}{(verses.length > 1 && language === 'pt') ? 's' : ''}</p>
                                                 </div>
                                             </div>
 

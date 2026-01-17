@@ -55,11 +55,11 @@ export default function Dashboard() {
                                 <PlusCircle size={100} className="rotate-45" />
                             </div>
                             <div>
-                                <h3 className="text-xl font-bold mb-2">Painel de Controle</h3>
-                                <p className="text-amber-50 text-sm">Gerenciar todas as empresas e planos do sistema.</p>
+                                <h3 className="text-xl font-bold mb-2">{t.dashboard.adminTitle}</h3>
+                                <p className="text-amber-50 text-sm">{t.dashboard.adminDesc}</p>
                             </div>
                             <div className="mt-4 flex items-center font-bold">
-                                Acessar Administração <ChevronRight className="ml-2 w-4 h-4" />
+                                {t.dashboard.adminAction} <ChevronRight className="ml-2 w-4 h-4" />
                             </div>
                         </Link>
                     )}
@@ -96,11 +96,11 @@ export default function Dashboard() {
                         </div>
                         <div className="relative z-10">
                             <h3 className="text-gray-500 dark:text-gray-400 font-medium mb-1 uppercase text-xs tracking-wider">{t.bible.title}</h3>
-                            <div className="text-xl font-bold text-gray-800 dark:text-gray-100">Consultar Escrituras</div>
-                            <p className="text-slate-400 text-xs mt-2">Leia e copie versículos para seus sermões.</p>
+                            <div className="text-xl font-bold text-gray-800 dark:text-gray-100">{t.dashboard.bibleTitle}</div>
+                            <p className="text-slate-400 text-xs mt-2">{t.dashboard.bibleDesc}</p>
                         </div>
                         <div className="mt-4 text-blue-600 dark:text-blue-400 text-sm font-medium flex items-center relative z-10">
-                            Acessar Bíblia <ChevronRight className="ml-1 w-4 h-4" />
+                            {t.dashboard.bibleAction} <ChevronRight className="ml-1 w-4 h-4" />
                         </div>
                     </Link>
 
