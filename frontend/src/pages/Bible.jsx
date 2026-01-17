@@ -41,7 +41,7 @@ export default function Bible() {
         { id: 'por_onbv', name: 'Open Nova Bíblia Viva (PT)', lang: 'pt' },
         { id: 'por_blj', name: 'Bíblia Livre (PT)', lang: 'pt' },
         { id: 'spa_r09', name: 'Reina Valera 1909 (ES)', lang: 'es' },
-        { id: 'eng_bsb', name: 'Berean Standard Bible (EN)', lang: 'en' },
+        { id: 'BSB', name: 'Berean Standard Bible (EN)', lang: 'en' },
         { id: 'fra_lsg', name: 'Louis Segond 1910 (FR)', lang: 'fr' },
         { id: 'deu_l12', name: 'Lutherbibel 1912 (DE)', lang: 'de' }
     ];
@@ -51,7 +51,7 @@ export default function Bible() {
         const langMap = {
             pt: 'por_onbv',
             es: 'spa_r09',
-            en: 'eng_bsb',
+            en: 'BSB',
             fr: 'fra_lsg',
             de: 'deu_l12'
         };
