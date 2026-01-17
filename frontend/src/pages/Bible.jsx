@@ -13,7 +13,16 @@ export default function Bible() {
     const [verses, setVerses] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadingVerses, setLoadingVerses] = useState(false);
-    const [version, setVersion] = useState('nvi'); // nvi, ra, acf
+    const [version, setVersion] = useState(() => {
+        const langMap = {
+            pt: 'por_onbv',
+            es: 'spa_r09',
+            en: 'eng_bsb',
+            fr: 'fra_lsg',
+            de: 'deu_l12'
+        };
+        return langMap[language] || 'por_onbv';
+    });
     const [searchTerm, setSearchTerm] = useState('');
     const [error, setError] = useState(null);
 
@@ -32,16 +41,25 @@ export default function Bible() {
         { id: 'por_onbv', name: 'Open Nova Bíblia Viva (PT)', lang: 'pt' },
         { id: 'por_blj', name: 'Bíblia Livre (PT)', lang: 'pt' },
         { id: 'spa_r09', name: 'Reina Valera 1909 (ES)', lang: 'es' },
-        { id: 'eng_bsb', name: 'Berean Standard Bible (EN)', lang: 'en' }
+        { id: 'eng_bsb', name: 'Berean Standard Bible (EN)', lang: 'en' },
+        { id: 'fra_lsg', name: 'Louis Segond 1910 (FR)', lang: 'fr' },
+        { id: 'deu_l12', name: 'Lutherbibel 1912 (DE)', lang: 'de' }
     ];
 
     useEffect(() => {
         // Set default version based on user language
-        const langMap = { pt: 'por_onbv', es: 'spa_r09', en: 'eng_bsb' };
+        const langMap = {
+            pt: 'por_onbv',
+            es: 'spa_r09',
+            en: 'eng_bsb',
+            fr: 'fra_lsg',
+            de: 'deu_l12'
+        };
         setVersion(langMap[language] || 'por_onbv');
     }, [language]);
 
     useEffect(() => {
+        handleBackToBooks();
         fetchBooks();
     }, [version]);
 
@@ -146,9 +164,9 @@ export default function Bible() {
                         <select
                             value={version}
                             onChange={(e) => setVersion(e.target.value)}
-                            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm font-bold text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm font-bold text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-sans"
                         >
-                            {versions.map(v => (
+                            {versions.filter(v => v.lang === language).map(v => (
                                 <option key={v.id} value={v.id}>{v.name}</option>
                             ))}
                         </select>
