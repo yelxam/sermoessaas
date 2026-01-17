@@ -17,7 +17,7 @@ exports.getAllPlans = async (req, res) => {
 // Create a new plan
 exports.createPlan = async (req, res) => {
     try {
-        const { name, max_sermons, price, description } = req.body;
+        const { name, max_sermons, price, description, allow_ai } = req.body;
 
         // Only admin/owner can create plans (usually super admin)
         // Assuming the auth middleware already checks for basic role, but we might want stricter check here
@@ -29,7 +29,8 @@ exports.createPlan = async (req, res) => {
             name,
             max_sermons,
             price,
-            description
+            description,
+            allow_ai: allow_ai !== undefined ? allow_ai : true
         });
 
         res.json(newPlan);
@@ -43,7 +44,7 @@ exports.createPlan = async (req, res) => {
 exports.updatePlan = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, max_sermons, price, description, active } = req.body;
+        const { name, max_sermons, price, description, active, allow_ai } = req.body;
 
         if (req.user.role !== 'owner' && req.user.role !== 'admin') {
             return res.status(403).json({ msg: 'Not authorized' });
@@ -52,7 +53,20 @@ exports.updatePlan = async (req, res) => {
         const plan = await Plan.findByPk(id);
         if (!plan) return res.status(404).json({ msg: 'Plan not found' });
 
-        await plan.update({ name, max_sermons, price, description, active });
+        const oldPlanName = plan.name;
+        await plan.update({ name, max_sermons, price, description, active, allow_ai });
+
+        // Sync with companies that use this plan
+        const Company = require('../models/Company');
+        await Company.update(
+            {
+                plan: plan.name, // In case name changed
+                max_sermons: plan.max_sermons,
+                allow_ai: plan.allow_ai
+            },
+            { where: { plan: oldPlanName } }
+        );
+
         res.json(plan);
     } catch (err) {
         console.error(err.message);

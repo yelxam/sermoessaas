@@ -50,7 +50,8 @@ exports.updateMyPlan = async (req, res) => {
         await Company.update(
             {
                 plan: plan.name,
-                max_sermons: plan.max_sermons
+                max_sermons: plan.max_sermons,
+                allow_ai: plan.allow_ai
             },
             { where: { id: req.user.company_id } }
         );
@@ -162,7 +163,7 @@ exports.updateCompany = async (req, res) => {
             return res.status(403).json({ msg: 'Not authorized' });
         }
 
-        const { name, plan, max_sermons, active } = req.body;
+        const { name, plan, max_sermons, active, allow_ai } = req.body;
         const company = await Company.findByPk(req.params.id);
 
         if (!company) return res.status(404).json({ msg: 'Company not found' });
@@ -170,6 +171,7 @@ exports.updateCompany = async (req, res) => {
         const updateData = {};
         if (name !== undefined) updateData.name = name;
         if (active !== undefined) updateData.active = active;
+        if (allow_ai !== undefined) updateData.allow_ai = allow_ai;
 
         if (plan !== undefined) {
             updateData.plan = plan;
@@ -177,6 +179,7 @@ exports.updateCompany = async (req, res) => {
             const selectedPlan = await Plan.findOne({ where: { name: plan } });
             if (selectedPlan) {
                 updateData.max_sermons = selectedPlan.max_sermons;
+                updateData.allow_ai = selectedPlan.allow_ai;
             }
         }
 

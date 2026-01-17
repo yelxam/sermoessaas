@@ -10,7 +10,8 @@ import {
     Calendar,
     PenTool,
     Check,
-    Loader2
+    Loader2,
+    X
 } from 'lucide-react';
 import Logo from '../components/Logo';
 
@@ -200,13 +201,17 @@ const LandingPage = () => {
                                             <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
                                             <span>{plan.max_sermons === -1 ? 'Sermões Ilimitados' : `${plan.max_sermons} Sermões por mês`}</span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
-                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span>Geração de Esboços com IA</span>
+                                        <li className="flex items-start gap-3 text-sm">
+                                            {plan.allow_ai !== false ? (
+                                                <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                                            ) : (
+                                                <X className="w-5 h-5 text-red-500 flex-shrink-0" />
+                                            )}
+                                            <span className={plan.allow_ai !== false ? '' : 'text-slate-400 line-through'}>Geração de Esboços com IA</span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
                                             <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span>Compartilhamento via Link</span>
+                                            <span>Estatísticas de Engajamento</span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
                                             <Check className="w-5 h-5 text-green-500 flex-shrink-0" />

@@ -31,6 +31,10 @@ const Company = sequelize.define('Company', {
     groq_api_key: {
         type: DataTypes.STRING,
         allowNull: true,
+    },
+    allow_ai: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
     }
 }, {
     timestamps: true,

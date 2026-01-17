@@ -208,7 +208,14 @@ export default function Organization() {
                                 <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800/50">
                                     <p className="text-sm text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider mb-1">Plano Atual</p>
                                     <p className="text-2xl font-black text-blue-900 dark:text-blue-200 uppercase">{data.company.plan}</p>
-                                    <p className="text-xs text-blue-500 mt-1">Limite: {data.company.max_sermons === -1 ? 'Ilimitado' : `${data.company.max_sermons} sermões/mês`}</p>
+                                    <div className="flex flex-wrap gap-2 mt-2">
+                                        <p className="text-[10px] bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 px-2 py-0.5 rounded font-bold uppercase">
+                                            Limite: {data.company.max_sermons === -1 ? 'Ilimitado' : `${data.company.max_sermons} sermões/mês`}
+                                        </p>
+                                        <p className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase ${data.company.allow_ai !== false ? 'bg-green-100 text-green-600 dark:bg-green-900/40' : 'bg-slate-100 text-slate-500 dark:bg-slate-800'}`}>
+                                            {data.company.allow_ai !== false ? 'Inteligência Artificial: Ativa' : 'Inteligência Artificial: Bloqueada'}
+                                        </p>
+                                    </div>
                                 </div>
 
                                 {currentUser?.role === 'owner' && (

@@ -39,6 +39,7 @@ exports.register = async (req, res) => {
             name: companyName || `${name.split(' ')[0]}'s Ministry`,
             plan: planDetails ? planDetails.name : 'Free',
             max_sermons: planDetails ? planDetails.max_sermons : 3,
+            allow_ai: planDetails ? planDetails.allow_ai : true,
         });
 
         // Create User
@@ -131,7 +132,7 @@ exports.login = async (req, res) => {
             { expiresIn: '5d' },
             (err, token) => {
                 if (err) throw err;
-                res.json({ token, user: { id: user.id, name: user.name, email: user.email, company_id: user.company_id, role: user.role } });
+                res.json({ token, user: { id: user.id, name: user.name, email: user.email, company_id: user.company_id, role: user.role, allow_ai: company.allow_ai } });
             }
         );
     } catch (err) {

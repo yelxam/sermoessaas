@@ -12,7 +12,7 @@ export default function AdminCompanies() {
     const [plans, setPlans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editingCompany, setEditingCompany] = useState(null);
-    const [editForm, setEditForm] = useState({ name: '', plan: '', max_sermons: 0, active: true });
+    const [editForm, setEditForm] = useState({ name: '', plan: '', max_sermons: 0, active: true, allow_ai: true });
     const [msg, setMsg] = useState({ type: '', text: '' });
     const [stats, setStats] = useState({
         totalCompanies: 0,
@@ -49,7 +49,8 @@ export default function AdminCompanies() {
             name: company.name,
             plan: company.plan,
             max_sermons: company.max_sermons,
-            active: company.active !== undefined ? company.active : true
+            active: company.active !== undefined ? company.active : true,
+            allow_ai: company.allow_ai !== undefined ? company.allow_ai : true
         });
         setMsg({ type: '', text: '' });
     };
@@ -226,9 +227,14 @@ export default function AdminCompanies() {
                                                         }`}>
                                                         {company.plan}
                                                     </span>
-                                                    <span className={`w-fit text-[9px] font-bold px-1.5 py-0.5 rounded uppercase ${company.active !== false ? 'text-green-500 bg-green-500/10' : 'text-red-500 bg-red-500/10'}`}>
-                                                        {company.active !== false ? 'Ativa' : 'Bloqueada'}
-                                                    </span>
+                                                    <div className="flex gap-1.5">
+                                                        <span className={`w-fit text-[9px] font-bold px-1.5 py-0.5 rounded uppercase ${company.active !== false ? 'text-green-500 bg-green-500/10' : 'text-red-500 bg-red-500/10'}`}>
+                                                            {company.active !== false ? 'Ativa' : 'Bloqueada'}
+                                                        </span>
+                                                        <span className={`w-fit text-[9px] font-bold px-1.5 py-0.5 rounded uppercase ${company.allow_ai !== false ? 'text-blue-500 bg-blue-500/10' : 'text-slate-500 bg-slate-500/10'}`}>
+                                                            {company.allow_ai !== false ? 'IA Ativa' : 'IA Bloqueada'}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 font-bold text-slate-600 dark:text-slate-300">
@@ -293,7 +299,8 @@ export default function AdminCompanies() {
                                                 setEditForm({
                                                     ...editForm,
                                                     plan: e.target.value,
-                                                    max_sermons: p ? p.max_sermons : editForm.max_sermons
+                                                    max_sermons: p ? p.max_sermons : editForm.max_sermons,
+                                                    allow_ai: p ? p.allow_ai : editForm.allow_ai
                                                 });
                                             }}
                                         >
@@ -313,6 +320,22 @@ export default function AdminCompanies() {
                                             required
                                         />
                                     </div>
+                                </div>
+
+                                <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border dark:border-slate-800 flex items-center justify-between">
+                                    <div className="flex flex-col text-left">
+                                        <span className="font-bold dark:text-white">Acesso à IA</span>
+                                        <span className="text-xs text-slate-500">Permitir geração de sermões com IA</span>
+                                    </div>
+                                    <label className="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            className="sr-only peer"
+                                            checked={editForm.allow_ai}
+                                            onChange={(e) => setEditForm({ ...editForm, allow_ai: e.target.checked })}
+                                        />
+                                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
                                 </div>
 
                                 <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border dark:border-slate-800 flex items-center justify-between">

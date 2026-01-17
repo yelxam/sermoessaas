@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,27 @@ export default function CreateSermon() {
     const navigate = useNavigate();
     const { t, language } = useLanguage();
     const [loading, setLoading] = useState(false);
-    const [creationMode, setCreationMode] = useState('ai'); // 'ai' or 'manual'
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const [creationMode, setCreationMode] = useState(user?.allow_ai === false ? 'manual' : 'ai'); // 'ai' or 'manual'
+
+    useEffect(() => {
+        const checkPermission = async () => {
+            try {
+                const res = await api.get('/companies/me');
+                if (res.data) {
+                    const updatedUser = { ...user, allow_ai: res.data.allow_ai };
+                    setUser(updatedUser);
+                    localStorage.setItem('user', JSON.stringify(updatedUser));
+                    if (res.data.allow_ai === false) {
+                        setCreationMode('manual');
+                    }
+                }
+            } catch (err) {
+                console.error("Erro ao verificar permissão de IA", err);
+            }
+        };
+        checkPermission();
+    }, []);
     const [formData, setFormData] = useState({
         book: '',
         chapter: '',
@@ -89,14 +109,20 @@ export default function CreateSermon() {
                     <div className="flex justify-center mb-8">
                         <div className="bg-slate-100 dark:bg-slate-800 p-1 rounded-xl inline-flex shadow-inner">
                             <button
-                                onClick={() => setCreationMode('ai')}
-                                className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${creationMode === 'ai'
-                                    ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-md transform scale-100'
+                                type="button"
+                                onClick={() => user?.allow_ai !== false && setCreationMode('ai')}
+                                className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all relative ${creationMode === 'ai'
+                                    ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-md'
                                     : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-                                    }`}
+                                    } ${user?.allow_ai === false ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
                                 <Wand2 className="w-4 h-4" />
                                 {t.createSermon.optionAI}
+                                {user?.allow_ai === false && (
+                                    <span className="absolute -top-2 -right-2 bg-amber-500 text-white p-1 rounded-full text-[10px]">
+                                        <Loader2 className="w-2.5 h-2.5" />
+                                    </span>
+                                )}
                             </button>
                             <button
                                 onClick={() => setCreationMode('manual')}
@@ -110,6 +136,22 @@ export default function CreateSermon() {
                             </button>
                         </div>
                     </div>
+
+                    {user?.allow_ai === false && creationMode === 'ai' && (
+                        <div className="mb-8 p-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl text-center">
+                            <Sparkles className="w-8 h-8 text-amber-500 mx-auto mb-3" />
+                            <h3 className="text-lg font-bold text-amber-900 dark:text-amber-200 mb-2">{t.createSermon.premiumFeature}</h3>
+                            <p className="text-amber-700 dark:text-amber-400 text-sm mb-4">
+                                {t.createSermon.aiRestricted}
+                            </p>
+                            <button
+                                onClick={() => navigate('/organization')}
+                                className="px-6 py-2 bg-amber-600 text-white rounded-xl font-bold hover:bg-amber-700 transition shadow-lg shadow-amber-200 dark:shadow-none"
+                            >
+                                {t.createSermon.upgradeSermons}
+                            </button>
+                        </div>
+                    )}
 
                     <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-gray-100 dark:border-slate-800 p-6 sm:p-10 transition-all duration-500">
                         <form onSubmit={handleSubmit} className="space-y-8">

@@ -28,6 +28,10 @@ const Plan = sequelize.define('Plan', {
     active: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
+    },
+    allow_ai: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 }, {
     timestamps: true,

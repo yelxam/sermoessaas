@@ -66,6 +66,9 @@ export const translations = {
             savingManual: 'Salvando...',
             optionAI: 'Usar Inteligência Artificial',
             optionManual: 'Criar Manualmente',
+            premiumFeature: 'Recurso Premium',
+            aiRestricted: 'A geração de sermões via Inteligência Artificial é um recurso exclusivo dos planos Pro e Enterprise.',
+            upgradeSermons: 'Ver Planos de Upgrade',
             audiences: {
                 General: 'Geral',
                 Youth: 'Jovens',
@@ -227,6 +230,9 @@ export const translations = {
             savingManual: 'Guardando...',
             optionAI: 'Usa Inteligencia Artificial',
             optionManual: 'Crear Manualmente',
+            premiumFeature: 'Recurso Premium',
+            aiRestricted: 'La generación de sermones mediante Inteligencia Artificial es una característica exclusiva de los planes Pro y Enterprise.',
+            upgradeSermons: 'Ver Planes de Mejora',
             audiences: {
                 General: 'General',
                 Youth: 'Jóvenes',
@@ -384,6 +390,9 @@ export const translations = {
             savingManual: 'Saving...',
             optionAI: 'Use Artificial Intelligence',
             optionManual: 'Create Manually',
+            premiumFeature: 'Premium Feature',
+            aiRestricted: 'AI-powered sermon generation is an exclusive feature of Pro and Enterprise plans.',
+            upgradeSermons: 'View Upgrade Plans',
             audiences: {
                 General: 'General',
                 Youth: 'Youth',

@@ -80,6 +80,13 @@ exports.generateSermon = async (req, res) => {
             });
         }
 
+        // C. Check AI Permission
+        if (user.Company.allow_ai === false) {
+            return res.status(403).json({
+                msg: 'Seu plano atual não permite a geração de sermões via Inteligência Artificial. Por favor, faça um upgrade para acessar este recurso.'
+            });
+        }
+
         // 3. Generate Sermon
         const systemInstruction = `You are an experienced Christian theologian, faithful to the Scriptures.
 Your task is to generate a complete Christian sermon based EXCLUSIVELY on the provided passage.
