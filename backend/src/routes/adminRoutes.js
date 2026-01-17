@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
-const auth = require('../middlewares/auth');
+const auth = require('../middlewares/authMiddleware');
 
 // @route   GET /admin/metrics
 // @desc    Get system wide metrics (Super Admin only)
