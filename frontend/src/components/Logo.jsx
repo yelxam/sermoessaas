@@ -14,7 +14,7 @@ const Logo = ({ className = "h-10" }) => {
                 style={{
                     filter: isDarkMode
                         ? 'brightness(100%)'
-                        : 'invert(15%) sepia(75%) saturate(2500%) hue-rotate(225deg) brightness(40%) contrast(100%)'
+                        : 'brightness(0)'
                 }}
             />
         </div>
