@@ -1,0 +1,279 @@
+import React, { useState, useEffect } from 'react';
+import Layout from '../components/Layout';
+import { Book, ChevronRight, Search, Loader2, BookOpen, ChevronLeft, Bookmark, Share2, Copy } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
+import axios from 'axios';
+
+export default function Bible() {
+    const { t } = useLanguage();
+    const [books, setBooks] = useState([]);
+    const [selectedBook, setSelectedBook] = useState(null);
+    const [selectedChapter, setSelectedChapter] = useState(null);
+    const [verses, setVerses] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [loadingVerses, setLoadingVerses] = useState(false);
+    const [version, setVersion] = useState('nvi'); // nvi, ra, acf
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const versions = [
+        { id: 'nvi', name: 'NVI' },
+        { id: 'ra', name: 'Almeida Revista e Atualizada' },
+        { id: 'acf', name: 'Almeida Corrigida Fiel' }
+    ];
+
+    useEffect(() => {
+        fetchBooks();
+    }, []);
+
+    const fetchBooks = async () => {
+        setLoading(true);
+        try {
+            const res = await axios.get('https://www.abibliadigital.com.br/api/books');
+            setBooks(res.data);
+        } catch (err) {
+            console.error("Erro ao carregar livros", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchVerses = async (bookAbbrev, chapter) => {
+        setLoadingVerses(true);
+        try {
+            const res = await axios.get(`https://www.abibliadigital.com.br/api/verses/${version}/${bookAbbrev}/${chapter}`);
+            setVerses(res.data.verses);
+            setSelectedChapter(chapter);
+        } catch (err) {
+            console.error("Erro ao carregar versículos", err);
+            setVerses([]);
+        } finally {
+            setLoadingVerses(false);
+        }
+    };
+
+    const handleSelectBook = (book) => {
+        setSelectedBook(book);
+        setSelectedChapter(null);
+        setVerses([]);
+    };
+
+    const handleBackToBooks = () => {
+        setSelectedBook(null);
+        setSelectedChapter(null);
+        setVerses([]);
+    };
+
+    const copyToClipboard = (text, verseNum) => {
+        const fullText = `${selectedBook.name} ${selectedChapter}:${verseNum} - "${text}"`;
+        navigator.clipboard.writeText(fullText);
+        // Could add a toast here if available
+    };
+
+    const filteredBooks = books.filter(b =>
+        b.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const oldTestament = filteredBooks.filter(b => b.testament === 'VT');
+    const newTestament = filteredBooks.filter(b => b.testament === 'NT');
+
+    return (
+        <Layout>
+            <div className="container mx-auto px-4 sm:px-6 py-8 h-[calc(100vh-100px)] flex flex-col">
+                <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <h1 className="text-3xl font-black text-slate-800 dark:text-white flex items-center gap-3">
+                            <BookOpen className="text-blue-600" size={32} />
+                            {t.bible.title}
+                        </h1>
+                        <p className="text-slate-500 dark:text-slate-400">{t.bible.subtitle}</p>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <select
+                            value={version}
+                            onChange={(e) => setVersion(e.target.value)}
+                            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm font-bold text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                        >
+                            {versions.map(v => (
+                                <option key={v.id} value={v.id}>{v.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                </header>
+
+                <div className="flex-1 overflow-hidden flex flex-col bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-xl border border-slate-100 dark:border-slate-800">
+                    {!selectedBook ? (
+                        <div className="flex flex-col h-full">
+                            <div className="p-6 border-b dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20">
+                                <div className="relative max-w-md">
+                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                    <input
+                                        type="text"
+                                        placeholder={t.bible.search}
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm dark:text-white"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar">
+                                {loading ? (
+                                    <div className="flex flex-col items-center justify-center py-20">
+                                        <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
+                                        <p className="text-slate-500">{t.bible.loading}</p>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-12">
+                                        <section>
+                                            <h2 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-6 flex items-center gap-3">
+                                                <div className="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
+                                                {t.bible.oldTestament}
+                                                <div className="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
+                                            </h2>
+                                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                                                {oldTestament.map(book => (
+                                                    <button
+                                                        key={book.abbrev.pt}
+                                                        onClick={() => handleSelectBook(book)}
+                                                        className="group p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl hover:bg-white dark:hover:bg-slate-800 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10 transition-all text-center"
+                                                    >
+                                                        <span className="block font-bold text-slate-700 dark:text-slate-200 text-sm group-hover:text-blue-600 transition-colors uppercase tracking-tight">{book.name}</span>
+                                                        <span className="text-[10px] text-slate-400 group-hover:text-blue-400 font-bold">{book.chapters} {t.bible.chapter.toLowerCase()}s</span>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </section>
+
+                                        <section>
+                                            <h2 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-6 flex items-center gap-3">
+                                                <div className="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
+                                                {t.bible.newTestament}
+                                                <div className="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
+                                            </h2>
+                                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                                                {newTestament.map(book => (
+                                                    <button
+                                                        key={book.abbrev.pt}
+                                                        onClick={() => handleSelectBook(book)}
+                                                        className="group p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl hover:bg-white dark:hover:bg-slate-800 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10 transition-all text-center"
+                                                    >
+                                                        <span className="block font-bold text-slate-700 dark:text-slate-200 text-sm group-hover:text-blue-600 transition-colors uppercase tracking-tight">{book.name}</span>
+                                                        <span className="text-[10px] text-slate-400 group-hover:text-blue-400 font-bold">{book.chapters} {t.bible.chapter.toLowerCase()}s</span>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </section>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="flex h-full">
+                            {/* Chapters Sidebar (Hidden on mobile when reading) */}
+                            <div className={`${selectedChapter ? 'hidden lg:flex' : 'flex'} w-full lg:w-48 xl:w-64 flex-col border-r dark:border-slate-800 bg-slate-50/30 dark:bg-slate-800/10`}>
+                                <div className="p-6 border-b dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-900">
+                                    <button
+                                        onClick={handleBackToBooks}
+                                        className="text-slate-400 hover:text-blue-600 transition-colors"
+                                    >
+                                        <ChevronLeft size={24} />
+                                    </button>
+                                    <span className="font-black text-slate-800 dark:text-white uppercase text-sm tracking-widest truncate ml-2">
+                                        {selectedBook.name}
+                                    </span>
+                                </div>
+                                <div className="flex-1 overflow-y-auto p-4 grid grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-2 content-start custom-scrollbar">
+                                    {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map(chap => (
+                                        <button
+                                            key={chap}
+                                            onClick={() => fetchVerses(selectedBook.abbrev.pt, chap)}
+                                            className={`
+                                                aspect-square flex items-center justify-center rounded-xl text-sm font-black transition-all
+                                                ${selectedChapter === chap
+                                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30 ring-2 ring-blue-500'
+                                                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-600'}
+                                            `}
+                                        >
+                                            {chap}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Verses Content */}
+                            <div className={`${!selectedChapter ? 'hidden lg:flex' : 'flex'} flex-1 flex-col overflow-hidden bg-white dark:bg-slate-900 relative`}>
+                                {selectedChapter ? (
+                                    <>
+                                        <div className="p-6 border-b dark:border-slate-800 flex items-center justify-between sticky top-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-10">
+                                            <div className="flex items-center gap-4">
+                                                <button
+                                                    onClick={() => setSelectedChapter(null)}
+                                                    className="lg:hidden text-slate-400 hover:text-blue-600"
+                                                >
+                                                    <ChevronLeft size={24} />
+                                                </button>
+                                                <div>
+                                                    <h3 className="text-xl font-black dark:text-white uppercase tracking-tighter">
+                                                        {selectedBook.name} {selectedChapter}
+                                                    </h3>
+                                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{verses.length} {t.bible.verse.toLowerCase()}s</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center gap-2">
+                                                <button className="p-2 text-slate-400 hover:text-blue-600 transition-colors">
+                                                    <Bookmark size={20} />
+                                                </button>
+                                                <button className="p-2 text-slate-400 hover:text-blue-600 transition-colors">
+                                                    <Share2 size={20} />
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex-1 overflow-y-auto p-6 md:p-12 custom-scrollbar lg:mx-auto lg:max-w-4xl w-full">
+                                            {loadingVerses ? (
+                                                <div className="flex flex-col items-center justify-center py-20">
+                                                    <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
+                                                </div>
+                                            ) : (
+                                                <div className="space-y-8 pb-10">
+                                                    {verses.map(v => (
+                                                        <div key={v.number} className="group flex gap-4 relative">
+                                                            <span className="text-blue-600 dark:text-blue-400 font-black text-xs pt-1.5 w-6 flex-shrink-0 text-right">{v.number}</span>
+                                                            <div className="flex-1">
+                                                                <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed font-serif tracking-tight selection:bg-blue-100 dark:selection:bg-blue-900 selection:text-blue-900 dark:selection:text-blue-100">
+                                                                    {v.text}
+                                                                </p>
+                                                                <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-4">
+                                                                    <button
+                                                                        onClick={() => copyToClipboard(v.text, v.number)}
+                                                                        className="flex items-center gap-1.5 text-[10px] uppercase font-black text-slate-400 hover:text-blue-600"
+                                                                    >
+                                                                        <Copy size={12} /> {t.sermonDetail.shareSermon.split(' ')[0]}
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="flex-1 flex flex-col items-center justify-center text-center p-10">
+                                        <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center text-slate-300 dark:text-slate-600 mb-6">
+                                            <BookOpen size={40} />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-slate-400 mb-2 uppercase tracking-widest">{t.bible.selectBook}</h3>
+                                        <p className="text-slate-300 dark:text-slate-500 max-w-xs">{t.bible.subtitle}</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </Layout>
+    );
+}

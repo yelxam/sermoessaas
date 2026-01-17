@@ -8,7 +8,8 @@ export const translations = {
             newSermon: 'Novo Sermão',
             team: 'Equipe',
             logout: 'Sair',
-            hello: 'Olá'
+            hello: 'Olá',
+            bible: 'Bíblia'
         },
         auth: {
             welcomeUser: 'Bem-vindo de volta',
@@ -162,6 +163,23 @@ export const translations = {
             confirmDelete: 'Tem certeza?',
             saveError: 'Erro ao salvar plano',
             deleteError: 'Erro ao deletar'
+        },
+        bible: {
+            title: 'Bíblia Sagrada',
+            subtitle: 'Consulte as Escrituras Sagradas e encontre inspiração.',
+            book: 'Livro',
+            chapter: 'Capítulo',
+            verse: 'Versículo',
+            search: 'Buscar na Bíblia...',
+            loading: 'Carregando Escrituras...',
+            noResults: 'Nenhum versículo encontrado.',
+            version: 'Versão',
+            testament: 'Testamento',
+            oldTestament: 'Antigo Testamento',
+            newTestament: 'Novo Testamento',
+            selectBook: 'Selecione um Livro',
+            selectChapter: 'Cap.',
+            allVerses: 'Todos os versículos'
         }
     },
     es: {
@@ -173,7 +191,8 @@ export const translations = {
             newSermon: 'Nuevo Sermón',
             team: 'Equipo',
             logout: 'Salir',
-            hello: 'Hola'
+            hello: 'Hola',
+            bible: 'Biblia'
         },
         auth: {
             welcomeUser: 'Bienvenido de nuevo',
@@ -322,6 +341,23 @@ export const translations = {
             confirmDelete: '¿Estás seguro?',
             saveError: 'Error al guardar el plan',
             deleteError: 'Error al eliminar'
+        },
+        bible: {
+            title: 'Santa Biblia',
+            subtitle: 'Consulta las Sagradas Escrituras y encuentra inspiración.',
+            book: 'Libro',
+            chapter: 'Capítulo',
+            verse: 'Versículo',
+            search: 'Buscar en la Biblia...',
+            loading: 'Cargando Escrituras...',
+            noResults: 'No se encontraron versículos.',
+            version: 'Versión',
+            testament: 'Testamento',
+            oldTestament: 'Antiguo Testamento',
+            newTestament: 'Nuevo Testamento',
+            selectBook: 'Seleccione un Libro',
+            selectChapter: 'Cap.',
+            allVerses: 'Todos los versículos'
         }
     },
     en: {
@@ -333,7 +369,8 @@ export const translations = {
             newSermon: 'New Sermon',
             team: 'Team',
             logout: 'Logout',
-            hello: 'Hello'
+            hello: 'Hello',
+            bible: 'Bible'
         },
         auth: {
             welcomeUser: 'Welcome back',
@@ -486,6 +523,23 @@ export const translations = {
             confirmDelete: 'Are you sure?',
             saveError: 'Error saving plan',
             deleteError: 'Error deleting'
+        },
+        bible: {
+            title: 'Holy Bible',
+            subtitle: 'Consult the Holy Scriptures and find inspiration.',
+            book: 'Book',
+            chapter: 'Chapter',
+            verse: 'Verse',
+            search: 'Search the Bible...',
+            loading: 'Loading Scriptures...',
+            noResults: 'No verses found.',
+            version: 'Version',
+            testament: 'Testament',
+            oldTestament: 'Old Testament',
+            newTestament: 'New Testament',
+            selectBook: 'Select a Book',
+            selectChapter: 'Ch.',
+            allVerses: 'All verses'
         }
     },
     fr: {

@@ -19,6 +19,7 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
 
     const navItems = [
         { path: '/dashboard', label: t.nav.home, icon: Home },
+        { path: '/bible', label: t.nav.bible, icon: BookOpen },
         { path: '/sermons', label: t.nav.mySermons, icon: List },
         { path: '/sermons/new', label: t.nav.newSermon, icon: Plus },
         { path: '/team', label: t.nav.team, icon: Users },

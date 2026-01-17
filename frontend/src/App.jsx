@@ -11,6 +11,7 @@ import Organization from './pages/Organization';
 import Plans from './pages/Plans';
 import LandingPage from './pages/LandingPage';
 import AdminCompanies from './pages/AdminCompanies';
+import Bible from './pages/Bible';
 
 const ProtectedRoute = ({ children }) => {
     const token = localStorage.getItem('token');
@@ -35,6 +36,12 @@ function App() {
                         <Route path="/dashboard" element={
                             <ProtectedRoute>
                                 <Dashboard />
+                            </ProtectedRoute>
+                        } />
+
+                        <Route path="/bible" element={
+                            <ProtectedRoute>
+                                <Bible />
                             </ProtectedRoute>
                         } />
 

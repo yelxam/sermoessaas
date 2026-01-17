@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { Link } from 'react-router-dom';
-import { PlusCircle, FileText, ChevronRight } from 'lucide-react';
+import { PlusCircle, FileText, ChevronRight, BookOpen } from 'lucide-react';
 import api from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -86,6 +86,21 @@ export default function Dashboard() {
                         </div>
                         <div className="mt-4 text-blue-600 dark:text-blue-400 text-sm font-medium flex items-center">
                             {t.dashboard.library} <ChevronRight className="ml-1 w-4 h-4" />
+                        </div>
+                    </Link>
+
+                    {/* Bible Quick Link */}
+                    <Link to="/bible" className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 p-6 flex flex-col justify-between hover:border-blue-200 dark:hover:border-blue-900 transition group relative overflow-hidden">
+                        <div className="absolute -right-4 -top-4 text-slate-50 dark:text-slate-800/50 group-hover:text-blue-50 dark:group-hover:text-blue-900/20 transition-colors">
+                            <BookOpen size={120} />
+                        </div>
+                        <div className="relative z-10">
+                            <h3 className="text-gray-500 dark:text-gray-400 font-medium mb-1 uppercase text-xs tracking-wider">{t.bible.title}</h3>
+                            <div className="text-xl font-bold text-gray-800 dark:text-gray-100">Consultar Escrituras</div>
+                            <p className="text-slate-400 text-xs mt-2">Leia e copie versículos para seus sermões.</p>
+                        </div>
+                        <div className="mt-4 text-blue-600 dark:text-blue-400 text-sm font-medium flex items-center relative z-10">
+                            Acessar Bíblia <ChevronRight className="ml-1 w-4 h-4" />
                         </div>
                     </Link>
 
