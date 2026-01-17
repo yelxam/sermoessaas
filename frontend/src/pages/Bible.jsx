@@ -18,41 +18,79 @@ export default function Bible() {
     const [error, setError] = useState(null);
 
     const versions = [
-        { id: 'nvi', name: 'NVI' },
-        { id: 'ra', name: 'Almeida Revista e Atualizada' },
-        { id: 'acf', name: 'Almeida Corrigida Fiel' }
+        { id: 'por_onbv', name: 'Open Nova Bíblia Viva (PT)', lang: 'pt' },
+        { id: 'por_blj', name: 'Bíblia Livre (PT)', lang: 'pt' },
+        { id: 'spa_r09', name: 'Reina Valera 1909 (ES)', lang: 'es' },
+        { id: 'eng_bsb', name: 'Berean Standard Bible (EN)', lang: 'en' }
     ];
 
     useEffect(() => {
+        // Set default version based on user language
+        const langMap = { pt: 'por_onbv', es: 'spa_r09', en: 'eng_bsb' };
+        setVersion(langMap[language] || 'por_onbv');
+    }, [language]);
+
+    useEffect(() => {
         fetchBooks();
-    }, []);
+    }, [version]);
 
     const fetchBooks = async () => {
         setLoading(true);
         setError(null);
         try {
-            const res = await axios.get('https://www.abibliadigital.com.br/api/books');
-            if (res.data && Array.isArray(res.data)) {
-                setBooks(res.data);
+            const res = await axios.get(`https://bible.helloao.org/api/${version}/books.json`);
+            if (res.data && res.data.books) {
+                // Map HelloAO format to our format
+                const mappedBooks = res.data.books.map(b => ({
+                    name: b.name,
+                    abbrev: { pt: b.id },
+                    id: b.id,
+                    chapters: b.chapters,
+                    testament: b.id === 'MAT' || b.id === 'GEN' ? 'VT' : 'VT' // We need better logic for testament
+                }));
+
+                // Better testament logic based on standard list
+                const ntStartIdx = res.data.books.findIndex(b => b.id === 'MAT');
+                const finalizedBooks = res.data.books.map((b, idx) => ({
+                    name: b.name,
+                    abbrev: { pt: b.id },
+                    id: b.id,
+                    chapters: b.chapters,
+                    testament: idx >= ntStartIdx ? 'NT' : 'VT'
+                }));
+
+                setBooks(finalizedBooks);
             }
         } catch (err) {
             console.error("Erro ao carregar livros", err);
-            setError("O servidor da Bíblia está temporariamente indisponível. Mostrando lista offline.");
+            setError("O servidor da Bíblia (HelloAO) está temporariamente indisponível.");
+            // Use BIBLE_BOOKS_PT as ultimate fallback if version is PT
+            if (version.startsWith('por')) {
+                setBooks(BIBLE_BOOKS_PT);
+            }
         } finally {
             setLoading(false);
         }
     };
 
-    const fetchVerses = async (bookAbbrev, chapter) => {
+    const fetchVerses = async (bookId, chapter) => {
         setLoadingVerses(true);
         setError(null);
         try {
-            const res = await axios.get(`https://www.abibliadigital.com.br/api/verses/${version}/${bookAbbrev}/${chapter}`);
-            setVerses(res.data.verses);
+            const res = await axios.get(`https://bible.helloao.org/api/${version}/${bookId}/${chapter}.json`);
+            // HelloAO structure: res.data.chapter.content is an array with verses
+            const mappedVerses = res.data.chapter.content
+                .filter(c => c.type === 'verse')
+                .map(v => ({
+                    number: v.number,
+                    text: v.content.map(textObj => typeof textObj === 'string' ? textObj : textObj.content).join('')
+                }));
+
+            setVerses(mappedVerses);
             setSelectedChapter(chapter);
         } catch (err) {
             console.error("Erro ao carregar versículos", err);
-            setError("Não foi possível carregar os versículos. O servidor pode estar instável.");
+            setError("Não foi possível carregar os versículos. Tente outra versão ou livro.");
             setVerses([]);
         } finally {
             setLoadingVerses(false);
@@ -148,7 +186,7 @@ export default function Bible() {
                                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                                                 {oldTestament.map(book => (
                                                     <button
-                                                        key={book.abbrev.pt}
+                                                        key={book.id}
                                                         onClick={() => handleSelectBook(book)}
                                                         className="group p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl hover:bg-white dark:hover:bg-slate-800 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10 transition-all text-center"
                                                     >
@@ -168,7 +206,7 @@ export default function Bible() {
                                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                                                 {newTestament.map(book => (
                                                     <button
-                                                        key={book.abbrev.pt}
+                                                        key={book.id}
                                                         onClick={() => handleSelectBook(book)}
                                                         className="group p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl hover:bg-white dark:hover:bg-slate-800 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10 transition-all text-center"
                                                     >
@@ -201,7 +239,7 @@ export default function Bible() {
                                     {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map(chap => (
                                         <button
                                             key={chap}
-                                            onClick={() => fetchVerses(selectedBook.abbrev.pt, chap)}
+                                            onClick={() => fetchVerses(selectedBook.id, chap)}
                                             className={`
                                                 aspect-square flex items-center justify-center rounded-xl text-sm font-black transition-all
                                                 ${selectedChapter === chap
