@@ -73,7 +73,7 @@ export default function Plans() {
                     {plans.map(plan => (
                         <div key={plan.id} className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 p-6 relative group overflow-hidden">
                             <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition flex space-x-2">
-                                <button onClick={() => handleEdit(plan)} className="text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 p-2 rounded-lg">
+                                <button onClick={() => handleEdit(plan)} className="text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 p-2 rounded-lg">
                                     <Edit className="w-4 h-4" />
                                 </button>
                                 <button onClick={() => handleDelete(plan.id)} className="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 p-2 rounded-lg">
@@ -82,14 +82,14 @@ export default function Plans() {
                             </div>
 
                             <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">{plan.name}</h3>
-                            <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">
+                            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-4">
                                 {Number(plan.price).toLocaleString(undefined, { style: 'currency', currency: 'BRL' })}
                                 <span className="text-sm text-gray-400 dark:text-gray-500 font-normal">/mês</span>
                             </div>
 
                             <div className="space-y-3 mb-6">
                                 <div className="flex items-center text-gray-600 dark:text-gray-300 text-sm">
-                                    <CreditCard className="w-4 h-4 mr-2 text-indigo-400" />
+                                    <CreditCard className="w-4 h-4 mr-2 text-blue-400" />
                                     {plan.max_sermons === -1 ? (t.plans?.unlimited || 'Sermões Ilimitados') : `${plan.max_sermons} ${(t.plans?.sermonsMonth || 'sermões/mês')}`}
                                 </div>
                                 <p className="text-sm text-gray-500 dark:text-gray-400">{plan.description}</p>

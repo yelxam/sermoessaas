@@ -148,7 +148,7 @@ export default function Organization() {
                     <div className="lg:col-span-1 space-y-8">
                         <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 p-6">
                             <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6 flex items-center">
-                                <Building2 className="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-400" />
+                                <Building2 className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
                                 {t.organization.settings}
                             </h2>
                             <form onSubmit={updateMyCompany} className="space-y-4">
@@ -199,16 +199,16 @@ export default function Organization() {
                         </div>
 
                         {/* Plan Management */}
-                        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-indigo-50 dark:border-indigo-900/40 p-6">
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-blue-50 dark:border-blue-900/40 p-6">
                             <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
-                                <CreditCard className="w-5 h-5 mr-2 text-indigo-500" />
+                                <CreditCard className="w-5 h-5 mr-2 text-blue-500" />
                                 Plano e Assinatura
                             </h2>
                             <div className="space-y-4">
-                                <div className="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800/50">
-                                    <p className="text-sm text-indigo-600 dark:text-indigo-400 font-bold uppercase tracking-wider mb-1">Plano Atual</p>
-                                    <p className="text-2xl font-black text-indigo-900 dark:text-indigo-200 uppercase">{data.company.plan}</p>
-                                    <p className="text-xs text-indigo-500 mt-1">Limite: {data.company.max_sermons === -1 ? 'Ilimitado' : `${data.company.max_sermons} sermões/mês`}</p>
+                                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800/50">
+                                    <p className="text-sm text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider mb-1">Plano Atual</p>
+                                    <p className="text-2xl font-black text-blue-900 dark:text-blue-200 uppercase">{data.company.plan}</p>
+                                    <p className="text-xs text-blue-500 mt-1">Limite: {data.company.max_sermons === -1 ? 'Ilimitado' : `${data.company.max_sermons} sermões/mês`}</p>
                                 </div>
 
                                 {currentUser?.role === 'owner' && (
@@ -220,13 +220,13 @@ export default function Organization() {
                                                     key={p.id}
                                                     onClick={() => changeMyPlan(p.id)}
                                                     disabled={loading}
-                                                    className="flex justify-between items-center p-3 rounded-xl border-2 border-slate-100 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-400 transition-all text-left group"
+                                                    className="flex justify-between items-center p-3 rounded-xl border-2 border-slate-100 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-400 transition-all text-left group"
                                                 >
                                                     <div>
                                                         <p className="font-bold text-slate-700 dark:text-slate-200">{p.name}</p>
                                                         <p className="text-[10px] text-slate-500">R$ {p.price}/mês</p>
                                                     </div>
-                                                    <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-indigo-500 transition-colors" />
+                                                    <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-blue-500 transition-colors" />
                                                 </button>
                                             ))}
                                         </div>
@@ -278,7 +278,7 @@ export default function Organization() {
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">{t.organization.churches}</h2>
                                 {canEdit && (
-                                    <button onClick={() => setShowChurchModal(true)} className="flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium text-sm bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 px-3 py-1.5 rounded-lg transition">
+                                    <button onClick={() => setShowChurchModal(true)} className="flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium text-sm bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 px-3 py-1.5 rounded-lg transition">
                                         <PlusCircle className="w-4 h-4 mr-1.5" />
                                         {t.organization.addChurch}
                                     </button>
@@ -292,7 +292,7 @@ export default function Organization() {
                             ) : (
                                 <div className="space-y-4">
                                     {data.churches.map(church => (
-                                        <div key={church.id} className="border border-gray-100 dark:border-slate-800 rounded-xl p-4 hover:shadow-md dark:hover:shadow-indigo-900/10 transition flex justify-between items-start group">
+                                        <div key={church.id} className="border border-gray-100 dark:border-slate-800 rounded-xl p-4 hover:shadow-md dark:hover:shadow-blue-900/10 transition flex justify-between items-start group">
                                             <div>
                                                 <h3 className="font-bold text-gray-800 dark:text-gray-100 text-lg">{church.name}</h3>
                                                 <div className="mt-2 space-y-1">

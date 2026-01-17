@@ -72,7 +72,7 @@ export default function Login() {
 
                 <p className="mt-6 text-center text-gray-600 dark:text-gray-400">
                     {t.auth.noAccount}{' '}
-                    <Link to="/register" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium hover:underline">
+                    <Link to="/register" className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium hover:underline">
                         {t.auth.createAccount}
                     </Link>
                 </p>

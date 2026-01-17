@@ -71,7 +71,7 @@ export default function Team() {
                                     <tr key={user.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition">
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center">
-                                                <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold mr-3">
+                                                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold mr-3">
                                                     {user.name.charAt(0)}
                                                 </div>
                                                 <span className="font-medium text-gray-900 dark:text-gray-100">{user.name}</span>
@@ -85,8 +85,8 @@ export default function Team() {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
-                          ${user.role === 'owner' ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300' :
-                                                    user.role === 'admin' ? 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300' :
+                          ${user.role === 'owner' ? 'bg-blue-800 text-white shadow-sm' :
+                                                    user.role === 'admin' ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300' :
                                                         'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-300'}`}>
                                                 {t.team.roles[user.role] || user.role}
                                             </span>

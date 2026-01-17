@@ -144,7 +144,12 @@ Required Structure:
             content
         });
 
-        res.json(newSermon);
+        // Fetch with User info for immediate UI update
+        const sermonWithAuthor = await Sermon.findByPk(newSermon.id, {
+            include: [{ model: User, attributes: ['name'] }]
+        });
+
+        res.json(sermonWithAuthor);
 
     } catch (err) {
         console.error(err);
@@ -155,7 +160,8 @@ Required Structure:
 exports.getSermons = async (req, res) => {
     try {
         const sermons = await Sermon.findAll({
-            where: { user_id: req.user.id },
+            where: { company_id: req.user.company_id },
+            include: [{ model: User, attributes: ['name'] }],
             order: [['created_at', 'DESC']]
         });
         res.json(sermons);
@@ -167,7 +173,10 @@ exports.getSermons = async (req, res) => {
 
 exports.getSermonById = async (req, res) => {
     try {
-        const sermon = await Sermon.findOne({ where: { id: req.params.id, user_id: req.user.id } });
+        const sermon = await Sermon.findOne({
+            where: { id: req.params.id, company_id: req.user.company_id },
+            include: [{ model: User, attributes: ['name'] }]
+        });
         if (!sermon) return res.status(404).json({ msg: 'Sermon not found' });
         res.json(sermon);
     } catch (err) {
@@ -290,7 +299,12 @@ exports.createSermon = async (req, res) => {
             company_id: req.user.company_id
         });
 
-        res.json(newSermon);
+        // Fetch with User info for immediate UI update
+        const sermonWithAuthor = await Sermon.findByPk(newSermon.id, {
+            include: [{ model: User, attributes: ['name'] }]
+        });
+
+        res.json(sermonWithAuthor);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

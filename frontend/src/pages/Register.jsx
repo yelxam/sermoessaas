@@ -81,13 +81,13 @@ export default function Register() {
                     {/* Plan Selector */}
                     <div className="space-y-2">
                         <label className="label-text flex items-center gap-2">
-                            <CreditCard className="w-4 h-4 text-indigo-500" /> Selecione seu Plano
+                            <CreditCard className="w-4 h-4 text-blue-500" /> Selecione seu Plano
                         </label>
                         <div className="relative group">
                             <select
                                 value={planId}
                                 onChange={(e) => setPlanId(e.target.value)}
-                                className="w-full appearance-none bg-indigo-50/50 dark:bg-slate-800 border-2 border-indigo-100 dark:border-slate-700 rounded-2xl px-5 py-3.5 text-sm font-bold text-slate-900 dark:text-white focus:border-indigo-500 outline-none transition-all cursor-pointer"
+                                className="w-full appearance-none bg-blue-50/50 dark:bg-slate-800 border-2 border-blue-100 dark:border-slate-700 rounded-2xl px-5 py-3.5 text-sm font-bold text-slate-900 dark:text-white focus:border-blue-500 outline-none transition-all cursor-pointer"
                             >
                                 {allPlans.map(plan => (
                                     <option key={plan.id} value={plan.id}>
@@ -95,10 +95,10 @@ export default function Register() {
                                     </option>
                                 ))}
                             </select>
-                            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-indigo-400 pointer-events-none group-hover:text-indigo-600 transition-colors" />
+                            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-400 pointer-events-none group-hover:text-blue-600 transition-colors" />
                         </div>
                         {selectedPlan && (
-                            <p className="text-[10px] text-indigo-500 font-bold uppercase tracking-widest pl-2">
+                            <p className="text-[10px] text-blue-500 font-bold uppercase tracking-widest pl-2">
                                 Inclui: {selectedPlan.max_sermons === -1 ? 'Sermões Ilimitados' : `${selectedPlan.max_sermons} sermões/mês`}
                             </p>
                         )}
@@ -142,7 +142,7 @@ export default function Register() {
 
                     <button
                         type="submit"
-                        className="w-full btn-primary !py-4 !text-lg mt-6 shadow-xl shadow-indigo-200 dark:shadow-none transition-transform active:scale-95"
+                        className="w-full btn-primary !py-4 !text-lg mt-6 shadow-xl shadow-blue-200 dark:shadow-none transition-transform active:scale-95"
                     >
                         {t.auth.register}
                     </button>
@@ -150,7 +150,7 @@ export default function Register() {
 
                 <p className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
                     {t.auth.haveAccount}{' '}
-                    <Link to="/login" className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline transition-all">
+                    <Link to="/login" className="text-blue-600 dark:text-blue-400 font-bold hover:underline transition-all">
                         {t.auth.login}
                     </Link>
                 </p>

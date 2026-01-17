@@ -91,8 +91,8 @@ export default function CreateSermon() {
                             <button
                                 onClick={() => setCreationMode('ai')}
                                 className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${creationMode === 'ai'
-                                        ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-md transform scale-100'
-                                        : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                                    ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-md transform scale-100'
+                                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
                                     }`}
                             >
                                 <Wand2 className="w-4 h-4" />
@@ -101,8 +101,8 @@ export default function CreateSermon() {
                             <button
                                 onClick={() => setCreationMode('manual')}
                                 className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${creationMode === 'manual'
-                                        ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-md transform scale-100'
-                                        : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                                    ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-md transform scale-100'
+                                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
                                     }`}
                             >
                                 <Edit3 className="w-4 h-4" />
@@ -229,8 +229,8 @@ export default function CreateSermon() {
                                     type="submit"
                                     disabled={loading}
                                     className={`w-full py-5 rounded-2xl shadow-xl font-bold flex justify-center items-center transition-all transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed ${creationMode === 'ai'
-                                            ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white hover:from-indigo-700 hover:to-violet-700 shadow-indigo-200 dark:shadow-none'
-                                            : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                                        ? 'bg-gradient-to-r from-blue-600 to-sky-600 text-white hover:from-blue-700 hover:to-sky-700 shadow-blue-200 dark:shadow-none'
+                                        : 'bg-blue-600 text-white hover:bg-blue-700'
                                         }`}
                                 >
                                     {loading ? (

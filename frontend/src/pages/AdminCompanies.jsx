@@ -66,14 +66,14 @@ export default function AdminCompanies() {
         }
     };
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center dark:bg-slate-950"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div></div>;
+    if (loading) return <div className="min-h-screen flex items-center justify-center dark:bg-slate-950"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div></div>;
 
     return (
         <Layout>
             <div className="container mx-auto px-6 py-8">
                 <div className="max-w-6xl mx-auto">
                     <div className="flex items-center gap-4 mb-8">
-                        <div className="p-3 bg-indigo-600 rounded-2xl shadow-lg shadow-indigo-200 dark:shadow-none">
+                        <div className="p-3 bg-blue-600 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-none">
                             <ShieldAlert className="w-8 h-8 text-white" />
                         </div>
                         <div>
@@ -92,8 +92,8 @@ export default function AdminCompanies() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                         <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border dark:border-slate-800 shadow-sm">
                             <div className="flex justify-between items-start mb-4">
-                                <div className="p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl">
-                                    <Building2 className="w-6 h-6 text-indigo-600" />
+                                <div className="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl">
+                                    <Building2 className="w-6 h-6 text-blue-600" />
                                 </div>
                                 <span className="text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Empresas</span>
                             </div>
@@ -129,7 +129,7 @@ export default function AdminCompanies() {
                         {/* Sermon Growth Chart */}
                         <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border dark:border-slate-800 shadow-sm min-h-[400px]">
                             <h3 className="text-lg font-bold dark:text-white mb-6 flex items-center gap-2">
-                                <TrendingUp className="w-5 h-5 text-indigo-600" />
+                                <TrendingUp className="w-5 h-5 text-blue-600" />
                                 Crescimento de Sermões (IA)
                             </h3>
                             <div className="h-[300px]">
@@ -137,11 +137,11 @@ export default function AdminCompanies() {
                                     <AreaChart data={stats.sermonGrowth}>
                                         <defs>
                                             <linearGradient id="colorSermon" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.1} />
-                                                <stop offset="95%" stopColor="#4f46e5" stopOpacity={0} />
+                                                <stop offset="5%" stopColor="#2563eb" stopOpacity={0.1} />
+                                                <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
                                             </linearGradient>
                                         </defs>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#33415510" />
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#3b82f610" />
                                         <XAxis
                                             dataKey="date"
                                             axisLine={false}
@@ -154,7 +154,7 @@ export default function AdminCompanies() {
                                             contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
                                             labelFormatter={(val) => new Date(val).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' })}
                                         />
-                                        <Area type="monotone" dataKey="count" stroke="#4f46e5" fillOpacity={1} fill="url(#colorSermon)" strokeWidth={3} />
+                                        <Area type="monotone" dataKey="count" stroke="#2563eb" fillOpacity={1} fill="url(#colorSermon)" strokeWidth={3} />
                                     </AreaChart>
                                 </ResponsiveContainer>
                             </div>
@@ -163,7 +163,7 @@ export default function AdminCompanies() {
                         {/* Company User Distribution */}
                         <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border dark:border-slate-800 shadow-sm min-h-[400px]">
                             <h3 className="text-lg font-bold dark:text-white mb-6 flex items-center gap-2">
-                                <PieChartIcon className="w-5 h-5 text-indigo-600" />
+                                <PieChartIcon className="w-5 h-5 text-blue-600" />
                                 Usuários por Organização
                             </h3>
                             <div className="h-[300px]">
@@ -179,7 +179,7 @@ export default function AdminCompanies() {
                                             dataKey="userCount"
                                         >
                                             {stats.companyDistribution.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={['#4f46e5', '#10b981', '#3b82f6', '#f59e0b', '#ef4444'][index % 5]} />
+                                                <Cell key={`cell-${index}`} fill={['#2563eb', '#10b981', '#3b82f6', '#f59e0b', '#ef4444'][index % 5]} />
                                             ))}
                                         </Pie>
                                         <Tooltip
@@ -194,7 +194,7 @@ export default function AdminCompanies() {
                     <div className="glass-panel overflow-hidden border dark:border-slate-800">
                         <div className="p-6 border-b dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 flex items-center justify-between font-bold">
                             <div className="flex items-center gap-2">
-                                <Building2 className="w-5 h-5 text-indigo-600" />
+                                <Building2 className="w-5 h-5 text-blue-600" />
                                 <span>Empresas Cadastradas</span>
                             </div>
                             <span className="text-xs text-slate-500 uppercase tracking-widest">{companies.length} no total</span>
@@ -220,7 +220,7 @@ export default function AdminCompanies() {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex flex-col gap-1.5">
-                                                    <span className={`w-fit px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${company.plan === 'Pro' ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300' :
+                                                    <span className={`w-fit px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${company.plan === 'Pro' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' :
                                                         company.plan === 'Avançado' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' :
                                                             'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
                                                         }`}>
@@ -240,7 +240,7 @@ export default function AdminCompanies() {
                                             <td className="px-6 py-4 text-right">
                                                 <button
                                                     onClick={() => handleEdit(company)}
-                                                    className="p-2 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-all"
+                                                    className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-all"
                                                 >
                                                     <Edit3 className="w-5 h-5" />
                                                 </button>
@@ -259,8 +259,8 @@ export default function AdminCompanies() {
                         <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl w-full max-w-lg overflow-hidden border dark:border-slate-800">
                             <div className="p-8 pb-0 flex justify-between items-center">
                                 <h2 className="text-2xl font-black dark:text-white flex items-center gap-3">
-                                    <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl">
-                                        <Building2 className="w-6 h-6 text-indigo-600" />
+                                    <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
+                                        <Building2 className="w-6 h-6 text-blue-600" />
                                     </div>
                                     Editar Empresa
                                 </h2>
@@ -327,7 +327,7 @@ export default function AdminCompanies() {
                                             checked={editForm.active}
                                             onChange={(e) => setEditForm({ ...editForm, active: e.target.checked })}
                                         />
-                                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                     </label>
                                 </div>
 

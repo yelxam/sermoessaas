@@ -54,13 +54,13 @@ const LandingPage = () => {
                     <Logo className="h-20" />
 
                     <div className="hidden md:flex items-center gap-8 text-slate-600 dark:text-slate-300 font-medium text-sm">
-                        <button onClick={() => scrollToSection('funcionalidades')} className="hover:text-indigo-600 transition-colors">Funcionalidades</button>
-                        <button onClick={() => scrollToSection('planos')} className="hover:text-indigo-600 transition-colors">Planos</button>
-                        <button onClick={() => scrollToSection('missao')} className="hover:text-indigo-600 transition-colors">Nossa Missão</button>
+                        <button onClick={() => scrollToSection('funcionalidades')} className="hover:text-blue-600 transition-colors">Funcionalidades</button>
+                        <button onClick={() => scrollToSection('planos')} className="hover:text-blue-600 transition-colors">Planos</button>
+                        <button onClick={() => scrollToSection('missao')} className="hover:text-blue-600 transition-colors">Nossa Missão</button>
                     </div>
 
                     <div className="flex items-center gap-3">
-                        <Link to="/login" className="px-4 py-2 text-indigo-600 font-semibold text-sm hover:bg-indigo-50 dark:hover:bg-slate-900 rounded-lg transition-all">
+                        <Link to="/login" className="px-4 py-2 text-blue-600 font-semibold text-sm hover:bg-blue-50 dark:hover:bg-slate-900 rounded-lg transition-all">
                             Entrar
                         </Link>
                         <Link to="/register" className="btn-primary !px-4 !py-2 !text-sm">
@@ -72,15 +72,15 @@ const LandingPage = () => {
 
             {/* Hero Section */}
             <section className="pt-32 pb-20 relative overflow-hidden">
-                <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-gradient-to-l from-indigo-50 to-transparent dark:from-indigo-950/20 opacity-50 blur-3xl"></div>
+                <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-gradient-to-l from-blue-50 to-transparent dark:from-blue-950/20 opacity-50 blur-3xl"></div>
                 <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
                     <div>
-                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full font-semibold text-xs mb-6 uppercase tracking-wider">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full font-semibold text-xs mb-6 uppercase tracking-wider">
                             <Sparkles className="w-3.5 h-3.5" />
                             A primeira IA feita para pastores e líderes
                         </div>
                         <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-                            Sermões Inspirados pela <span className="text-indigo-600">Bíblia</span> com auxílio da IA.
+                            Sermões Inspirados pela <span className="text-blue-600">Bíblia</span> com auxílio da IA.
                         </h1>
                         <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-lg">
                             Potencialize seu ministério com o VerboCast. Gere esboços, estudos e sermões profundos em minutos, mantendo sempre a fidelidade às Escrituras.
@@ -92,7 +92,7 @@ const LandingPage = () => {
                             >
                                 Ver Planos Disponíveis <ArrowRight className="w-5 h-5" />
                             </button>
-                            <Link to="/login" className="btn-secondary !px-8 !py-4 flex items-center justify-center text-indigo-600 border-indigo-200">
+                            <Link to="/login" className="btn-secondary !px-8 !py-4 flex items-center justify-center text-blue-600 border-blue-200">
                                 Ver Demonstração
                             </Link>
                         </div>
@@ -131,7 +131,7 @@ const LandingPage = () => {
 
                 <div className="container mx-auto px-6 grid md:grid-cols-3 gap-8 text-left">
                     <div className="glass-panel p-8 card-hover">
-                        <div className="w-14 h-14 bg-indigo-100 dark:bg-indigo-900/50 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 font-bold text-xl">
+                        <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center text-blue-600 mb-6 font-bold text-xl">
                             <PenTool className="w-7 h-7" />
                         </div>
                         <h3 className="text-xl font-bold mb-3">Esboços Inteligentes</h3>
@@ -141,7 +141,7 @@ const LandingPage = () => {
                     </div>
 
                     <div className="glass-panel p-8 card-hover">
-                        <div className="w-14 h-14 bg-violet-100 dark:bg-violet-900/50 rounded-2xl flex items-center justify-center text-violet-600 mb-6">
+                        <div className="w-14 h-14 bg-sky-100 dark:bg-sky-900/50 rounded-2xl flex items-center justify-center text-sky-600 mb-6">
                             <Calendar className="w-7 h-7" />
                         </div>
                         <h3 className="text-xl font-bold mb-3">Séries de Mensagens</h3>
@@ -174,15 +174,15 @@ const LandingPage = () => {
 
                     {loading ? (
                         <div className="flex flex-col items-center justify-center py-20">
-                            <Loader2 className="w-12 h-12 text-indigo-600 animate-spin mb-4" />
+                            <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
                             <p className="text-slate-500">Carregando planos...</p>
                         </div>
                     ) : (
                         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                             {plans.map((plan, idx) => (
-                                <div key={plan.id} className={`glass-panel p-8 relative flex flex-col ${idx === 1 ? 'border-2 border-indigo-500 scale-105 shadow-2xl z-10' : ''}`}>
+                                <div key={plan.id} className={`glass-panel p-8 relative flex flex-col ${idx === 1 ? 'border-2 border-blue-500 scale-105 shadow-2xl z-10' : ''}`}>
                                     {idx === 1 && (
-                                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                                             Mais Popular
                                         </div>
                                     )}
@@ -217,8 +217,8 @@ const LandingPage = () => {
                                     <Link
                                         to={`/register?plan=${plan.id}`}
                                         className={`w-full py-4 rounded-xl font-bold text-center transition-all ${idx === 1
-                                            ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-200 dark:shadow-none'
-                                            : 'bg-indigo-50 dark:bg-slate-900 text-indigo-600 hover:bg-indigo-100 dark:hover:bg-slate-800'
+                                            ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200 dark:shadow-none'
+                                            : 'bg-blue-50 dark:bg-slate-900 text-blue-600 hover:bg-blue-100 dark:hover:bg-slate-800'
                                             }`}
                                     >
                                         Assinar Agora
@@ -238,13 +238,13 @@ const LandingPage = () => {
                         <div className="grid md:grid-cols-2 gap-12 text-left">
                             <div className="space-y-4">
                                 <div className="flex items-start gap-4">
-                                    <div className="mt-1 w-6 h-6 bg-indigo-600 rounded-full flex-shrink-0 flex items-center justify-center text-white text-[10px]">1</div>
+                                    <div className="mt-1 w-6 h-6 bg-blue-600 rounded-full flex-shrink-0 flex items-center justify-center text-white text-[10px]">1</div>
                                     <p className="text-slate-600 dark:text-slate-400 text-sm">
                                         Libere tempo para o cuidado pastoral direto, deixando o VerboCast auxiliar na estruturação do estudo.
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-4">
-                                    <div className="mt-1 w-6 h-6 bg-indigo-600 rounded-full flex-shrink-0 flex items-center justify-center text-white text-[10px]">2</div>
+                                    <div className="mt-1 w-6 h-6 bg-blue-600 rounded-full flex-shrink-0 flex items-center justify-center text-white text-[10px]">2</div>
                                     <p className="text-slate-600 dark:text-slate-400 text-sm">
                                         Encontre novas perspectivas e ilustrações para textos clássicos, renovando o interesse dos ouvintes.
                                     </p>
@@ -255,7 +255,7 @@ const LandingPage = () => {
                                     "O VerboCast nasceu para estar ao lado de quem prega. Acreditamos que a tecnologia deve servir ao Reino, facilitando o preparo intelectual para que o pastor foque no preparo espiritual."
                                 </p>
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold">AM</div>
+                                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">AM</div>
                                     <div>
                                         <p className="font-bold text-slate-900 dark:text-white text-sm">Pr. André Marques</p>
                                         <p className="text-xs text-slate-500">Fundador do VerboCast</p>
@@ -270,14 +270,14 @@ const LandingPage = () => {
             {/* CTA Final */}
             <section className="py-20">
                 <div className="container mx-auto px-6 text-center">
-                    <div className="bg-gradient-to-r from-indigo-600 to-violet-700 rounded-[3rem] p-12 text-center text-white relative overflow-hidden shadow-2xl max-w-5xl mx-auto">
+                    <div className="bg-gradient-to-r from-blue-600 to-sky-700 rounded-[3rem] p-12 text-center text-white relative overflow-hidden shadow-2xl max-w-5xl mx-auto">
                         <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
                         <h2 className="text-4xl font-bold mb-6 relative z-10">Potencialize seu ministério hoje.</h2>
-                        <p className="text-indigo-100 mb-8 max-w-xl mx-auto relative z-10">
+                        <p className="text-blue-100 mb-8 max-w-xl mx-auto relative z-10">
                             Junte-se a centenas de líderes que já estão transformando o tempo de preparo de sermões com inteligência bíblica.
                         </p>
                         <div className="relative z-10">
-                            <Link to="/register" className="px-10 py-5 bg-white text-indigo-600 font-bold rounded-2xl hover:bg-indigo-50 transition-all shadow-xl inline-flex items-center gap-2">
+                            <Link to="/register" className="px-10 py-5 bg-white text-blue-600 font-bold rounded-2xl hover:bg-blue-50 transition-all shadow-xl inline-flex items-center gap-2">
                                 Criar Conta Agora <ArrowRight className="w-5 h-5" />
                             </Link>
                         </div>
@@ -291,9 +291,9 @@ const LandingPage = () => {
                     <Logo className="h-8" />
                     <p className="text-slate-500 text-xs">© 2026 VerboCast AI. Preparando corações para a mensagem bíblica.</p>
                     <div className="flex gap-6 text-slate-500 text-xs font-medium uppercase tracking-widest">
-                        <a href="#" className="hover:text-indigo-600 transition-colors">Privacidade</a>
-                        <a href="#" className="hover:text-indigo-600 transition-colors">Termos</a>
-                        <a href="#" className="hover:text-indigo-600 transition-colors">Contato</a>
+                        <a href="#" className="hover:text-blue-600 transition-colors">Privacidade</a>
+                        <a href="#" className="hover:text-blue-600 transition-colors">Termos</a>
+                        <a href="#" className="hover:text-blue-600 transition-colors">Contato</a>
                     </div>
                 </div>
             </footer>

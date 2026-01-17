@@ -12,7 +12,8 @@ import {
     X,
     Copy,
     CheckCircle,
-    MessageCircle
+    MessageCircle,
+    User
 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -135,7 +136,7 @@ export default function SermonDetail() {
                             <div className="flex space-x-2">
                                 {!isEditing ? (
                                     <>
-                                        <button onClick={() => setIsSharing(true)} className="p-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg hover:bg-indigo-100 transition" title={t.sermonDetail.share}>
+                                        <button onClick={() => setIsSharing(true)} className="p-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 transition" title={t.sermonDetail.share}>
                                             <Share2 className="w-5 h-5" />
                                         </button>
                                         <button onClick={() => setIsEditing(true)} className="p-2 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-lg hover:bg-amber-100 transition" title={t.sermonDetail.edit}>
@@ -162,33 +163,39 @@ export default function SermonDetail() {
                         </div>
 
                         <div className="bg-white dark:bg-slate-900 shadow-xl rounded-2xl overflow-hidden print:shadow-none border dark:border-slate-800">
-                            <div className="bg-indigo-600 dark:bg-indigo-700 p-8 text-white print:bg-white print:text-black print:p-0 print:mb-4">
+                            <div className="bg-blue-600 dark:bg-blue-700 p-8 text-white print:bg-white print:text-black print:p-0 print:mb-4">
                                 {isEditing ? (
                                     <div className="space-y-4">
                                         <input
                                             type="text"
-                                            className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-indigo-200 focus:outline-none focus:ring-2 focus:ring-white/30 text-2xl font-bold"
+                                            className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/30 text-2xl font-bold"
                                             value={editForm.theme}
                                             onChange={(e) => setEditForm({ ...editForm, theme: e.target.value })}
                                             placeholder="Título do Sermão"
                                         />
                                         {(sermon.book && sermon.chapter) && (
-                                            <p className="text-indigo-100 text-lg">{sermon.book} {sermon.chapter}:{sermon.verses}</p>
+                                            <p className="text-blue-100 text-lg">{sermon.book} {sermon.chapter}:{sermon.verses}</p>
                                         )}
                                     </div>
                                 ) : (
                                     <div className="flex justify-between items-start">
                                         <div>
-                                            <span className="bg-white/20 text-indigo-50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide print:hidden">{sermon.language}</span>
+                                            <span className="bg-white/20 text-blue-50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide print:hidden">{sermon.language}</span>
                                             <h1 className="text-3xl font-bold mt-4 mb-2">{sermon.theme || t.sermonDetail.untitled}</h1>
                                             {(sermon.book && sermon.chapter) && (
-                                                <p className="text-indigo-100 text-lg print:text-gray-600">{sermon.book} {sermon.chapter}:{sermon.verses}</p>
+                                                <p className="text-blue-100 text-lg print:text-gray-600">{sermon.book} {sermon.chapter}:{sermon.verses}</p>
                                             )}
                                         </div>
-                                        <div className="text-right text-indigo-200 text-sm print:hidden">
+                                        <div className="text-right text-blue-200 text-sm print:hidden">
                                             <p>{t.sermonDetail.audience}: {sermon.audience}</p>
                                             <p>{t.sermonDetail.tone}: {sermon.tone}</p>
                                             <p>{t.sermonDetail.duration}: {sermon.duration}</p>
+                                            {sermon.User && (
+                                                <div className="mt-2 flex items-center justify-end text-white font-bold bg-white/10 px-3 py-1 rounded-full">
+                                                    <User className="w-3.5 h-3.5 mr-1.5" />
+                                                    {sermon.User.name}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 )}
@@ -197,17 +204,17 @@ export default function SermonDetail() {
                             <div className="p-8 lg:p-12 print:p-0">
                                 {isEditing ? (
                                     <textarea
-                                        className="w-full min-h-[500px] p-6 bg-slate-50 dark:bg-slate-950 border dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all dark:text-gray-300 leading-relaxed font-sans text-lg"
+                                        className="w-full min-h-[500px] p-6 bg-slate-50 dark:bg-slate-950 border dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-blue-500/20 outline-none transition-all dark:text-gray-300 leading-relaxed font-sans text-lg"
                                         value={editForm.content}
                                         onChange={(e) => setEditForm({ ...editForm, content: e.target.value })}
                                     />
                                 ) : isTranslating ? (
-                                    <div className="flex flex-col items-center justify-center py-20 text-indigo-500 animate-pulse">
+                                    <div className="flex flex-col items-center justify-center py-20 text-blue-500 animate-pulse">
                                         <div className="text-4xl mb-4">🌍</div>
                                         <p>Traduzindo sermão... / Translating...</p>
                                     </div>
                                 ) : (
-                                    <div className="prose prose-indigo max-w-none text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line text-lg">
+                                    <div className="prose prose-blue max-w-none text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line text-lg">
                                         {translatedContent || sermon.content}
                                     </div>
                                 )}
@@ -254,7 +261,7 @@ export default function SermonDetail() {
                                     />
                                     <button
                                         onClick={handleCopyLink}
-                                        className={`p-2 rounded-lg transition-all ${copySuccess ? 'bg-green-500 text-white' : 'bg-white dark:bg-slate-700 text-indigo-600 shadow-sm'}`}
+                                        className={`p-2 rounded-lg transition-all ${copySuccess ? 'bg-green-500 text-white' : 'bg-white dark:bg-slate-700 text-blue-600 shadow-sm'}`}
                                     >
                                         {copySuccess ? <CheckCircle className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                                     </button>
