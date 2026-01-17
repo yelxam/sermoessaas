@@ -163,30 +163,36 @@ export default function AdminCompanies() {
                                 Crescimento de Sermões (IA)
                             </h3>
                             <div className="h-[300px]">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={stats.sermonGrowth}>
-                                        <defs>
-                                            <linearGradient id="colorSermon" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#2563eb" stopOpacity={0.1} />
-                                                <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
-                                            </linearGradient>
-                                        </defs>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#3b82f610" />
-                                        <XAxis
-                                            dataKey="date"
-                                            axisLine={false}
-                                            tickLine={false}
-                                            tick={{ fontSize: 10 }}
-                                            tickFormatter={(val) => new Date(val).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })}
-                                        />
-                                        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                                        <Tooltip
-                                            contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                                            labelFormatter={(val) => new Date(val).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' })}
-                                        />
-                                        <Area type="monotone" dataKey="count" stroke="#2563eb" fillOpacity={1} fill="url(#colorSermon)" strokeWidth={3} />
-                                    </AreaChart>
-                                </ResponsiveContainer>
+                                {stats.sermonGrowth && stats.sermonGrowth.length > 0 ? (
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <AreaChart data={stats.sermonGrowth}>
+                                            <defs>
+                                                <linearGradient id="colorSermon" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="5%" stopColor="#2563eb" stopOpacity={0.1} />
+                                                    <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
+                                                </linearGradient>
+                                            </defs>
+                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#3b82f610" />
+                                            <XAxis
+                                                dataKey="date"
+                                                axisLine={false}
+                                                tickLine={false}
+                                                tick={{ fontSize: 10 }}
+                                                tickFormatter={(val) => new Date(val).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })}
+                                            />
+                                            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
+                                            <Tooltip
+                                                contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                                labelFormatter={(val) => new Date(val).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' })}
+                                            />
+                                            <Area type="monotone" dataKey="count" stroke="#2563eb" fillOpacity={1} fill="url(#colorSermon)" strokeWidth={3} />
+                                        </AreaChart>
+                                    </ResponsiveContainer>
+                                ) : (
+                                    <div className="h-full flex items-center justify-center text-slate-400 text-sm">
+                                        Sem dados suficientes
+                                    </div>
+                                )}
                             </div>
                         </div>
 
