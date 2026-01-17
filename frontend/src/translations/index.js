@@ -551,7 +551,8 @@ export const translations = {
             newSermon: 'Nouveau Sermon',
             team: 'Équipe',
             logout: 'Déconnexion',
-            hello: 'Bonjour'
+            hello: 'Bonjour',
+            bible: 'Bible'
         },
         auth: {
             welcomeUser: 'Bon retour',
@@ -697,6 +698,23 @@ export const translations = {
             confirmDelete: 'Êtes-vous sûr ?',
             saveError: 'Erreur lors de l\'enregistrement',
             deleteError: 'Erreur lors de la suppression'
+        },
+        bible: {
+            title: 'Sainte Bible',
+            subtitle: 'Consultez les Saintes Écritures et trouvez l\'inspiration.',
+            book: 'Livre',
+            chapter: 'Chapitre',
+            verse: 'Verset',
+            search: 'Chercher dans la Bible...',
+            loading: 'Chargement des Écritures...',
+            noResults: 'Aucun verset trouvé.',
+            version: 'Version',
+            testament: 'Testament',
+            oldTestament: 'Ancien Testament',
+            newTestament: 'Nouveau Testament',
+            selectBook: 'Sélectionnez un Livre',
+            selectChapter: 'Ch.',
+            allVerses: 'Tous les versets'
         }
     },
     de: {
@@ -708,7 +726,8 @@ export const translations = {
             newSermon: 'Neue Predigt',
             team: 'Team',
             logout: 'Abmelden',
-            hello: 'Hallo'
+            hello: 'Hallo',
+            bible: 'Bibel'
         },
         auth: {
             welcomeUser: 'Willkommen zurück',
@@ -854,6 +873,23 @@ export const translations = {
             confirmDelete: 'Sicher?',
             saveError: 'Fehler beim Speichern des Plans',
             deleteError: 'Fehler beim Löschen'
+        },
+        bible: {
+            title: 'Heilige Bibel',
+            subtitle: 'Konsultieren Sie die Heilige Schrift und finden Sie Inspiration.',
+            book: 'Buch',
+            chapter: 'Kapitel',
+            verse: 'Vers',
+            search: 'In der Bibel suchen...',
+            loading: 'Schriften laden...',
+            noResults: 'Keine Verse gefunden.',
+            version: 'Version',
+            testament: 'Testament',
+            oldTestament: 'Altes Testament',
+            newTestament: 'Neues Testament',
+            selectBook: 'Wählen Sie ein Buch',
+            selectChapter: 'Kap.',
+            allVerses: 'Alle Verse'
         }
     }
 };

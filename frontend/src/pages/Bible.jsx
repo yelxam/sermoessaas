@@ -6,7 +6,7 @@ import axios from 'axios';
 import { BIBLE_BOOKS_PT } from '../translations/bibleData';
 
 export default function Bible() {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [books, setBooks] = useState(BIBLE_BOOKS_PT);
     const [selectedBook, setSelectedBook] = useState(null);
     const [selectedChapter, setSelectedChapter] = useState(null);
@@ -16,6 +16,17 @@ export default function Bible() {
     const [version, setVersion] = useState('nvi'); // nvi, ra, acf
     const [searchTerm, setSearchTerm] = useState('');
     const [error, setError] = useState(null);
+
+    // Safety check: if translation object is missing for any reason
+    if (!t || !t.bible) {
+        return (
+            <Layout>
+                <div className="flex items-center justify-center h-full">
+                    <Loader2 className="animate-spin text-blue-600" size={48} />
+                </div>
+            </Layout>
+        );
+    }
 
     const versions = [
         { id: 'por_onbv', name: 'Open Nova Bíblia Viva (PT)', lang: 'pt' },
@@ -115,9 +126,9 @@ export default function Bible() {
         // Could add a toast here if available
     };
 
-    const filteredBooks = books.filter(b =>
+    const filteredBooks = Array.isArray(books) ? books.filter(b =>
         b.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    ) : [];
 
     const oldTestament = filteredBooks.filter(b => b.testament === 'VT');
     const newTestament = filteredBooks.filter(b => b.testament === 'NT');
