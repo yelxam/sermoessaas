@@ -21,18 +21,21 @@ export default function AdminCompanies() {
         companyDistribution: [],
         sermonGrowth: []
     });
+    const [aiMetrics, setAiMetrics] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [compRes, planRes, statsRes] = await Promise.all([
+                const [compRes, planRes, statsRes, aiRes] = await Promise.all([
                     api.get('/companies'),
                     api.get('/plans/public'),
-                    api.get('/companies/stats')
+                    api.get('/companies/stats'),
+                    api.get('/admin/metrics')
                 ]);
                 setCompanies(compRes.data);
                 setPlans(planRes.data);
                 setStats(statsRes.data);
+                setAiMetrics(aiRes.data);
             } catch (err) {
                 console.error("Erro ao carregar dados do admin", err);
                 setMsg({ type: 'error', text: 'Erro ao carregar empresas' });
@@ -123,6 +126,32 @@ export default function AdminCompanies() {
                             <div className="text-3xl font-black dark:text-white">{stats.totalSermons}</div>
                             <p className="text-sm text-slate-500 mt-1">Gerados com IA</p>
                         </div>
+
+                        {aiMetrics && (
+                            <>
+                                <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border dark:border-slate-800 shadow-sm">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className="p-3 bg-purple-50 dark:bg-purple-900/30 rounded-xl">
+                                            <TrendingUp className="w-6 h-6 text-purple-600" />
+                                        </div>
+                                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Tokens IA</span>
+                                    </div>
+                                    <div className="text-3xl font-black dark:text-white">{(aiMetrics.tokens.total / 1000).toFixed(1)}k</div>
+                                    <p className="text-sm text-slate-500 mt-1">{aiMetrics.tokens.month.toLocaleString()} este mês</p>
+                                </div>
+
+                                <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border dark:border-slate-800 shadow-sm">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className="p-3 bg-amber-50 dark:bg-amber-900/30 rounded-xl">
+                                            <span className="text-2xl font-bold text-amber-600">$</span>
+                                        </div>
+                                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Custo API</span>
+                                    </div>
+                                    <div className="text-3xl font-black dark:text-white">${aiMetrics.cost.total.toFixed(4)}</div>
+                                    <p className="text-sm text-slate-500 mt-1">${aiMetrics.cost.month.toFixed(4)} este mês</p>
+                                </div>
+                            </>
+                        )}
                     </div>
 
                     {/* Charts Section */}

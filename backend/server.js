@@ -22,6 +22,7 @@ app.use('/sermons', require('./src/routes/sermonRoutes'));
 app.use('/users', require('./src/routes/userRoutes'));
 app.use('/companies', require('./src/routes/companyRoutes'));
 app.use('/plans', require('./src/routes/planRoutes'));
+app.use('/admin', require('./src/routes/adminRoutes'));
 
 // Database connection
 sequelize.authenticate()
