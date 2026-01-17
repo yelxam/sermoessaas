@@ -52,16 +52,16 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
     return (
         <div
             className={`
-                bg-slate-900 text-white h-full w-full transition-all duration-300 flex flex-col shadow-2xl
+                bg-white dark:bg-slate-900 text-slate-800 dark:text-white h-full w-full transition-all duration-300 flex flex-col shadow-2xl border-r border-slate-100 dark:border-transparent
             `}
         >
             {/* Header / Toggle */}
-            <div className={`flex items-center p-4 border-b border-white/10 h-24 transition-all duration-300 ${collapsed ? 'justify-center' : 'justify-between px-6'}`}>
+            <div className={`flex items-center p-4 border-b border-slate-100 dark:border-white/10 h-24 transition-all duration-300 ${collapsed ? 'justify-center' : 'justify-between px-6'}`}>
                 <Logo className={collapsed ? "w-10" : "w-32"} showText={false} />
 
                 <button
                     onClick={() => setCollapsed(!collapsed)}
-                    className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition"
+                    className="p-1.5 rounded-lg bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-white transition"
                     title={collapsed ? "Expandir" : "Recolher"}
                 >
                     {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
@@ -77,8 +77,8 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
                         className={`
                             flex items-center px-4 py-3 rounded-xl transition-all duration-200 group relative
                             ${isActive(item.path)
-                                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-900/50'
-                                : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-900/30'
+                                : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-indigo-600 dark:hover:text-white'
                             }
                         `}
                         onClick={() => onNavigate && onNavigate()}
@@ -101,16 +101,16 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
             </div>
 
             {/* Bottom Section: Language & User */}
-            <div className="p-4 border-t border-white/10 bg-slate-900/50">
+            <div className="p-4 border-t border-slate-100 dark:border-white/10 bg-slate-50/50 dark:bg-slate-900/50">
 
                 {/* Language & Theme Selector */}
                 {!collapsed ? (
                     <div className="mb-4">
                         <div className="flex justify-between items-center mb-2">
-                            <p className="text-xs text-slate-500 uppercase font-semibold tracking-wider">Preferências</p>
+                            <p className="text-xs text-slate-400 dark:text-slate-500 uppercase font-semibold tracking-wider">Preferências</p>
                             <button
                                 onClick={toggleTheme}
-                                className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
+                                className="p-1.5 rounded-lg bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors"
                                 title={isDarkMode ? "Modo Claro" : "Modo Escuro"}
                             >
                                 {isDarkMode ? <Sun size={14} /> : <Moon size={14} />}
@@ -123,7 +123,7 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
                                     onClick={() => setLanguage(lang.code)}
                                     className={`
                                         p-1 rounded transition border border-transparent flex items-center justify-center
-                                        ${language === lang.code ? 'border-indigo-500 bg-white/10' : 'opacity-50 hover:opacity-100'}
+                                        ${language === lang.code ? 'border-indigo-500 bg-indigo-50 dark:bg-white/10' : 'opacity-50 hover:opacity-100'}
                                     `}
                                     title={lang.label}
                                 >
@@ -136,11 +136,11 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
                     <div className="mb-4 flex flex-col items-center space-y-4">
                         <button
                             onClick={toggleTheme}
-                            className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
+                            className="p-2 rounded-lg bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors"
                         >
                             {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
                         </button>
-                        <img src={currentFlag} className="w-6 h-4 rounded shadow opacity-80" />
+                        <img src={currentFlag} className="w-6 h-4 rounded shadow-sm opacity-80" />
                     </div>
                 )}
 
@@ -153,8 +153,8 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
                                 {user.name?.[0] || 'U'}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-white truncate">{user.name}</p>
-                                <p className="text-xs text-slate-400 truncate">{user.email}</p>
+                                <p className="text-sm font-medium text-slate-800 dark:text-white truncate">{user.name}</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{user.email}</p>
                             </div>
                         </div>
                     )}
@@ -162,7 +162,7 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
                     <button
                         onClick={handleLogout}
                         className={`
-                            text-slate-400 hover:text-red-400 hover:bg-white/5 p-2 rounded-lg transition
+                            text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-white/5 p-2 rounded-lg transition
                             ${collapsed ? '' : ''}
                         `}
                         title={t.nav.logout}
