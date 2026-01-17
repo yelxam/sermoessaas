@@ -6,9 +6,10 @@ const sequelize = require('../config/database');
 
 exports.getMetrics = async (req, res) => {
     try {
-        // Only superadmin (admin@sermon.ai logic usually, or explicit role)
-        // Checking role in middleware would be better, but verifying here too
-        if (req.user.email !== 'admin@sermon.ai') {
+        // Fetch full user to verify email (token usually doesn't have email)
+        const user = await User.findByPk(req.user.id);
+
+        if (!user || user.email !== 'admin@sermon.ai') {
             return res.status(403).json({ msg: 'Acesso negado' });
         }
 
