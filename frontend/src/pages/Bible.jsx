@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
-import { Book, ChevronRight, Search, Loader2, BookOpen, ChevronLeft, Bookmark, Share2, Copy } from 'lucide-react';
+import { Book, ChevronRight, Search, Loader2, BookOpen, ChevronLeft, Bookmark, Share2, Copy, AlertCircle } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import axios from 'axios';
+import { BIBLE_BOOKS_PT } from '../translations/bibleData';
 
 export default function Bible() {
     const { t } = useLanguage();
-    const [books, setBooks] = useState([]);
+    const [books, setBooks] = useState(BIBLE_BOOKS_PT);
     const [selectedBook, setSelectedBook] = useState(null);
     const [selectedChapter, setSelectedChapter] = useState(null);
     const [verses, setVerses] = useState([]);
@@ -14,6 +15,7 @@ export default function Bible() {
     const [loadingVerses, setLoadingVerses] = useState(false);
     const [version, setVersion] = useState('nvi'); // nvi, ra, acf
     const [searchTerm, setSearchTerm] = useState('');
+    const [error, setError] = useState(null);
 
     const versions = [
         { id: 'nvi', name: 'NVI' },
@@ -27,11 +29,15 @@ export default function Bible() {
 
     const fetchBooks = async () => {
         setLoading(true);
+        setError(null);
         try {
             const res = await axios.get('https://www.abibliadigital.com.br/api/books');
-            setBooks(res.data);
+            if (res.data && Array.isArray(res.data)) {
+                setBooks(res.data);
+            }
         } catch (err) {
             console.error("Erro ao carregar livros", err);
+            setError("O servidor da Bíblia está temporariamente indisponível. Mostrando lista offline.");
         } finally {
             setLoading(false);
         }
@@ -39,12 +45,14 @@ export default function Bible() {
 
     const fetchVerses = async (bookAbbrev, chapter) => {
         setLoadingVerses(true);
+        setError(null);
         try {
             const res = await axios.get(`https://www.abibliadigital.com.br/api/verses/${version}/${bookAbbrev}/${chapter}`);
             setVerses(res.data.verses);
             setSelectedChapter(chapter);
         } catch (err) {
             console.error("Erro ao carregar versículos", err);
+            setError("Não foi possível carregar os versículos. O servidor pode estar instável.");
             setVerses([]);
         } finally {
             setLoadingVerses(false);
@@ -89,6 +97,12 @@ export default function Bible() {
                     </div>
 
                     <div className="flex items-center gap-3">
+                        {error && (
+                            <div className="flex items-center gap-2 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 px-4 py-2 rounded-xl border border-amber-100 dark:border-amber-800 text-[10px] font-bold animate-pulse">
+                                <AlertCircle size={14} />
+                                {error}
+                            </div>
+                        )}
                         <select
                             value={version}
                             onChange={(e) => setVersion(e.target.value)}
