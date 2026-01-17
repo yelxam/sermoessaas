@@ -59,7 +59,7 @@ export default function Register() {
     const selectedPlan = allPlans.find(p => p.id.toString() === planId.toString());
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-400 via-sky-400 to-blue-600 dark:from-slate-900 dark:to-slate-950 p-4">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-300 via-blue-400 to-blue-500 dark:from-slate-900 dark:to-slate-950 p-4">
             <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-8 rounded-3xl shadow-2xl w-full max-w-md animate-in fade-in zoom-in duration-300 border dark:border-slate-800">
                 <div className="flex justify-center mb-8">
                     <Logo className="w-64" showText={false} />
