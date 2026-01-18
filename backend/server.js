@@ -22,11 +22,25 @@ app.use('/sermons', require('./src/routes/sermonRoutes'));
 app.use('/users', require('./src/routes/userRoutes'));
 app.use('/companies', require('./src/routes/companyRoutes'));
 app.use('/plans', require('./src/routes/planRoutes'));
+app.use('/webhooks', require('./src/routes/webhookRoutes'));
 
 // Database connection
 sequelize.authenticate()
     .then(() => console.log('Database connected'))
     .catch(err => console.error('Database connection error:', err));
+
+app.get('/ping', (req, res) => {
+    res.json({
+        pong: true,
+        time: new Date(),
+        env: {
+            has_db: !!process.env.DATABASE_URL,
+            has_jwt: !!process.env.JWT_SECRET,
+            has_kiwify: !!process.env.KIWIFY_SECRET,
+            has_smtp: !!process.env.SMTP_HOST
+        }
+    });
+});
 
 app.get('/', (req, res) => {
     res.json({ message: 'Sermoes API is running' });
