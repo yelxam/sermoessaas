@@ -41,19 +41,6 @@ sequelize.authenticate()
     .then(() => console.log('Database connected'))
     .catch(err => console.error('Database connection error:', err));
 
-app.get('/ping', (req, res) => {
-    res.json({
-        pong: true,
-        time: new Date(),
-        env: {
-            has_db: !!process.env.DATABASE_URL,
-            has_jwt: !!process.env.JWT_SECRET,
-            has_kiwify: !!process.env.KIWIFY_SECRET,
-            has_smtp: !!process.env.SMTP_HOST
-        }
-    });
-});
-
 app.get('/', (req, res) => {
     res.json({ message: 'Sermoes API is running' });
 });

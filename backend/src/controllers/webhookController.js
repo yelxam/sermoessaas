@@ -150,6 +150,6 @@ exports.handleKiwifyWebhook = async (req, res) => {
         res.status(200).json({ msg: 'Webhook processed successfully' });
     } catch (err) {
         console.error('WEBHOOK ERROR:', err);
-        res.status(500).json({ msg: 'Internal Server Error', error: err.message, stack: err.stack });
+        res.status(500).json({ msg: 'Internal Server Error' });
     }
 };

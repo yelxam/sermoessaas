@@ -1,6 +1,0 @@
-{
-    "order_status": "paid",
-    "customer_name": "Test Local Webhook",
-    "customer_email": "localtest@example.com",
-    "product_name": "Pro"
-}
