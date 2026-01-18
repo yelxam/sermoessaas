@@ -22,16 +22,14 @@ const LandingPage = () => {
     useEffect(() => {
         const fetchPlans = async () => {
             try {
-                // Using the centralized API service to handle baseURL and avoids issues with manual URL concatenation
                 const res = await api.get('/plans/public');
                 setPlans(res.data);
             } catch (err) {
                 console.error("Erro ao carregar planos", err);
-                // Fallback local if API is not yet redeployed on Vercel (optional, but helps UX)
                 setPlans([
-                    { id: 'f1', name: 'Plano Mensal', price: 49.90, max_sermons: 10, description: 'Perfeito para pastores de comunidades locais.' },
-                    { id: 'f2', name: 'Plano Premium', price: 89.90, max_sermons: -1, description: 'Acesso ilimitado para líderes e conferencistas.' },
-                    { id: 'f3', name: 'Plano Church', price: 199.90, max_sermons: -1, description: 'Ideal para equipes pastorais e igrejas em crescimento.' }
+                    { id: 'f1', name: 'Plano Essencial', price: 67.90, max_sermons: 15, allow_ai: false, description: 'Ideal para quem quer organização e praticidade.' },
+                    { id: 'f2', name: 'Plano Avançado', price: 147.90, max_sermons: 40, allow_ai: true, description: 'Perfeito para quem prepara sermões com frequência.' },
+                    { id: 'f3', name: 'Plano Pro', price: 247.00, max_sermons: -1, allow_ai: true, description: 'Para quem leva o preparo do púlpito a sério.' }
                 ]);
             } finally {
                 setLoading(false);
@@ -55,9 +53,10 @@ const LandingPage = () => {
                     <Logo className="h-20" />
 
                     <div className="hidden md:flex items-center gap-8 text-slate-600 dark:text-slate-300 font-medium text-sm">
-                        <button onClick={() => scrollToSection('funcionalidades')} className="hover:text-blue-600 transition-colors">Funcionalidades</button>
+                        <button onClick={() => scrollToSection('problema')} className="hover:text-blue-600 transition-colors">Dores</button>
+                        <button onClick={() => scrollToSection('solucao')} className="hover:text-blue-600 transition-colors">O Sistema</button>
                         <button onClick={() => scrollToSection('planos')} className="hover:text-blue-600 transition-colors">Planos</button>
-                        <button onClick={() => scrollToSection('missao')} className="hover:text-blue-600 transition-colors">Nossa Missão</button>
+                        <button onClick={() => scrollToSection('depoimentos')} className="hover:text-blue-600 transition-colors">Depoimentos</button>
                     </div>
 
                     <div className="flex items-center gap-3">
@@ -71,7 +70,7 @@ const LandingPage = () => {
                 </div>
             </nav>
 
-            {/* Hero Section */}
+            {/* Hero Section - Seção 1 */}
             <section className="pt-32 pb-20 relative overflow-hidden">
                 <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-gradient-to-l from-blue-50 to-transparent dark:from-blue-950/20 opacity-50 blur-3xl"></div>
                 <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
@@ -80,22 +79,28 @@ const LandingPage = () => {
                             <Sparkles className="w-3.5 h-3.5" />
                             A primeira IA feita para pastores e líderes
                         </div>
-                        <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-                            Sermões Inspirados pela <span className="text-blue-600">Bíblia</span> com auxílio da IA.
+                        <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6 text-slate-900 dark:text-white">
+                            Prepare sermões <span className="text-blue-600">poderosos</span> em minutos.
                         </h1>
+                        <p className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+                            Sem stress. Sem bloqueio. Sem perder tempo.
+                        </p>
                         <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-lg">
-                            Potencialize seu ministério com o VerboCast. Gere esboços, estudos e sermões profundos em minutos, mantendo sempre a fidelidade às Escrituras.
+                            O Verbo Cast ajuda pastores e pregadores a criar, organizar, salvar e compartilhar sermões com clareza — usando tecnologia e Inteligência Artificial a favor do seu chamado.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
                             <button
                                 onClick={() => scrollToSection('planos')}
                                 className="btn-primary !px-8 !py-4 flex items-center justify-center gap-2"
                             >
-                                Ver Planos Disponíveis <ArrowRight className="w-5 h-5" />
+                                Começar agora <ArrowRight className="w-5 h-5" />
                             </button>
-                            <Link to="/login" className="btn-secondary !px-8 !py-4 flex items-center justify-center text-blue-600 border-blue-200">
-                                Ver Demonstração
-                            </Link>
+                            <button
+                                onClick={() => scrollToSection('solucao')}
+                                className="btn-secondary !px-8 !py-4 flex items-center justify-center text-blue-600 border-blue-200"
+                            >
+                                Conhecer o Sistema
+                            </button>
                         </div>
                     </div>
                     <div className="relative">
@@ -106,68 +111,163 @@ const LandingPage = () => {
                                 className="w-full h-auto object-cover"
                             />
                         </div>
-                        <div className="absolute -bottom-6 -left-6 glass-panel p-6 max-w-xs shadow-2xl animate-bounce-slow hidden sm:block">
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white">
-                                    <CheckCircle2 className="w-6 h-6" />
-                                </div>
-                                <div>
-                                    <p className="text-sm font-bold">Esboço Gerado</p>
-                                    <p className="text-xs text-slate-500">Com base em João 3:16</p>
-                                </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Pain Points - Seção 2 */}
+            <section id="problema" className="py-20 bg-slate-50 dark:bg-slate-900/50 border-y border-slate-100 dark:border-slate-800">
+                <div className="container mx-auto px-6">
+                    <div className="max-w-4xl mx-auto text-center mb-16">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-slate-900 dark:text-white">Você não foi chamado para viver apagando incêndio todo domingo</h2>
+                        <p className="text-lg text-slate-600 dark:text-slate-400">Se preparar um sermão virou sinônimo de:</p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        {[
+                            "Correr contra o tempo toda semana",
+                            "Ter boas ideias, mas não conseguir organizar",
+                            "Deixar o sermão para o último dia",
+                            "Perder mensagens antigas porque não estavam salvas",
+                            "Sentir o peso da responsabilidade antes de subir ao púlpito"
+                        ].map((pain, pidx) => (
+                            <div key={pidx} className="flex items-center gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+                                <X className="w-5 h-5 text-red-500 flex-shrink-0" />
+                                <span className="text-slate-700 dark:text-slate-300 font-medium">{pain}</span>
                             </div>
-                        </div>
+                        ))}
+                    </div>
+
+                    <div className="mt-16 text-center">
+                        <p className="text-xl mb-4 text-slate-700 dark:text-slate-300">👉 O problema não é falta de fé. <br className="md:hidden" /> 👉 Nem falta de dedicação.</p>
+                        <p className="text-2xl font-bold text-blue-600">É falta de um sistema simples, rápido e inteligente para o preparo da Palavra.</p>
                     </div>
                 </div>
             </section>
 
-            {/* Features */}
-            <section id="funcionalidades" className="py-20 bg-slate-50 dark:bg-slate-900/50">
-                <div className="container mx-auto px-6 text-center mb-16">
-                    <h2 className="text-3xl font-bold mb-4">Funcionalidades focadas no Reino</h2>
-                    <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-                        Ferramentas inteligentes desenhadas para respeitar o tempo de estudo bíblico e amplificar a mensagem do Evangelho.
-                    </p>
+            {/* Solution & Benefits - Seção 3 & 4 */}
+            <section id="solucao" className="py-24 bg-white dark:bg-slate-950 overflow-hidden">
+                <div className="container mx-auto px-6">
+                    <div className="max-w-3xl mx-auto text-center mb-20">
+                        <h2 className="text-4xl font-bold mb-6 text-slate-900 dark:text-white">Conheça o Verbo Cast</h2>
+                        <p className="text-lg text-slate-600 dark:text-slate-400 mb-10">
+                            O Verbo Cast é uma plataforma criada especialmente para pastores, pregadores e líderes que querem:
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                            {[
+                                "Ganhar tempo no preparo dos sermões",
+                                "Ter mensagens mais claras e bem estruturadas",
+                                "Guardar tudo em um só lugar",
+                                "Compartilhar mensagens com facilidade",
+                                "Contar com IA quando a inspiração não vem"
+                            ].map((item, iidx) => (
+                                <div key={iidx} className="flex items-center gap-3">
+                                    <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                                        <Check className="w-4 h-4 text-green-600" />
+                                    </div>
+                                    <span className="font-medium text-slate-700 dark:text-slate-300">{item}</span>
+                                </div>
+                            ))}
+                        </div>
+                        <p className="mt-12 text-blue-600 font-bold text-xl uppercase tracking-widest text-center">
+                            Tudo isso em um painel simples, intuitivo e feito para quem vive o ministério na prática.
+                        </p>
+                    </div>
+
+                    <div className="text-center mb-16">
+                        <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Tudo o que você precisa para preparar seus sermões, em um só lugar</h3>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {[
+                            { title: "Criador de Sermões Estruturado", desc: "Monte sermões completos com tema, texto base, introdução, desenvolvimento e conclusão.", icon: <PenTool className="w-7 h-7" /> },
+                            { title: "Inteligência Artificial como apoio", desc: "Use IA para destravar ideias, gerar esboços bíblicos e organizar pensamentos.", icon: <Sparkles className="w-7 h-7" /> },
+                            { title: "Salvar Sermões em PDF", desc: "Tenha seus sermões sempre salvos, organizados e prontos para reutilizar.", icon: <CheckCircle2 className="w-7 h-7" /> },
+                            { title: "Compartilhamento no WhatsApp", desc: "Envie mensagens para líderes, células e equipes com um clique.", icon: <ArrowRight className="w-7 h-7 rotate-45" /> },
+                            { title: "Biblioteca de Sermões", desc: "Nunca mais perca uma boa mensagem preparada com dedicação.", icon: <Calendar className="w-7 h-7" /> },
+                            { title: "Bíblia Online Integrada", desc: "Consulte versículos, compare traduções e estude a Palavra sem sair da plataforma.", icon: <BookOpen className="w-7 h-7" /> }
+                        ].map((benefit, bidx) => (
+                            <div key={bidx} className="glass-panel p-8 card-hover">
+                                <div className="w-14 h-14 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
+                                    {benefit.icon}
+                                </div>
+                                <h4 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">{benefit.title}</h4>
+                                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                                    {benefit.desc}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
+            </section>
 
-                <div className="container mx-auto px-6 grid md:grid-cols-3 gap-8 text-left">
-                    <div className="glass-panel p-8 card-hover">
-                        <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center text-blue-600 mb-6 font-bold text-xl">
-                            <PenTool className="w-7 h-7" />
+            {/* IA Support - Seção 5 */}
+            <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
+                <div className="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center max-w-5xl">
+                    <div className="relative">
+                        <div className="rounded-3xl overflow-hidden shadow-2xl">
+                            <img src="./hero-banner.png" alt="IA e Bíblia" className="w-full h-auto" />
                         </div>
-                        <h3 className="text-xl font-bold mb-3">Esboços Inteligentes</h3>
-                        <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                            Gere pontos de sermão, ilustrações e aplicações práticas baseadas em qualquer texto bíblico ou tema.
-                        </p>
                     </div>
-
-                    <div className="glass-panel p-8 card-hover">
-                        <div className="w-14 h-14 bg-sky-100 dark:bg-sky-900/50 rounded-2xl flex items-center justify-center text-sky-600 mb-6">
-                            <Calendar className="w-7 h-7" />
-                        </div>
-                        <h3 className="text-xl font-bold mb-3">Séries de Mensagens</h3>
-                        <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                            Planeje o mês inteiro da igreja com séries temáticas e devocionais conectados para sua congregação.
+                    <div>
+                        <h2 className="text-3xl font-bold mb-6 text-slate-900 dark:text-white">A IA não substitui o chamado. <span className="text-blue-600">Ela apoia o preparo.</span></h2>
+                        <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+                            A Inteligência Artificial do Verbo Cast foi criada para ajudar, não para pregar por você. Ela serve para:
                         </p>
-                    </div>
-
-                    <div className="glass-panel p-8 card-hover">
-                        <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
-                            <ShieldCheck className="w-7 h-7" />
-                        </div>
-                        <h3 className="text-xl font-bold mb-3">Fidelidade Doutrinária</h3>
-                        <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                            Nossa IA é treinada para priorizar a exegese bíblica e referências teológicas sólidas em cada resposta.
+                        <ul className="space-y-4 mb-8">
+                            {["Destravar ideias", "Organizar pensamentos", "Economizar tempo"].map((t, tid) => (
+                                <li key={tid} className="flex items-center gap-3 font-bold text-slate-800 dark:text-slate-200">
+                                    <Sparkles className="w-4 h-4 text-blue-600" /> {t}
+                                </li>
+                            ))}
+                        </ul>
+                        <p className="text-lg font-bold text-slate-900 dark:text-white border-l-4 border-blue-600 pl-6 italic bg-white dark:bg-slate-900 p-4 rounded-r-xl shadow-sm">
+                            👉 O conteúdo final continua sendo seu, com sua visão, sua unção e sua responsabilidade diante de Deus e da igreja.
                         </p>
                     </div>
                 </div>
             </section>
 
-            {/* Plans Section */}
-            <section id="planos" className="py-24 bg-white dark:bg-slate-950">
+            {/* Testimonials - Seção 6 */}
+            <section id="depoimentos" className="py-24 bg-white dark:bg-slate-950">
+                <div className="container mx-auto px-6 text-center">
+                    <div className="flex justify-center gap-1 mb-6 text-yellow-400">
+                        {[1, 2, 3, 4, 5].map(s => <Sparkles key={s} className="w-6 h-6 fill-current" />)}
+                    </div>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-white">Pastores e pregadores que já usam aprovam</h2>
+                    <p className="text-slate-600 dark:text-slate-400 mb-16">Centenas de mensagens preparadas com mais clareza, menos pressa e muito mais organização.</p>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-left max-w-6xl mx-auto">
+                        {[
+                            { name: "Pastor Marcos A.", text: "Eu sempre deixava o sermão para a última hora. Com o Verbo Cast, agora consigo organizar tudo com antecedência. Mudou completamente minha rotina." },
+                            { name: "Pr. André S.", text: "A ferramenta de IA me ajuda muito quando estou sem ideias. Não substitui meu estudo, mas acelera demais o processo." },
+                            { name: "Presbítero Lucas M.", text: "Antes eu perdia meus sermões antigos. Agora tenho tudo salvo, organizado e ainda consigo compartilhar direto no WhatsApp." },
+                            { name: "Pastor João C.", text: "É uma plataforma pensada para quem vive o ministério de verdade." },
+                            { name: "Evangelista Rafael P.", text: "Vale cada centavo. Hoje preparo meus sermões com mais paz, mais clareza e menos pressão." },
+                            { name: "Pastor Daniel R.", text: "Depois que comecei a usar o Verbo Cast, parei de sentir aquele peso antes de preparar o sermão." },
+                            { name: "Missionário Felipe T.", text: "O que mais gostei foi a praticidade. Em poucos minutos consigo estruturar a mensagem." },
+                            { name: "Pastor Elias N.", text: "Uso o plano Pro e a IA ilimitada faz toda diferença." }
+                        ].map((test, tidx) => (
+                            <div key={tidx} className="glass-panel p-6 bg-slate-50 dark:bg-slate-900/50">
+                                <p className="text-slate-600 dark:text-slate-300 italic mb-6 leading-relaxed">"{test.text}"</p>
+                                <div className="font-bold text-slate-900 dark:text-white">— {test.name}</div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="mt-12 text-blue-600 font-bold text-xl">
+                        ⭐ Avaliação média: 5,0 de 5 estrelas
+                    </div>
+                    <button onClick={() => scrollToSection('planos')} className="mt-8 text-blue-600 font-bold underline flex items-center gap-2 mx-auto hover:text-blue-700 transition-colors">
+                        Quero preparar meus sermões com mais clareza <ArrowRight className="w-4 h-4" />
+                    </button>
+                </div>
+            </section>
+
+            {/* Plans Section - Seção 7 */}
+            <section id="planos" className="py-24 bg-slate-50 dark:bg-slate-900/50">
                 <div className="container mx-auto px-6">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold mb-4">Escolha o Plano Ideal</h2>
+                        <h2 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">Escolha o plano ideal para o seu ministério</h2>
                         <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
                             Invista no seu ministério com ferramentas que otimizam seu tempo de estudo.
                         </p>
@@ -181,52 +281,71 @@ const LandingPage = () => {
                     ) : (
                         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                             {plans.map((plan, idx) => (
-                                <div key={plan.id} className={`glass-panel p-8 relative flex flex-col ${idx === 1 ? 'border-2 border-blue-500 scale-105 shadow-2xl z-10' : ''}`}>
-                                    {idx === 1 && (
-                                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                                            Mais Popular
-                                        </div>
-                                    )}
-                                    <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+                                <div key={plan.id} className={`glass-panel p-8 relative flex flex-col bg-white dark:bg-slate-900 ${idx === 1 ? 'border-2 border-yellow-500 scale-105 shadow-2xl z-10' : ''}`}>
+                                    {idx === 0 && <div className="w-4 h-4 rounded-full bg-green-500 mb-4 shadow-lg shadow-green-200"></div>}
+                                    {idx === 1 && <div className="w-4 h-4 rounded-full bg-yellow-500 mb-4 shadow-lg shadow-yellow-200"></div>}
+                                    {idx === 2 && <div className="w-4 h-4 rounded-full bg-blue-500 mb-4 shadow-lg shadow-blue-200"></div>}
+
+                                    <h3 className="text-2xl font-bold mb-2 text-slate-900 dark:text-white">{plan.name}</h3>
                                     <div className="flex items-baseline gap-1 mb-6">
-                                        <span className="text-4xl font-bold">R$ {parseFloat(plan.price).toFixed(2).replace('.', ',')}</span>
+                                        <span className="text-4xl font-bold text-slate-900 dark:text-white">R$ {parseFloat(plan.price).toFixed(2).replace('.', ',')}</span>
                                         <span className="text-slate-500 dark:text-slate-400 text-sm">/mês</span>
                                     </div>
-                                    <p className="text-slate-600 dark:text-slate-400 mb-8 text-sm leading-relaxed min-h-[40px]">
+                                    <p className="text-slate-600 dark:text-slate-400 mb-8 text-sm leading-relaxed min-h-[40px] font-bold">
                                         {plan.description}
                                     </p>
 
-                                    <ul className="space-y-4 mb-8 flex-1">
+                                    <ul className="space-y-4 mb-8 flex-1 border-t border-slate-100 dark:border-slate-800 pt-6">
                                         <li className="flex items-start gap-3 text-sm">
                                             <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span>{plan.max_sermons === -1 ? 'Sermões Ilimitados' : `${plan.max_sermons} Sermões por mês`}</span>
+                                            <span className="text-slate-700 dark:text-slate-300 font-medium">
+                                                {plan.id === 'f1' ? 'Organização total para o preparo do sermão' : plan.id === 'f2' ? 'Mais tempo, mais clareza e apoio inteligente' : 'Liberdade total para preparar sermões com excelência'}
+                                            </span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm">
-                                            {plan.allow_ai !== false ? (
-                                                <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            ) : (
-                                                <X className="w-5 h-5 text-red-500 flex-shrink-0" />
-                                            )}
-                                            <span className={plan.allow_ai !== false ? '' : 'text-slate-400 line-through'}>Geração de Esboços com IA</span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
                                             <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span>Estatísticas de Engajamento</span>
+                                            <span className="text-slate-700 dark:text-slate-300">
+                                                {plan.id === 'f3' ? 'Todos os recursos liberados' : 'Criar e organizar sermões'}
+                                            </span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
+                                        <li className="flex items-start gap-3 text-sm">
                                             <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span>Exportação para Impressão</span>
+                                            <span className="text-slate-700 dark:text-slate-300">
+                                                {plan.id === 'f3' ? 'IA ILIMITADA' : plan.id === 'f2' ? 'IA para criação de sermões (uso limitado)' : 'Biblioteca pessoal'}
+                                            </span>
+                                        </li>
+                                        <li className="flex items-start gap-3 text-sm">
+                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                                            <span className="text-slate-700 dark:text-slate-300">
+                                                {plan.id === 'f1' ? 'Salvar sermões em PDF' : 'Esboços bíblicos'}
+                                            </span>
+                                        </li>
+                                        <li className="flex items-start gap-3 text-sm">
+                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                                            <span className="text-slate-700 dark:text-slate-300">
+                                                {plan.id === 'f3' ? 'Ideal para séries de mensagens' : 'Organização de ideias'}
+                                            </span>
+                                        </li>
+                                        <li className="flex items-start gap-3 text-sm">
+                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                                            <span className="text-slate-700 dark:text-slate-300">
+                                                {plan.id === 'f3' ? 'Bíblia Online completa integrada' : 'Bíblia Online integrada'}
+                                            </span>
+                                        </li>
+                                        <li className="flex items-start gap-3 text-sm">
+                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                                            <span className="text-slate-700 dark:text-slate-300">Compartilhar no WhatsApp</span>
                                         </li>
                                     </ul>
 
                                     <Link
                                         to={`/register?plan=${plan.id}`}
                                         className={`w-full py-4 rounded-xl font-bold text-center transition-all ${idx === 1
-                                            ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200 dark:shadow-none'
-                                            : 'bg-blue-50 dark:bg-slate-900 text-blue-600 hover:bg-blue-100 dark:hover:bg-slate-800'
+                                            ? 'bg-yellow-500 text-white hover:bg-yellow-600 shadow-xl'
+                                            : idx === 2 ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-green-600 text-white hover:bg-green-700'
                                             }`}
                                     >
-                                        Assinar Agora
+                                        Quero o {plan.name}
                                     </Link>
                                 </div>
                             ))}
@@ -235,17 +354,43 @@ const LandingPage = () => {
                 </div>
             </section>
 
+            {/* Transformation - Seção 8 */}
+            <section className="py-24 bg-white dark:bg-slate-950">
+                <div className="container mx-auto px-6 max-w-4xl text-center">
+                    <h2 className="text-4xl font-bold mb-8 text-slate-900 dark:text-white">Imagine sua rotina com o Verbo Cast</h2>
+                    <p className="text-lg text-slate-600 dark:text-slate-400 mb-12">Imagine abrir seu painel e já saber:</p>
+                    <div className="grid md:grid-cols-2 gap-6 text-left mb-16">
+                        {[
+                            "Qual será o próximo sermão",
+                            "Onde está cada mensagem",
+                            "Ter apoio quando faltar inspiração",
+                            "Ter mais tempo para oração, estudo e cuidado pastoral"
+                        ].map((txt, tid) => (
+                            <div key={tid} className="flex items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+                                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                                <span className="text-lg font-medium text-slate-700 dark:text-slate-300">{txt}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="space-y-2 text-2xl font-bold text-slate-900 dark:text-white">
+                        <p>Menos correria.</p>
+                        <p>Mais clareza.</p>
+                        <p className="text-blue-600">Mais consistência no púlpito.</p>
+                    </div>
+                </div>
+            </section>
+
             {/* Mission Section */}
-            <section id="missao" className="py-20 relative overflow-hidden bg-slate-50 dark:bg-slate-900/30">
+            <section id="missao" className="py-20 bg-slate-50 dark:bg-slate-900/50">
                 <div className="container mx-auto px-6">
                     <div className="max-w-4xl mx-auto text-center">
-                        <h2 className="text-4xl font-bold mb-8">Mais do que tecnologia, uma ferramenta de ministério.</h2>
+                        <h2 className="text-4xl font-bold mb-8 text-slate-900 dark:text-white">Mais do que tecnologia, uma ferramenta de ministério.</h2>
                         <div className="grid md:grid-cols-2 gap-12 text-left">
                             <div className="space-y-4">
                                 <div className="flex items-start gap-4">
                                     <div className="mt-1 w-6 h-6 bg-blue-600 rounded-full flex-shrink-0 flex items-center justify-center text-white text-[10px]">1</div>
                                     <p className="text-slate-600 dark:text-slate-400 text-sm">
-                                        Libere tempo para o cuidado pastoral direto, deixando o VerboCast auxiliar na estruturação do estudo.
+                                        Libere tempo para o cuidado pastoral direto, deixando o Verbo Cast auxiliar na estruturação do estudo.
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-4">
@@ -257,13 +402,13 @@ const LandingPage = () => {
                             </div>
                             <div className="space-y-4 text-slate-600 dark:text-slate-400">
                                 <p className="text-sm italic leading-relaxed">
-                                    "O VerboCast nasceu para estar ao lado de quem prega. Acreditamos que a tecnologia deve servir ao Reino, facilitando o preparo intelectual para que o pastor foque no preparo espiritual."
+                                    "O Verbo Cast nasceu para estar ao lado de quem prega. Acreditamos que a tecnologia deve servir ao Reino, facilitando o preparo intelectual para que o pastor foque no preparo espiritual."
                                 </p>
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">AM</div>
+                                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center text-blue-600 font-bold">AM</div>
                                     <div>
                                         <p className="font-bold text-slate-900 dark:text-white text-sm">Pr. André Marques</p>
-                                        <p className="text-xs text-slate-500">Fundador do VerboCast</p>
+                                        <p className="text-xs text-slate-500">Fundador do Verbo Cast</p>
                                     </div>
                                 </div>
                             </div>
@@ -272,29 +417,29 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* CTA Final */}
-            <section className="py-20">
+            {/* CTA Final - Seção 9 */}
+            <section className="py-20 bg-white dark:bg-slate-950">
                 <div className="container mx-auto px-6 text-center">
                     <div className="bg-gradient-to-r from-blue-600 to-sky-700 rounded-[3rem] p-12 text-center text-white relative overflow-hidden shadow-2xl max-w-5xl mx-auto">
                         <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-                        <h2 className="text-4xl font-bold mb-6 relative z-10">Potencialize seu ministério hoje.</h2>
+                        <h2 className="text-4xl font-bold mb-6 relative z-10">Seu próximo sermão pode começar agora</h2>
                         <p className="text-blue-100 mb-8 max-w-xl mx-auto relative z-10">
-                            Junte-se a centenas de líderes que já estão transformando o tempo de preparo de sermões com inteligência bíblica.
+                            O Verbo Cast foi criado para servir o ministério, respeitar o chamado e facilitar o preparo da Palavra. Clique no botão abaixo, escolha seu plano e comece hoje mesmo.
                         </p>
                         <div className="relative z-10">
-                            <Link to="/register" className="px-10 py-5 bg-white text-blue-600 font-bold rounded-2xl hover:bg-blue-50 transition-all shadow-xl inline-flex items-center gap-2">
-                                Criar Conta Agora <ArrowRight className="w-5 h-5" />
-                            </Link>
+                            <button onClick={() => scrollToSection('planos')} className="px-10 py-5 bg-green-600 text-white font-bold rounded-2xl hover:bg-green-700 transition-all shadow-xl inline-flex items-center gap-2">
+                                Começar com o Verbo Cast agora <ArrowRight className="w-5 h-5" />
+                            </button>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Footer */}
-            <footer className="py-12 border-t border-slate-100 dark:border-slate-800">
+            <footer className="py-12 bg-white dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800">
                 <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
                     <Logo className="h-8" />
-                    <p className="text-slate-500 text-xs">© 2026 VerboCast AI. Preparando corações para a mensagem bíblica.</p>
+                    <p className="text-slate-500 text-xs">© 2026 Verbo Cast AI. Preparando corações para a mensagem bíblica.</p>
                     <div className="flex gap-6 text-slate-500 text-xs font-medium uppercase tracking-widest">
                         <a href="#" className="hover:text-blue-600 transition-colors">Privacidade</a>
                         <a href="#" className="hover:text-blue-600 transition-colors">Termos</a>
