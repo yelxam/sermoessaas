@@ -9,6 +9,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// JSON Error Handling Middleware
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        console.error('BAD_JSON_ERROR:', err.message);
+        return res.status(400).json({
+            msg: 'Invalid JSON format in request body',
+            error: err.message
+        });
+    }
+    next();
+});
+
 // Models (Import to register with sequelize)
 require('./src/models/Plan');
 require('./src/models/Company');
