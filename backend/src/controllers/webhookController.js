@@ -24,13 +24,28 @@ exports.handleKiwifyWebhook = async (req, res) => {
             // check documentation if this specific check fails.
         }
 
-        // 2. Check Order Status
-        // Kiwify statuses: paid, approved, refused, refunded, etc.
-        const { order_status, customer_name, customer_email, product_name, plan_name } = payload;
+        // 2. Extrair dados com suporte a diferentes formatos (Legado vs Nesting)
+        const order_status = payload.order_status || payload.status || (payload.Order && payload.Order.status);
+        const customer_name = payload.customer_name || (payload.Customer && payload.Customer.full_name);
+        const customer_email = payload.customer_email || (payload.Customer && payload.Customer.email);
+        const product_name = payload.product_name || (payload.Product && payload.Product.product_name);
+        const plan_name = payload.plan_name || (payload.Product && payload.Product.plan_name);
 
-        if (order_status !== 'paid' && order_status !== 'approved') {
-            console.log(`Order not approved: ${order_status}. Skipping.`);
-            return res.status(200).json({ msg: 'Webhook received but ignored due to status' });
+        // Kiwify statuses: paid, approved, completed, etc.
+        const validStatuses = ['paid', 'approved', 'completed'];
+
+        if (!validStatuses.includes(order_status)) {
+            console.log(`Order status not valid for action: ${order_status}. Skipping.`);
+            return res.status(200).json({
+                msg: 'Webhook ignored due to status',
+                status_received: order_status,
+                tip: 'Apenas status "paid" ou "approved" criam contas.'
+            });
+        }
+
+        if (!customer_email) {
+            console.error('MISSING CUSTOMER EMAIL in payload');
+            return res.status(400).json({ msg: 'Customer email is required' });
         }
 
         // 3. Find Plan
