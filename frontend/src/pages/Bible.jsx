@@ -115,7 +115,10 @@ export default function Bible() {
                 .filter(c => c.type === 'verse')
                 .map(v => ({
                     number: v.number,
-                    text: v.content.map(textObj => typeof textObj === 'string' ? textObj : textObj.content).join('')
+                    text: v.content.map(textObj => {
+                        if (typeof textObj === 'string') return textObj;
+                        return textObj.text || textObj.content || '';
+                    }).join('')
                 }));
 
             setVerses(mappedVerses);
