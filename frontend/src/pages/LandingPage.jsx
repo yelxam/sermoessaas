@@ -38,6 +38,13 @@ const LandingPage = () => {
         fetchPlans();
     }, []);
 
+    const getCheckoutUrl = (planName, index) => {
+        const name = planName?.toLowerCase() || '';
+        if (name.includes('enterprise') || index === 2) return 'https://pay.kiwify.com.br/AKaukS4';
+        if (name.includes('pro') || index === 1) return 'https://pay.kiwify.com.br/RjHvRsU';
+        return 'https://pay.kiwify.com.br/O3NseBN'; // Default to Básico
+    };
+
     const scrollToSection = (id) => {
         const element = document.getElementById(id);
         if (element) {
@@ -339,7 +346,7 @@ const LandingPage = () => {
                                     </ul>
 
                                     <a
-                                        href={plan.checkout_url || `https://pay.kiwify.com.br/O3NseBN`}
+                                        href={getCheckoutUrl(plan.name, idx)}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={`w-full py-4 rounded-xl font-bold text-center transition-all ${idx === 1
