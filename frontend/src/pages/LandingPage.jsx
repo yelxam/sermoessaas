@@ -27,9 +27,9 @@ const LandingPage = () => {
             } catch (err) {
                 console.error("Erro ao carregar planos", err);
                 setPlans([
-                    { id: 'f1', name: 'Plano Básico', price: 67.90, max_sermons: 15, allow_ai: false, description: 'Ideal para quem quer organização e praticidade.', checkout_url: 'https://pay.kiwify.com.br/O3NseBN' },
-                    { id: 'f2', name: 'Plano Pro', price: 147.90, max_sermons: 40, allow_ai: true, description: 'Perfeito para quem prepara sermões com frequência.', checkout_url: 'https://pay.kiwify.com.br/RjHvRsU' },
-                    { id: 'f3', name: 'Plano Enterprise', price: 247.00, max_sermons: -1, allow_ai: true, description: 'Para quem leva o preparo do púlpito a sério.', checkout_url: 'https://pay.kiwify.com.br/AKaukS4' }
+                    { id: 'f1', name: 'Plano Básico', price: 67.90, max_sermons: 15, allow_ai: false, description: 'Ideal para organização e praticidade. 15 sermões por mês.', checkout_url: 'https://pay.kiwify.com.br/O3NseBN' },
+                    { id: 'f2', name: 'Plano Pro', price: 147.90, max_sermons: 40, allow_ai: true, description: 'Perfeito para sermões frequentes com IA. 40 sermões por mês.', checkout_url: 'https://pay.kiwify.com.br/RjHvRsU' },
+                    { id: 'f3', name: 'Plano Enterprise', price: 247.00, max_sermons: -1, allow_ai: true, description: 'Para púlpito sério. Sermões ILIMITADOS e IA.', checkout_url: 'https://pay.kiwify.com.br/AKaukS4' }
                 ]);
             } finally {
                 setLoading(false);
@@ -305,8 +305,18 @@ const LandingPage = () => {
                                     <ul className="space-y-4 mb-8 flex-1 border-t border-slate-100 dark:border-slate-800 pt-6">
                                         <li className="flex items-start gap-3 text-sm">
                                             <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span className="text-slate-700 dark:text-slate-300 font-medium">
-                                                {plan.id === 'f1' ? 'Organização total para o preparo do sermão' : plan.id === 'f2' ? 'Mais tempo, mais clareza e apoio inteligente' : 'Liberdade total para preparar sermões com excelência'}
+                                            <span className="text-slate-700 dark:text-slate-300 font-bold">
+                                                {plan.max_sermons === -1 ? 'Sermões ILIMITADOS' : `${plan.max_sermons} sermões por mês`}
+                                            </span>
+                                        </li>
+                                        <li className="flex items-start gap-3 text-sm">
+                                            {plan.allow_ai ? (
+                                                <Check className="w-5 h-5 text-blue-500 flex-shrink-0" />
+                                            ) : (
+                                                <X className="w-5 h-5 text-red-500 flex-shrink-0" />
+                                            )}
+                                            <span className={`font-bold ${plan.allow_ai ? 'text-blue-600' : 'text-slate-400 line-through'}`}>
+                                                {plan.allow_ai ? 'Inteligência Artificial inclusa' : 'Sem Inteligência Artificial'}
                                             </span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm">
@@ -318,25 +328,13 @@ const LandingPage = () => {
                                         <li className="flex items-start gap-3 text-sm">
                                             <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
                                             <span className="text-slate-700 dark:text-slate-300">
-                                                {plan.id === 'f3' ? 'IA ILIMITADA' : plan.id === 'f2' ? 'IA para criação de sermões (uso limitado)' : 'Biblioteca pessoal'}
+                                                {plan.id === 'f1' ? 'Salvar sermões em PDF' : 'Esboços bíblicos e estudos'}
                                             </span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm">
                                             <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
                                             <span className="text-slate-700 dark:text-slate-300">
-                                                {plan.id === 'f1' ? 'Salvar sermões em PDF' : 'Esboços bíblicos'}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm">
-                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span className="text-slate-700 dark:text-slate-300">
-                                                {plan.id === 'f3' ? 'Ideal para séries de mensagens' : 'Organização de ideias'}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm">
-                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span className="text-slate-700 dark:text-slate-300">
-                                                {plan.id === 'f3' ? 'Bíblia Online completa integrada' : 'Bíblia Online integrada'}
+                                                {plan.id === 'f3' ? 'Bíblia Online COMPLETA' : 'Bíblia Online integrada'}
                                             </span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm">
