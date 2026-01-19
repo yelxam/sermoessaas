@@ -60,7 +60,6 @@ const LandingPage = () => {
                     <Logo className="h-20" />
 
                     <div className="hidden md:flex items-center gap-8 text-slate-600 dark:text-slate-300 font-medium text-sm">
-                        <button onClick={() => scrollToSection('problema')} className="hover:text-blue-600 transition-colors">Dores</button>
                         <button onClick={() => scrollToSection('solucao')} className="hover:text-blue-600 transition-colors">O Sistema</button>
                         <button onClick={() => scrollToSection('planos')} className="hover:text-blue-600 transition-colors">Planos</button>
                         <button onClick={() => scrollToSection('depoimentos')} className="hover:text-blue-600 transition-colors">Depoimentos</button>
