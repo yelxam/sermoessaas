@@ -36,7 +36,8 @@ export default function SermonDetail() {
                 setSermon(res.data);
                 setEditForm({
                     theme: res.data.theme || '',
-                    content: res.data.content || ''
+                    content: res.data.content || '',
+                    related_verses: res.data.related_verses || ''
                 });
                 setTranslatedContent(null);
             } catch (err) {
@@ -214,8 +215,33 @@ export default function SermonDetail() {
                                         <p>Traduzindo sermão... / Translating...</p>
                                     </div>
                                 ) : (
-                                    <div className="prose prose-blue max-w-none text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line text-lg">
-                                        {translatedContent || sermon.content}
+                                    <div className="space-y-12">
+                                        <div className="prose prose-blue max-w-none text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line text-lg">
+                                            {translatedContent || sermon.content}
+                                        </div>
+
+                                        {(sermon.related_verses || isEditing) && (
+                                            <div className="mt-12 pt-8 border-t dark:border-slate-800">
+                                                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                                                    <span className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center text-sm">📖</span>
+                                                    Referências Relacionadas
+                                                </h3>
+                                                {isEditing ? (
+                                                    <textarea
+                                                        className="w-full min-h-[150px] p-4 bg-slate-50 dark:bg-slate-950 border dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-blue-500/20 outline-none transition-all dark:text-gray-300 leading-relaxed"
+                                                        value={editForm.related_verses}
+                                                        onChange={(e) => setEditForm({ ...editForm, related_verses: e.target.value })}
+                                                        placeholder="Liste outras referências bíblicas relacionadas ao tema..."
+                                                    />
+                                                ) : (
+                                                    <div className="bg-slate-50 dark:bg-slate-800/30 rounded-2xl p-6 border dark:border-slate-800/50">
+                                                        <div className="prose prose-blue max-w-none text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-line italic">
+                                                            {sermon.related_verses}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>

@@ -115,35 +115,48 @@ Required Structure:
 3. Biblical Context and Exegesis of the specific selection (${passageReference})
 4. Development (3 main points derived from the text)
 5. Practical Application
-6. Conclusion (with appeal or challenge)`;
+7. Conclusion (with appeal or challenge)
+8. RELATED_VERSES: List at least 5 other biblical references (Book Chapter:Verse) where this theme is cited, with a very brief explanation (1 sentence) for each.
+
+IMPORTANT: End the sermon content and start the related verses section with the exact tag: [RELATED_VERSES_START]`;
 
         const { type, client } = getAIClient(user.Company);
         console.log(`Using AI Client: ${type}`);
 
-        let content = "";
+        let rawContent = "";
 
         if (type === 'groq') {
             console.log('Calling Groq API...');
             const completion = await client.chat.completions.create({
                 messages: [
-                    { role: "system", content: "You are a helpful assistant that writes sermons." },
+                    { role: "system", content: "You are a helpful assistant that writes sermons. Always follow the language requirement." },
                     { role: "user", content: systemInstruction }
                 ],
                 model: "llama-3.3-70b-versatile",
             });
-            content = completion.choices[0].message.content;
+            rawContent = completion.choices[0].message.content;
         } else {
             console.log('Calling OpenAI API...');
             const completion = await client.chat.completions.create({
                 messages: [
-                    { role: "system", content: "You are a helpful assistant that writes sermons." },
+                    { role: "system", content: "You are a helpful assistant that writes sermons. Always follow the language requirement." },
                     { role: "user", content: systemInstruction }
                 ],
                 model: "gpt-4o",
             });
-            content = completion.choices[0].message.content;
+            rawContent = completion.choices[0].message.content;
         }
         console.log('AI Response received');
+
+        // Split content and related verses
+        let content = rawContent;
+        let related_verses = "";
+
+        if (rawContent.includes('[RELATED_VERSES_START]')) {
+            const parts = rawContent.split('[RELATED_VERSES_START]');
+            content = parts[0].trim();
+            related_verses = parts[1].trim();
+        }
 
         const newSermon = await Sermon.create({
             user_id: req.user.id,
@@ -156,7 +169,8 @@ Required Structure:
             duration,
             tone,
             language: language || 'pt-BR',
-            content
+            content,
+            related_verses
         });
 
         // Fetch with User info for immediate UI update

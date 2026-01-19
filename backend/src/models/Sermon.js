@@ -60,6 +60,10 @@ const Sermon = sequelize.define('Sermon', {
         type: DataTypes.TEXT('long'), // Long text for the sermon content
         allowNull: false,
     },
+    related_verses: {
+        type: DataTypes.TEXT, // Store cross-references where the theme is cited
+        allowNull: true,
+    },
 }, {
     timestamps: true,
     createdAt: 'created_at',
