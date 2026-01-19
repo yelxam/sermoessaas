@@ -68,6 +68,13 @@ export default function Bible() {
         setLoading(true);
         setError(null);
         try {
+            // Priority 1: Use local data for PT to ensure all 66 books are present
+            if (version.startsWith('por') && BIBLE_BOOKS_PT.length > 0) {
+                setBooks(BIBLE_BOOKS_PT);
+                setLoading(false);
+                return;
+            }
+
             const res = await axios.get(`https://bible.helloao.org/api/${version}/books.json`);
             if (res.data && res.data.books) {
                 // Better testament logic based on standard list
@@ -82,7 +89,7 @@ export default function Bible() {
 
                 setBooks(finalizedBooks);
             } else {
-                setBooks([]);
+                setBooks(version.startsWith('por') ? BIBLE_BOOKS_PT : []);
             }
         } catch (err) {
             console.error("Erro ao carregar livros", err);
