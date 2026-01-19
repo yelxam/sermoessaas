@@ -7,9 +7,12 @@ import { useLanguage } from '../contexts/LanguageContext';
 export default function Team() {
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'member' });
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'member', sermon_limit: '' });
     const currentUser = JSON.parse(localStorage.getItem('user'));
     const { t } = useLanguage();
+
+    const canManageTeam = currentUser?.role === 'owner' || currentUser?.role === 'admin';
 
     useEffect(() => {
         fetchUsers();
@@ -27,13 +30,45 @@ export default function Team() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await api.post('/users', formData);
-            setShowModal(false);
-            setFormData({ name: '', email: '', password: '', role: 'member' });
+            if (selectedUser) {
+                await api.put(`/users/${selectedUser.id}`, formData);
+            } else {
+                await api.post('/users', formData);
+            }
+            handleCloseModal();
             fetchUsers();
         } catch (err) {
-            alert(err.response?.data?.msg || 'Erro ao criar usuário');
+            alert(err.response?.data?.msg || 'Erro ao processar usuário');
         }
+    };
+
+    const handleEdit = (user) => {
+        setSelectedUser(user);
+        setFormData({
+            name: user.name,
+            email: user.email,
+            password: '', // Reset password field for security
+            role: user.role,
+            sermon_limit: user.sermon_limit || ''
+        });
+        setShowModal(true);
+    };
+
+    const handleDelete = async (id) => {
+        if (window.confirm('Tem certeza que deseja remover este membro da equipe?')) {
+            try {
+                await api.delete(`/users/${id}`);
+                fetchUsers();
+            } catch (err) {
+                alert(err.response?.data?.msg || 'Erro ao excluir usuário');
+            }
+        }
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedUser(null);
+        setFormData({ name: '', email: '', password: '', role: 'member', sermon_limit: '' });
     };
 
     return (
@@ -64,6 +99,9 @@ export default function Team() {
                                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t.team.email}</th>
                                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t.team.role}</th>
                                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t.team.joined}</th>
+                                    {canManageTeam && (
+                                        <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Ações</th>
+                                    )}
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100 dark:divide-slate-800">
@@ -94,6 +132,14 @@ export default function Team() {
                                         <td className="px-6 py-4 text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap">
                                             {new Date(user.created_at).toLocaleDateString()}
                                         </td>
+                                        {canManageTeam && (
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <button onClick={() => handleEdit(user)} className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-4">Editar</button>
+                                                {user.id !== currentUser.id && (
+                                                    <button onClick={() => handleDelete(user.id)} className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Excluir</button>
+                                                )}
+                                            </td>
+                                        )}
                                     </tr>
                                 ))}
                             </tbody>
@@ -104,8 +150,8 @@ export default function Team() {
                 {/* Modal */}
                 {showModal && (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-                        <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-2xl w-full max-w-md animate-in fade-in zoom-in duration-200 border dark:border-slate-800">
-                            <h2 className="text-2xl font-bold mb-6 dark:text-gray-100">{t.team.modalTitle}</h2>
+                        <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-2xl w-full max-w-md animate-in fade-in zoom-in duration-200 border dark:border-slate-800 h-[80vh] overflow-y-auto">
+                            <h2 className="text-2xl font-bold mb-6 dark:text-gray-100">{selectedUser ? 'Editar Membro' : t.team.modalTitle}</h2>
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
                                     <label className="label-text">{t.team.name}</label>
@@ -116,14 +162,28 @@ export default function Team() {
                                     <input required type="email" className="input-field" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
                                 </div>
                                 <div>
-                                    <label className="label-text">{t.team.provisionalPassword}</label>
-                                    <input required type="password" className="input-field" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} />
+                                    <label className="label-text">
+                                        {selectedUser ? 'Nova Senha (deixe vazio para manter)' : t.team.provisionalPassword}
+                                    </label>
+                                    <input
+                                        required={!selectedUser}
+                                        type="password"
+                                        className="input-field"
+                                        value={formData.password}
+                                        onChange={e => setFormData({ ...formData, password: e.target.value })}
+                                    />
                                 </div>
                                 <div>
                                     <label className="label-text">{t.team.role}</label>
-                                    <select className="input-field bg-white dark:bg-slate-900" value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })}>
+                                    <select
+                                        className="input-field bg-white dark:bg-slate-900"
+                                        value={formData.role}
+                                        onChange={e => setFormData({ ...formData, role: e.target.value })}
+                                        disabled={selectedUser?.role === 'owner'}
+                                    >
                                         <option value="member">{t.team.roles.member}</option>
                                         <option value="admin">{t.team.roles.admin}</option>
+                                        {selectedUser?.role === 'owner' && <option value="owner">{t.team.roles.owner}</option>}
                                     </select>
                                 </div>
                                 <div>
@@ -138,7 +198,7 @@ export default function Team() {
                                     <span className="text-xs text-gray-500 dark:text-gray-400">Use -1 para ilimitado (se o plano permitir).</span>
                                 </div>
                                 <div className="flex space-x-3 pt-4">
-                                    <button type="button" onClick={() => setShowModal(false)} className="flex-1 btn-secondary">{t.team.cancel}</button>
+                                    <button type="button" onClick={handleCloseModal} className="flex-1 btn-secondary">{t.team.cancel}</button>
                                     <button type="submit" className="flex-1 btn-primary">{t.team.save}</button>
                                 </div>
                             </form>
