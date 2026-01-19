@@ -27,9 +27,9 @@ const LandingPage = () => {
             } catch (err) {
                 console.error("Erro ao carregar planos", err);
                 setPlans([
-                    { id: 'f1', name: 'Plano Essencial', price: 67.90, max_sermons: 15, allow_ai: false, description: 'Ideal para quem quer organização e praticidade.' },
-                    { id: 'f2', name: 'Plano Avançado', price: 147.90, max_sermons: 40, allow_ai: true, description: 'Perfeito para quem prepara sermões com frequência.' },
-                    { id: 'f3', name: 'Plano Pro', price: 247.00, max_sermons: -1, allow_ai: true, description: 'Para quem leva o preparo do púlpito a sério.' }
+                    { id: 'f1', name: 'Plano Básico', price: 67.90, max_sermons: 15, allow_ai: false, description: 'Ideal para quem quer organização e praticidade.', checkout_url: 'https://pay.kiwify.com.br/O3NseBN' },
+                    { id: 'f2', name: 'Plano Pro', price: 147.90, max_sermons: 40, allow_ai: true, description: 'Perfeito para quem prepara sermões com frequência.', checkout_url: 'https://pay.kiwify.com.br/RjHvRsU' },
+                    { id: 'f3', name: 'Plano Enterprise', price: 247.00, max_sermons: -1, allow_ai: true, description: 'Para quem leva o preparo do púlpito a sério.', checkout_url: 'https://pay.kiwify.com.br/AKaukS4' }
                 ]);
             } finally {
                 setLoading(false);
@@ -63,9 +63,9 @@ const LandingPage = () => {
                         <Link to="/login" className="px-4 py-2 text-blue-600 font-semibold text-sm hover:bg-blue-50 dark:hover:bg-slate-900 rounded-lg transition-all">
                             Entrar
                         </Link>
-                        <Link to="/register" className="btn-primary !px-4 !py-2 !text-sm">
+                        <button onClick={() => scrollToSection('planos')} className="btn-primary !px-4 !py-2 !text-sm">
                             Criar Conta
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </nav>
@@ -338,15 +338,17 @@ const LandingPage = () => {
                                         </li>
                                     </ul>
 
-                                    <Link
-                                        to={`/register?plan=${plan.id}`}
+                                    <a
+                                        href={plan.checkout_url || `https://pay.kiwify.com.br/O3NseBN`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         className={`w-full py-4 rounded-xl font-bold text-center transition-all ${idx === 1
                                             ? 'bg-yellow-500 text-white hover:bg-yellow-600 shadow-xl'
                                             : idx === 2 ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-green-600 text-white hover:bg-green-700'
                                             }`}
                                     >
                                         Quero o {plan.name}
-                                    </Link>
+                                    </a>
                                 </div>
                             ))}
                         </div>
