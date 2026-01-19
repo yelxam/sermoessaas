@@ -39,6 +39,8 @@ export default function CreateSermon() {
         audience: 'General',
         duration: '30 min',
         tone: 'Expository',
+        church_name: '',
+        event_date: new Date().toISOString().split('T')[0], // Default to today
     });
 
     const handleChange = (e) => {
@@ -281,6 +283,27 @@ export default function CreateSermon() {
                                         <option value="60 min">1 hora</option>
                                         <option value="Ilimitada">Ilimitada</option>
                                     </select>
+                                </div>
+                                <div className="md:col-span-1">
+                                    <label className="label-text">Nome da Igreja / Evento</label>
+                                    <input
+                                        type="text"
+                                        name="church_name"
+                                        placeholder="Ex: Igreja Central"
+                                        className="input-field"
+                                        value={formData.church_name}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="md:col-span-1">
+                                    <label className="label-text">Data do Sermão (Opcional)</label>
+                                    <input
+                                        type="date"
+                                        name="event_date"
+                                        className="input-field"
+                                        value={formData.event_date}
+                                        onChange={handleChange}
+                                    />
                                 </div>
                             </div>
 

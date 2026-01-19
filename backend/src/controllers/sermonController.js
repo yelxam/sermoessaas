@@ -26,7 +26,7 @@ const getAIClient = (company) => {
 };
 
 exports.generateSermon = async (req, res) => {
-    const { book, chapter, verses, theme, audience, duration, tone, language } = req.body;
+    const { book, chapter, verses, theme, audience, duration, tone, language, church_name, event_date } = req.body;
 
     try {
         console.log('Generating sermon with params:', { book, chapter, verses, language });
@@ -170,7 +170,9 @@ IMPORTANT: End the sermon content and start the related verses section with the 
             tone,
             language: language || 'pt-BR',
             content,
-            related_verses
+            related_verses,
+            church_name,
+            event_date
         });
 
         // Fetch with User info for immediate UI update
@@ -273,7 +275,7 @@ exports.translateSermon = async (req, res) => {
 
 exports.createSermon = async (req, res) => {
     try {
-        const { theme, content, audience, tone, duration } = req.body;
+        const { theme, content, audience, tone, duration, church_name, event_date } = req.body;
 
         // 1. Check Plan Limits
         const user = await User.findByPk(req.user.id, {
@@ -324,6 +326,8 @@ exports.createSermon = async (req, res) => {
             audience,
             tone,
             duration,
+            church_name,
+            event_date,
             user_id: req.user.id,
             company_id: req.user.company_id
         });
@@ -343,7 +347,7 @@ exports.createSermon = async (req, res) => {
 exports.updateSermon = async (req, res) => {
     try {
         const { id } = req.params;
-        const { theme, content, audience, tone, duration } = req.body;
+        const { theme, content, audience, tone, duration, church_name, event_date } = req.body;
 
         const sermon = await Sermon.findOne({ where: { id, user_id: req.user.id } });
         if (!sermon) return res.status(404).json({ msg: 'Sermon not found' });
@@ -353,7 +357,9 @@ exports.updateSermon = async (req, res) => {
             content,
             audience,
             tone,
-            duration
+            duration,
+            church_name,
+            event_date
         });
 
         res.json(sermon);

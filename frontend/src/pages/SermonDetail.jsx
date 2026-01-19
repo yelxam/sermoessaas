@@ -37,7 +37,9 @@ export default function SermonDetail() {
                 setEditForm({
                     theme: res.data.theme || '',
                     content: res.data.content || '',
-                    related_verses: res.data.related_verses || ''
+                    related_verses: res.data.related_verses || '',
+                    church_name: res.data.church_name || '',
+                    event_date: res.data.event_date || ''
                 });
                 setTranslatedContent(null);
             } catch (err) {
@@ -177,15 +179,38 @@ export default function SermonDetail() {
                                         {(sermon.book && sermon.chapter) && (
                                             <p className="text-blue-100 text-lg">{sermon.book} {sermon.chapter}:{sermon.verses}</p>
                                         )}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                            <input
+                                                type="text"
+                                                className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/30"
+                                                value={editForm.church_name}
+                                                onChange={(e) => setEditForm({ ...editForm, church_name: e.target.value })}
+                                                placeholder="Nome da Igreja"
+                                            />
+                                            <input
+                                                type="date"
+                                                className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/30"
+                                                value={editForm.event_date}
+                                                onChange={(e) => setEditForm({ ...editForm, event_date: e.target.value })}
+                                            />
+                                        </div>
                                     </div>
                                 ) : (
                                     <div className="flex justify-between items-start">
                                         <div>
                                             <span className="bg-white/20 text-blue-50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide print:hidden">{sermon.language}</span>
                                             <h1 className="text-3xl font-bold mt-4 mb-2">{sermon.theme || t.sermonDetail.untitled}</h1>
-                                            {(sermon.book && sermon.chapter) && (
-                                                <p className="text-blue-100 text-lg print:text-gray-600">{sermon.book} {sermon.chapter}:{sermon.verses}</p>
-                                            )}
+                                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-blue-100 text-lg mb-2">
+                                                {(sermon.book && sermon.chapter) && (
+                                                    <span>{sermon.book} {sermon.chapter}:{sermon.verses}</span>
+                                                )}
+                                                {sermon.event_date && (
+                                                    <span className="flex items-center gap-1.5 text-sm bg-white/10 px-2 py-0.5 rounded">📅 {new Date(sermon.event_date).toLocaleDateString('pt-BR')}</span>
+                                                )}
+                                                {sermon.church_name && (
+                                                    <span className="flex items-center gap-1.5 text-sm bg-white/10 px-2 py-0.5 rounded">⛪ {sermon.church_name}</span>
+                                                )}
+                                            </div>
                                         </div>
                                         <div className="text-right text-blue-200 text-sm print:hidden">
                                             <p>{t.sermonDetail.audience}: {sermon.audience}</p>

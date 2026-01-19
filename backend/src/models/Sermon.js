@@ -64,6 +64,14 @@ const Sermon = sequelize.define('Sermon', {
         type: DataTypes.TEXT, // Store cross-references where the theme is cited
         allowNull: true,
     },
+    church_name: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    event_date: {
+        type: DataTypes.DATEONLY,
+        allowNull: true,
+    },
 }, {
     timestamps: true,
     createdAt: 'created_at',

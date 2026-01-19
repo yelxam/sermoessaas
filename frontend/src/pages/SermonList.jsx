@@ -68,11 +68,16 @@ export default function SermonList() {
 
                                 <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition">{sermon.theme || t.sermonList.untitled}</h3>
 
-                                <div className="flex items-center text-gray-400 dark:text-gray-500 text-xs mb-4">
+                                <div className="flex flex-wrap items-center text-gray-400 dark:text-gray-500 text-xs mb-4 gap-y-2">
                                     <div className="flex items-center mr-3">
                                         <Calendar className="w-3 h-3 mr-1" />
-                                        {new Date(sermon.created_at).toLocaleDateString()}
+                                        {new Date(sermon.event_date || sermon.created_at).toLocaleDateString()}
                                     </div>
+                                    {sermon.church_name && (
+                                        <div className="flex items-center mr-3 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-[10px]">
+                                            ⛪ {sermon.church_name}
+                                        </div>
+                                    )}
                                     {sermon.User && (
                                         <div className="flex items-center text-blue-500/70 dark:text-blue-400/70 font-medium">
                                             <User className="w-3 h-3 mr-1" />
