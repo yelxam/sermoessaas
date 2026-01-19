@@ -176,7 +176,7 @@ export default function CreateSermon() {
                                             <input
                                                 name="chapter"
                                                 required={creationMode === 'ai'}
-                                                type="number"
+                                                type="text"
                                                 placeholder="3"
                                                 className="input-field"
                                                 value={formData.chapter}
@@ -187,14 +187,17 @@ export default function CreateSermon() {
                                             <label className="label-text">{t.createSermon.verses}</label>
                                             <input
                                                 name="verses"
-                                                required={creationMode === 'ai'}
-                                                placeholder="16"
+                                                required={false}
+                                                placeholder="Ex: 1-8 ou 'Todo'"
                                                 className="input-field"
                                                 value={formData.verses}
                                                 onChange={handleChange}
                                             />
                                         </div>
                                     </div>
+                                    <p className="text-[11px] text-blue-600 dark:text-blue-400 font-medium mt-[-1rem]">
+                                        ✨ Dica: Deixe os <b>versículos</b> em branco para usar o capítulo todo, ou use um intervalo como <b>1-12</b>.
+                                    </p>
 
                                     <div>
                                         <label className="label-text">{t.createSermon.theme}</label>
@@ -262,6 +265,21 @@ export default function CreateSermon() {
                                         {Object.keys(t.createSermon.tones).map(key => (
                                             <option key={key} value={key}>{t.createSermon.tones[key]}</option>
                                         ))}
+                                    </select>
+                                </div>
+                                <div className="md:col-span-2">
+                                    <label className="label-text">Duração estimada</label>
+                                    <select
+                                        name="duration"
+                                        className="input-field bg-white dark:bg-slate-900"
+                                        onChange={handleChange}
+                                        value={formData.duration}
+                                    >
+                                        <option value="15 min">15 minutos</option>
+                                        <option value="30 min">30 minutos</option>
+                                        <option value="45 min">45 minutos</option>
+                                        <option value="60 min">1 hora</option>
+                                        <option value="Ilimitada">Ilimitada</option>
                                     </select>
                                 </div>
                             </div>

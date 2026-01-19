@@ -87,14 +87,22 @@ exports.generateSermon = async (req, res) => {
             });
         }
 
-        // 3. Generate Sermon
+        // 3. Prepare the reference string
+        let passageReference = `${book} ${chapter}`;
+        if (verses && verses.toLowerCase() !== 'all' && verses.toLowerCase() !== 'todo' && verses.trim() !== '') {
+            passageReference += `:${verses}`;
+        } else {
+            passageReference += ` (Todo o capítulo)`;
+        }
+
+        // 4. Generate Sermon
         const systemInstruction = `You are an experienced Christian theologian, faithful to the Scriptures.
-Your task is to generate a complete Christian sermon based EXCLUSIVELY on the provided passage.
+Your task is to generate a complete Christian sermon based EXCLUSIVELY on the provided passage selection.
 
 IMPORTANT: The ENTIRE SECTION of your response (the sermon itself) MUST BE WRITTEN IN THE FOLLOWING LANGUAGE: ${language || 'Portuguese'}.
 Do not write in English unless the requested language is English.
 
-Passage: ${book} ${chapter}:${verses}
+Passage Selection: ${passageReference}
 Theme: ${theme || 'General'}
 Target Audience: ${audience || 'General'}
 Estimated Duration: ${duration || '30 min'}
@@ -104,8 +112,8 @@ Output Language: ${language || 'Portuguese'}
 Required Structure:
 1. Creative Title
 2. Introduction (with a daily life hook)
-3. Biblical Context (simple exegesis)
-4. Development (3 main points)
+3. Biblical Context and Exegesis of the specific selection (${passageReference})
+4. Development (3 main points derived from the text)
 5. Practical Application
 6. Conclusion (with appeal or challenge)`;
 
