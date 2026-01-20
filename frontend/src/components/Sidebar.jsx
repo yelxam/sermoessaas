@@ -29,7 +29,9 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
         navItems.push({ path: '/organization', label: t.organization?.settings || 'Configs', icon: Settings });
     }
 
-    if (user.email === 'admin@sermon.ai') {
+    const superAdmins = ['admin@sermon.ai', 'eliel@verbocast.com.br'];
+
+    if (superAdmins.includes(user.email)) {
         navItems.push({ path: '/admin', label: t.dashboard.adminTitle.split(' ')[0], icon: ShieldAlert });
         navItems.push({ path: '/admin/requests', label: 'Solicitações', icon: AlertCircle });
         navItems.push({ path: '/plans', label: t.plans.title, icon: CreditCard });

@@ -54,33 +54,47 @@ exports.updateMyPlan = async (req, res) => {
 
         await company.update({ requested_plan_id: plan.id });
 
-        // Notify Admin/Finance for approval
+        // 1. Notify Admin/Finance (Internal)
         try {
             await sendEmail({
-                email: process.env.SMTP_USER, // Sending to support/admin email
+                email: process.env.SMTP_USER,
                 subject: `[Aprovação] Solicitação de Troca de Plano - ${company.name}`,
                 message: `
                     <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
                         <h2 style="color: #2563eb;">Nova Solicitação de Plano</h2>
                         <p>A organização <strong>${company.name}</strong> solicitou a troca de plano.</p>
-                        <hr style="border: 1px solid #eee; margin: 20px 0;">
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="margin-bottom: 10px;">🏢 <strong>Empresa:</strong> ${company.name} (ID: ${company.id})</li>
-                            <li style="margin-bottom: 10px;">👤 <strong>Solicitante:</strong> ${req.user.email} (ID: ${req.user.id})</li>
-                            <li style="margin-bottom: 10px;">📉 <strong>Plano Atual:</strong> ${oldPlanName}</li>
-                            <li style="margin-bottom: 10px;">📈 <strong>Plano Solicitado:</strong> ${plan.name}</li>
-                            <li style="margin-bottom: 10px;">💰 <strong>Novo Valor:</strong> R$ ${plan.price}</li>
-                            <li style="margin-bottom: 10px;">📅 <strong>Data:</strong> ${new Date().toLocaleString('pt-BR')}</li>
+                        <ul>
+                            <li><strong>Empresa:</strong> ${company.name} (ID: ${company.id})</li>
+                            <li><strong>Solicitante:</strong> ${req.user.email}</li>
+                            <li><strong>De:</strong> ${oldPlanName} <strong>Para:</strong> ${plan.name}</li>
+                             <li><strong>Novo Valor:</strong> R$ ${plan.price}</li>
                         </ul>
-                        <hr style="border: 1px solid #eee; margin: 20px 0;">
-                        <p style="background-color: #f0f9ff; padding: 15px; border-radius: 5px; border: 1px solid #bae6fd; color: #0369a1;">
-                            ℹ️ <strong>Ação Necessária:</strong> Acesse o painel administrativo para APROVAR ou REJEITAR esta solicitação. A cobrança deve ser feita após a aprovação.
-                        </p>
+                        <p>Acesse o painel administrativo para aprovar.</p>
                     </div>
                 `
             });
         } catch (emailErr) {
-            console.error('Failed to send plan request notification email:', emailErr);
+            console.error('Failed to send admin notification:', emailErr);
+        }
+
+        // 2. Notify Requester (External)
+        try {
+            await sendEmail({
+                email: req.user.email,
+                subject: `Solicitação de Alteração de Plano Recebida - VerboCast`,
+                message: `
+                    <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+                        <h2 style="color: #10b981;">Solicitação Recebida!</h2>
+                        <p>Olá, ${req.user.name || 'usuário'}.</p>
+                        <p>Recebemos sua solicitação para alterar o plano da <strong>${company.name}</strong> para o plano <strong>${plan.name}</strong>.</p>
+                        <p>Nossa equipe financeira irá analisar a solicitação e processar a alteração em breve. Você receberá um novo email assim que a mudança for aprovada.</p>
+                        <br>
+                        <p>Atenciosamente,<br>Equipe VerboCast</p>
+                    </div>
+                `
+            });
+        } catch (emailErr) {
+            console.error('Failed to send user confirmation:', emailErr);
         }
 
         res.json({ msg: 'Solicitação de troca de plano enviada com sucesso! Aguarde a aprovação do administrador.', pending: true });
@@ -196,10 +210,12 @@ exports.createCompany = async (req, res) => {
 };
 
 // Super Admin approvals
+const isSuperAdmin = (email) => ['admin@sermon.ai', 'eliel@verbocast.com.br'].includes(email);
+
 exports.listPendingRequests = async (req, res) => {
     try {
-        if (req.user.role !== 'owner') { // Usually superadmin is owner of platform or we check email/specific role
-            // For now assume platform owner/admin accesses this
+        if (!isSuperAdmin(req.user.email)) {
+            return res.status(403).json({ msg: 'Not authorized as Super Admin' });
         }
 
         const companies = await Company.findAll({
@@ -229,8 +245,9 @@ exports.listPendingRequests = async (req, res) => {
 
 exports.approvePlanRequest = async (req, res) => {
     try {
-        // Only superadmin
-        // ...
+        if (!isSuperAdmin(req.user.email)) {
+            return res.status(403).json({ msg: 'Not authorized as Super Admin' });
+        }
 
         const company = await Company.findByPk(req.params.id);
         if (!company || !company.requested_plan_id) {
@@ -251,7 +268,36 @@ exports.approvePlanRequest = async (req, res) => {
             requested_plan_id: null
         });
 
-        // Send email to company owner (optional, find user with role owner and company_id)
+        // Send email to company owner
+        try {
+            const User = require('../models/User');
+            const owner = await User.findOne({ where: { company_id: company.id, role: 'owner' } });
+
+            if (owner) {
+                await sendEmail({
+                    email: owner.email,
+                    subject: `Alteração de Plano Aprovada - VerboCast`,
+                    message: `
+                        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+                            <h2 style="color: #10b981;">Plano Atualizado com Sucesso!</h2>
+                            <p>Olá, ${owner.name}.</p>
+                            <p>A alteração do plano da <strong>${company.name}</strong> para <strong>${plan.name}</strong> foi aprovada e já está em vigor!</p>
+                            <p>Agora você conta com:</p>
+                            <ul>
+                                <li>${plan.max_sermons === -1 ? 'Sermões Ilimitados' : `${plan.max_sermons} sermões/mês`}</li>
+                                <li>${plan.max_users === -1 ? 'Usuários Ilimitados' : `${plan.max_users} usuários`}</li>
+                                <li>${plan.max_churches === -1 ? 'Igrejas Ilimitadas' : `${plan.max_churches} igrejas`}</li>
+                            </ul>
+                            <p>Aproveite os novos recursos!</p>
+                            <br>
+                            <p>Atenciosamente,<br>Equipe VerboCast</p>
+                        </div>
+                    `
+                });
+            }
+        } catch (emailErr) {
+            console.error('Failed to send approval email:', emailErr);
+        }
 
         res.json({ msg: 'Plan change approved and applied' });
 
@@ -263,12 +309,40 @@ exports.approvePlanRequest = async (req, res) => {
 
 exports.rejectPlanRequest = async (req, res) => {
     try {
-        // Only superadmin
+        if (!isSuperAdmin(req.user.email)) {
+            return res.status(403).json({ msg: 'Not authorized as Super Admin' });
+        }
 
         const company = await Company.findByPk(req.params.id);
         if (!company) return res.status(404).json({ msg: 'Company not found' });
 
         await company.update({ requested_plan_id: null });
+
+        // Notify Rejection
+        try {
+            const User = require('../models/User');
+            const owner = await User.findOne({ where: { company_id: company.id, role: 'owner' } });
+
+            if (owner) {
+                await sendEmail({
+                    email: owner.email,
+                    subject: `Atualização sobre sua solicitação de plano - VerboCast`,
+                    message: `
+                        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+                            <h2 style="color: #ef4444;">Solicitação não aprovada</h2>
+                            <p>Olá, ${owner.name}.</p>
+                            <p>Infelizmente não foi possível processar sua solicitação de alteração de plano para a organização <strong>${company.name}</strong> neste momento.</p>
+                            <p>Isso pode ter ocorrido por pendências financeiras ou dados cadastrais inconsistentes.</p>
+                            <p>Por favor, entre em contato com nosso suporte para mais detalhes.</p>
+                            <br>
+                            <p>Atenciosamente,<br>Equipe VerboCast</p>
+                        </div>
+                    `
+                });
+            }
+        } catch (emailErr) {
+            console.error('Failed to send rejection email:', emailErr);
+        }
 
         res.json({ msg: 'Plan request rejected' });
 
