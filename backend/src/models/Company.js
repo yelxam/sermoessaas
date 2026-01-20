@@ -40,6 +40,10 @@ const Company = sequelize.define('Company', {
         type: DataTypes.INTEGER,
         defaultValue: 1,
     },
+    max_churches: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
+    },
     sermons_count_month: {
         type: DataTypes.INTEGER,
         defaultValue: 0,

@@ -7,7 +7,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 export default function Plans() {
     const [plans, setPlans] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [form, setForm] = useState({ id: null, name: '', max_sermons: '', max_users: 1, price: '', description: '', allow_ai: true });
+    const [form, setForm] = useState({ id: null, name: '', max_sermons: '', max_users: 1, max_churches: 1, price: '', description: '', allow_ai: true });
     const { t } = useLanguage();
 
     useEffect(() => {
@@ -32,7 +32,7 @@ export default function Plans() {
                 await api.post('/plans', form);
             }
             setShowModal(false);
-            setForm({ id: null, name: '', max_sermons: '', max_users: 1, price: '', description: '', allow_ai: true });
+            setForm({ id: null, name: '', max_sermons: '', max_users: 1, max_churches: 1, price: '', description: '', allow_ai: true });
             fetchPlans();
         } catch (err) {
             alert(t.plans?.saveError || 'Erro ao salvar plano');
@@ -43,6 +43,7 @@ export default function Plans() {
         setForm({
             ...plan,
             max_users: plan.max_users !== undefined ? plan.max_users : 1,
+            max_churches: plan.max_churches !== undefined ? plan.max_churches : 1,
             allow_ai: plan.allow_ai !== undefined ? plan.allow_ai : true
         });
         setShowModal(true);
@@ -67,7 +68,7 @@ export default function Plans() {
                         <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">{t.plans?.title || 'Gerenciar Planos'}</h1>
                         <p className="text-gray-500 dark:text-gray-400 mt-1">{t.plans?.subtitle || 'Configure os planos e limites do sistema.'}</p>
                     </div>
-                    <button onClick={() => { setForm({ id: null, name: '', max_sermons: '', max_users: 1, price: '', description: '', allow_ai: true }); setShowModal(true); }} className="btn-primary flex items-center space-x-2">
+                    <button onClick={() => { setForm({ id: null, name: '', max_sermons: '', max_users: 1, max_churches: 1, price: '', description: '', allow_ai: true }); setShowModal(true); }} className="btn-primary flex items-center space-x-2">
                         <PlusCircle className="w-4 h-4" />
                         <span>{t.plans?.newPlan || 'Novo Plano'}</span>
                     </button>
@@ -100,6 +101,10 @@ export default function Plans() {
                                     <span className="w-4 h-4 flex items-center justify-center mr-2 text-blue-400 font-bold">👥</span>
                                     {plan.max_users === -1 ? 'Usuários Ilimitados' : `${plan.max_users} usuários`}
                                 </div>
+                                <div className="flex items-center text-gray-600 dark:text-gray-300 text-sm">
+                                    <span className="w-4 h-4 flex items-center justify-center mr-2 text-blue-400 font-bold">⛪</span>
+                                    {plan.max_churches === -1 ? 'Igrejas Ilimitadas' : `${plan.max_churches} igrejas`}
+                                </div>
                                 <div className="flex items-center text-sm font-bold">
                                     <div className={`w-2 h-2 rounded-full mr-2 ${plan.allow_ai !== false ? 'bg-green-500' : 'bg-red-500'}`}></div>
                                     <span className={plan.allow_ai !== false ? 'text-green-600' : 'text-red-500'}>
@@ -128,6 +133,10 @@ export default function Plans() {
                                 <div>
                                     <label className="label-text">Limite de Usuários (-1 para ilimitado)</label>
                                     <input required type="number" className="input-field" value={form.max_users} onChange={e => setForm({ ...form, max_users: e.target.value })} />
+                                </div>
+                                <div>
+                                    <label className="label-text">Limite de Igrejas (-1 para ilimitado)</label>
+                                    <input required type="number" className="input-field" value={form.max_churches} onChange={e => setForm({ ...form, max_churches: e.target.value })} />
                                 </div>
                                 <div>
                                     <label className="label-text">{t.plans?.price || 'Preço (R$)'}</label>

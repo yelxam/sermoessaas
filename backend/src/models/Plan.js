@@ -37,6 +37,11 @@ const Plan = sequelize.define('Plan', {
         type: DataTypes.INTEGER,
         defaultValue: 1,
         comment: '-1 for unlimited'
+    },
+    max_churches: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
+        comment: '-1 for unlimited'
     }
 }, {
     timestamps: true,

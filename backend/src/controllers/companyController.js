@@ -51,6 +51,8 @@ exports.updateMyPlan = async (req, res) => {
             {
                 plan: plan.name,
                 max_sermons: plan.max_sermons,
+                max_users: plan.max_users,
+                max_churches: plan.max_churches,
                 allow_ai: plan.allow_ai
             },
             { where: { id: req.user.company_id } }
@@ -141,14 +143,21 @@ exports.createCompany = async (req, res) => {
         const selectedPlan = await Plan.findOne({ where: { name: plan || 'Free' } });
 
         let max_sermons = 3;
+        let max_users = 1;
+        let max_churches = 1;
+
         if (selectedPlan) {
             max_sermons = selectedPlan.max_sermons;
+            max_users = selectedPlan.max_users;
+            max_churches = selectedPlan.max_churches;
         }
 
         const newCompany = await Company.create({
             name,
             plan: plan || 'Free',
-            max_sermons
+            max_sermons,
+            max_users,
+            max_churches,
         });
         res.json(newCompany);
     } catch (err) {
@@ -179,6 +188,8 @@ exports.updateCompany = async (req, res) => {
             const selectedPlan = await Plan.findOne({ where: { name: plan } });
             if (selectedPlan) {
                 updateData.max_sermons = selectedPlan.max_sermons;
+                updateData.max_users = selectedPlan.max_users;
+                updateData.max_churches = selectedPlan.max_churches;
                 updateData.allow_ai = selectedPlan.allow_ai;
             }
         }
@@ -216,6 +227,13 @@ exports.createChurch = async (req, res) => {
         }
 
         const { name, address, pastor_name, phone } = req.body;
+
+        const company = await Company.findByPk(req.user.company_id);
+        const currentChurches = await Church.count({ where: { company_id: req.user.company_id } });
+
+        if (company.max_churches !== -1 && currentChurches >= company.max_churches) {
+            return res.status(403).json({ msg: `Limite de igrejas atingido (${currentChurches}/${company.max_churches}). Atualize seu plano.` });
+        }
 
         const newChurch = await Church.create({
             name,
