@@ -14,6 +14,17 @@ module.exports = async function (req, res, next) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded.user;
 
+        // Fetch full user to ensure we have email and latest role
+        const User = require('../models/User');
+        const userDB = await User.findByPk(req.user.id);
+
+        if (!userDB) {
+            return res.status(401).json({ msg: 'User not found' });
+        }
+
+        // Merge DB user data into req.user (keeping payload data but enhancing it)
+        req.user = { ...req.user, email: userDB.email, name: userDB.name, role: userDB.role };
+
         // Verify if company is active
         const Company = require('../models/Company');
         const company = await Company.findByPk(req.user.company_id, {
