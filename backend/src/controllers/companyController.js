@@ -73,7 +73,7 @@ exports.updateMyPlan = async (req, res) => {
 
 exports.getAdminStats = async (req, res) => {
     try {
-        if (req.user.role !== 'owner' && req.user.email !== 'admin@sermon.ai') {
+        if (!isSuperAdmin(req.user.email)) {
             return res.status(403).json({ msg: 'Not authorized' });
         }
 
@@ -109,13 +109,46 @@ exports.getAdminStats = async (req, res) => {
             order: [[sequelize.fn('date', sequelize.col('created_at')), 'ASC']]
         });
 
+        const pendingRequestsCount = await Company.count({
+            where: {
+                requested_plan_id: { [Op.ne]: null }
+            }
+        });
+
+        const pendingRequestsFull = await Company.findAll({
+            where: {
+                requested_plan_id: { [Op.ne]: null }
+            },
+            attributes: ['name', 'requested_plan_id']
+        });
+
+        // Fetch plan names manually for the distribution
+        const Plan = require('../models/Plan');
+        const pendingWithPlans = await Promise.all(pendingRequestsFull.map(async (c) => {
+            const p = await Plan.findByPk(c.requested_plan_id);
+            return { companyName: c.name, planName: p ? p.name : 'Desconhecido' };
+        }));
+
+        const dist = {};
+        pendingWithPlans.forEach(item => {
+            dist[item.planName] = (dist[item.planName] || 0) + 1;
+        });
+
+        const pendingRequestsDistribution = Object.keys(dist).map(name => ({
+            name,
+            count: dist[name]
+        }));
+
         res.json({
             ...stats,
             companyDistribution: userDist.map(c => ({
                 name: c.name,
                 userCount: c.Users ? c.Users.length : 0
             })),
-            sermonGrowth
+            sermonGrowth,
+            pendingRequestsCount,
+            pendingRequestsCompanies: pendingRequestsFull.map(c => c.name),
+            pendingRequestsDistribution
         });
     } catch (err) {
         console.error("ADMIN STATS ERR:", err);

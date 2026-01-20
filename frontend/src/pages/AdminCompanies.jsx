@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import Layout from '../components/Layout';
-import { Building2, Save, X, Edit3, ShieldAlert, TrendingUp, Users, FileText, PieChart as PieChartIcon } from 'lucide-react';
+import { Building2, Save, X, Edit3, ShieldAlert, TrendingUp, Users, FileText, PieChart as PieChartIcon, CreditCard, AlertCircle } from 'lucide-react';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-    PieChart, Pie, Cell, AreaChart, Area
+    PieChart, Pie, Cell, AreaChart, Area, BarChart, Bar
 } from 'recharts';
 
 export default function AdminCompanies() {
@@ -19,7 +19,10 @@ export default function AdminCompanies() {
         totalUsers: 0,
         totalSermons: 0,
         companyDistribution: [],
-        sermonGrowth: []
+        sermonGrowth: [],
+        pendingRequestsCount: 0,
+        pendingRequestsCompanies: [],
+        pendingRequestsDistribution: []
     });
 
     useEffect(() => {
@@ -90,7 +93,7 @@ export default function AdminCompanies() {
                     )}
 
                     {/* Stats Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border dark:border-slate-800 shadow-sm">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl">
@@ -122,6 +125,31 @@ export default function AdminCompanies() {
                             </div>
                             <div className="text-3xl font-black dark:text-white">{stats.totalSermons}</div>
                             <p className="text-sm text-slate-500 mt-1">Gerados com IA</p>
+                        </div>
+
+                        <div className={`bg-white dark:bg-slate-900 rounded-2xl p-6 border ${stats.pendingRequestsCount > 0 ? 'border-amber-200 dark:border-amber-900/50 bg-amber-50/10' : 'dark:border-slate-800'} shadow-sm`}>
+                            <div className="flex justify-between items-start mb-4">
+                                <div className={`p-3 ${stats.pendingRequestsCount > 0 ? 'bg-amber-100 dark:bg-amber-900/30' : 'bg-slate-100 dark:bg-slate-800'} rounded-xl`}>
+                                    <AlertCircle className={`w-6 h-6 ${stats.pendingRequestsCount > 0 ? 'text-amber-600' : 'text-slate-400'}`} />
+                                </div>
+                                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Pendências</span>
+                            </div>
+                            <div className="text-3xl font-black dark:text-white">{stats.pendingRequestsCount}</div>
+                            <p className="text-sm text-slate-500 mt-1">Trocas de Plano</p>
+
+                            {stats.pendingRequestsCompanies.length > 0 && (
+                                <div className="mt-3 overflow-hidden">
+                                    <div className="text-[10px] uppercase font-bold text-amber-600 dark:text-amber-400/70 mb-1">Empresas:</div>
+                                    <div className="flex flex-wrap gap-1">
+                                        {stats.pendingRequestsCompanies.slice(0, 3).map((name, i) => (
+                                            <span key={i} className="text-[9px] bg-white dark:bg-slate-800 border dark:border-slate-700 px-1.5 py-0.5 rounded-md truncate max-w-[80px]">
+                                                {name}
+                                            </span>
+                                        ))}
+                                        {stats.pendingRequestsCompanies.length > 3 && <span className="text-[9px] text-slate-400">+{stats.pendingRequestsCompanies.length - 3}</span>}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -161,8 +189,37 @@ export default function AdminCompanies() {
                             </div>
                         </div>
 
-                        {/* Company User Distribution */}
+                        {/* Pending Requests Distribution */}
                         <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border dark:border-slate-800 shadow-sm min-h-[400px]">
+                            <h3 className="text-lg font-bold dark:text-white mb-6 flex items-center gap-2">
+                                <CreditCard className="w-5 h-5 text-amber-500" />
+                                Solicitações por Plano
+                            </h3>
+                            <div className="h-[300px]">
+                                {stats.pendingRequestsCount > 0 ? (
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart data={stats.pendingRequestsDistribution}>
+                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#3b82f610" />
+                                            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
+                                            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
+                                            <Tooltip
+                                                cursor={{ fill: '#3b82f605' }}
+                                                contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                            />
+                                            <Bar dataKey="count" fill="#f59e0b" radius={[4, 4, 0, 0]} barSize={40} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                ) : (
+                                    <div className="h-full flex flex-col items-center justify-center text-slate-400">
+                                        <AlertCircle className="w-12 h-12 mb-2 opacity-20" />
+                                        <p>Nenhuma solicitação pendente</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Company User Distribution */}
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border dark:border-slate-800 shadow-sm min-h-[400px] lg:col-span-2">
                             <h3 className="text-lg font-bold dark:text-white mb-6 flex items-center gap-2">
                                 <PieChartIcon className="w-5 h-5 text-blue-600" />
                                 Usuários por Organização
