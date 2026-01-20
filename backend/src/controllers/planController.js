@@ -17,7 +17,7 @@ exports.getAllPlans = async (req, res) => {
 // Create a new plan
 exports.createPlan = async (req, res) => {
     try {
-        const { name, max_sermons, price, description, allow_ai } = req.body;
+        const { name, max_sermons, max_users, price, description, allow_ai } = req.body;
 
         // Only admin/owner can create plans (usually super admin)
         // Assuming the auth middleware already checks for basic role, but we might want stricter check here
@@ -28,6 +28,7 @@ exports.createPlan = async (req, res) => {
         const newPlan = await Plan.create({
             name,
             max_sermons,
+            max_users: max_users !== undefined ? max_users : 1,
             price,
             description,
             allow_ai: allow_ai !== undefined ? allow_ai : true
@@ -44,7 +45,7 @@ exports.createPlan = async (req, res) => {
 exports.updatePlan = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, max_sermons, price, description, active, allow_ai } = req.body;
+        const { name, max_sermons, max_users, price, description, active, allow_ai } = req.body;
 
         if (req.user.role !== 'owner' && req.user.role !== 'admin') {
             return res.status(403).json({ msg: 'Not authorized' });
@@ -54,7 +55,7 @@ exports.updatePlan = async (req, res) => {
         if (!plan) return res.status(404).json({ msg: 'Plan not found' });
 
         const oldPlanName = plan.name;
-        await plan.update({ name, max_sermons, price, description, active, allow_ai });
+        await plan.update({ name, max_sermons, max_users, price, description, active, allow_ai });
 
         // Sync with companies that use this plan
         const Company = require('../models/Company');
@@ -62,6 +63,7 @@ exports.updatePlan = async (req, res) => {
             {
                 plan: plan.name, // In case name changed
                 max_sermons: plan.max_sermons,
+                max_users: plan.max_users,
                 allow_ai: plan.allow_ai
             },
             { where: { plan: oldPlanName } }
