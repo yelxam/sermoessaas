@@ -11,6 +11,7 @@ import Organization from './pages/Organization';
 import Plans from './pages/Plans';
 import LandingPage from './pages/LandingPage';
 import AdminCompanies from './pages/AdminCompanies';
+import AdminRequests from './pages/AdminRequests';
 import Bible from './pages/Bible';
 
 const ProtectedRoute = ({ children }) => {
@@ -81,9 +82,16 @@ function App() {
                             </ProtectedRoute>
                         } />
 
+
                         <Route path="/admin" element={
                             <ProtectedRoute>
                                 <AdminCompanies />
+                            </ProtectedRoute>
+                        } />
+
+                        <Route path="/admin/requests" element={
+                            <ProtectedRoute>
+                                <AdminRequests />
                             </ProtectedRoute>
                         } />
 
