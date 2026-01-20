@@ -3,6 +3,7 @@ const Church = require('../models/Church');
 const User = require('../models/User');
 const Sermon = require('../models/Sermon');
 const sequelize = require('../config/database');
+const sendEmail = require('../utils/mailer');
 
 // My Organization (Tenant)
 exports.getMyCompany = async (req, res) => {
@@ -47,6 +48,9 @@ exports.updateMyPlan = async (req, res) => {
 
         if (!plan) return res.status(404).json({ msg: 'Plano não encontrado' });
 
+        const company = await Company.findByPk(req.user.company_id);
+        const oldPlanName = company.plan;
+
         await Company.update(
             {
                 plan: plan.name,
@@ -57,6 +61,36 @@ exports.updateMyPlan = async (req, res) => {
             },
             { where: { id: req.user.company_id } }
         );
+
+        // Notify Admin/Finance for invoice generation
+        try {
+            await sendEmail({
+                email: process.env.SMTP_USER, // Sending to support/admin email
+                subject: `[Cobrança] Alteração de Plano - ${company.name}`,
+                message: `
+                    <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+                        <h2 style="color: #2563eb;">Solicitação de Atualização de Plano</h2>
+                        <p>A organização <strong>${company.name}</strong> alterou seu plano de assinatura.</p>
+                        <hr style="border: 1px solid #eee; margin: 20px 0;">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 10px;">🏢 <strong>Empresa:</strong> ${company.name} (ID: ${company.id})</li>
+                            <li style="margin-bottom: 10px;">👤 <strong>Solicitante:</strong> ${req.user.email} (ID: ${req.user.id})</li>
+                            <li style="margin-bottom: 10px;">📉 <strong>Plano Anterior:</strong> ${oldPlanName}</li>
+                            <li style="margin-bottom: 10px;">📈 <strong>Novo Plano:</strong> ${plan.name}</li>
+                            <li style="margin-bottom: 10px;">💰 <strong>Novo Valor:</strong> R$ ${plan.price}</li>
+                            <li style="margin-bottom: 10px;">📅 <strong>Data:</strong> ${new Date().toLocaleString('pt-BR')}</li>
+                        </ul>
+                        <hr style="border: 1px solid #eee; margin: 20px 0;">
+                        <p style="background-color: #fffbeb; padding: 15px; border-radius: 5px; border: 1px solid #fcd34d; color: #92400e;">
+                            ⚠️ <strong>Ação Necessária:</strong> Verifique o status do pagamento e emita a nova fatura/cobrança para o cliente.
+                        </p>
+                    </div>
+                `
+            });
+        } catch (emailErr) {
+            console.error('Failed to send plan update notification email:', emailErr);
+            // Don't fail the request if email fails, just log it
+        }
 
         res.json({ msg: 'Plano atualizado com sucesso', plan: plan.name });
     } catch (err) {
