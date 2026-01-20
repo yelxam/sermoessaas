@@ -56,9 +56,14 @@ exports.updateMyPlan = async (req, res) => {
 
         // 1. Notify Admin/Finance (Internal)
         try {
+            // Send to all Super Admins
+            const superAdmins = ['admin@sermon.ai', 'eliel@verbocast.com.br', 'financeiro@verbocast.com.br'];
+            const recipients = superAdmins.join(',');
+
             await sendEmail({
-                email: process.env.SMTP_USER,
+                email: recipients,
                 subject: `[Aprovação] Solicitação de Troca de Plano - ${company.name}`,
+
                 message: `
                     <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
                         <h2 style="color: #2563eb;">Nova Solicitação de Plano</h2>
@@ -210,7 +215,8 @@ exports.createCompany = async (req, res) => {
 };
 
 // Super Admin approvals
-const isSuperAdmin = (email) => ['admin@sermon.ai', 'eliel@verbocast.com.br', 'financeiro@verbocast.com.br'].includes(email);
+const SUPER_ADMIN_EMAILS = ['admin@sermon.ai', 'eliel@verbocast.com.br', 'financeiro@verbocast.com.br'];
+const isSuperAdmin = (email) => SUPER_ADMIN_EMAILS.includes(email);
 
 exports.listPendingRequests = async (req, res) => {
     try {
