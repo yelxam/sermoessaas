@@ -287,7 +287,15 @@ const LandingPage = () => {
                     ) : (
                         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                             {plans.map((plan, idx) => (
-                                <div key={plan.id} className={`glass-panel p-8 relative flex flex-col bg-white dark:bg-slate-900 ${idx === 1 ? 'border-2 border-yellow-500 scale-105 shadow-2xl z-10' : ''}`}>
+                                <div key={plan.id} className={`glass-panel p-8 relative flex flex-col bg-white dark:bg-slate-900 transition-all duration-300 ${idx === 1 ? 'border-2 border-yellow-500 scale-105 shadow-2xl z-10' : 'hover:scale-105'}`}>
+                                    {idx === 1 && (
+                                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                                            <span className="bg-yellow-500 text-white px-6 py-1.5 rounded-full text-sm font-bold shadow-lg uppercase tracking-wide flex items-center gap-2 whitespace-nowrap">
+                                                <Sparkles className="w-4 h-4 fill-white" /> Mais Recomendado
+                                            </span>
+                                        </div>
+                                    )}
+
                                     {idx === 0 && <div className="w-4 h-4 rounded-full bg-green-500 mb-4 shadow-lg shadow-green-200"></div>}
                                     {idx === 1 && <div className="w-4 h-4 rounded-full bg-yellow-500 mb-4 shadow-lg shadow-yellow-200"></div>}
                                     {idx === 2 && <div className="w-4 h-4 rounded-full bg-blue-500 mb-4 shadow-lg shadow-blue-200"></div>}
