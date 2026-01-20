@@ -55,6 +55,7 @@ exports.updateMyPlan = async (req, res) => {
         await company.update({ requested_plan_id: plan.id });
 
         // 1. Notify Admin/Finance (Internal)
+        console.log(`[UPDATE_MY_PLAN] Updating company ${company.id} request to plan ${plan.id}`);
         try {
             // Send to all Super Admins
             const superAdmins = ['admin@sermon.ai', 'eliel@verbocast.com.br', 'financeiro@verbocast.com.br'];
