@@ -161,6 +161,7 @@ IMPORTANT: End the sermon content and start the related verses section with the 
             related_verses = parts[1].trim();
         }
 
+        console.log(`Creating Sermon record for User ${req.user.id}, Company ${user.company_id}`);
         const newSermon = await Sermon.create({
             user_id: req.user.id,
             company_id: user.company_id,
@@ -224,11 +225,20 @@ exports.getSermonById = async (req, res) => {
 
 exports.deleteSermon = async (req, res) => {
     try {
-        const result = await Sermon.destroy({ where: { id: req.params.id, user_id: req.user.id } });
-        if (!result) return res.status(404).json({ msg: 'Sermon not found' });
+        const sermon = await Sermon.findByPk(req.params.id);
+        if (!sermon) return res.status(404).json({ msg: 'Sermon not found' });
+
+        // Allow if it's the author OR an admin/owner of the same company
+        const canDelete = sermon.user_id === req.user.id || req.user.role === 'owner' || req.user.role === 'admin';
+
+        if (!canDelete || (sermon.company_id !== req.user.company_id)) {
+            return res.status(403).json({ msg: 'Not authorized to delete this sermon' });
+        }
+
+        await sermon.destroy();
         res.json({ msg: 'Sermon removed' });
     } catch (err) {
-        console.error(err.message);
+        console.error('Delete Sermon Error:', err.message);
         res.status(500).send('Server Error');
     }
 };
@@ -282,6 +292,7 @@ exports.translateSermon = async (req, res) => {
 exports.createSermon = async (req, res) => {
     try {
         const { theme, content, audience, tone, duration, church_name, event_date } = req.body;
+        console.log(`[ManualSermon] Request from user ${req.user?.id} in company ${req.user?.company_id}`);
 
         // 1. Check Plan Limits
         const user = await User.findByPk(req.user.id, {
@@ -321,6 +332,7 @@ exports.createSermon = async (req, res) => {
             }
         }
 
+        console.log(`[ManualSermon] Saving record for theme: ${theme}`);
         const newSermon = await Sermon.create({
             theme,
             content,
@@ -355,8 +367,14 @@ exports.updateSermon = async (req, res) => {
         const { id } = req.params;
         const { theme, content, audience, tone, duration, church_name, event_date } = req.body;
 
-        const sermon = await Sermon.findOne({ where: { id, user_id: req.user.id } });
+        const sermon = await Sermon.findByPk(id);
         if (!sermon) return res.status(404).json({ msg: 'Sermon not found' });
+
+        // Allow if author OR admin/owner of same company
+        const canEdit = sermon.user_id === req.user.id || req.user.role === 'owner' || req.user.role === 'admin';
+        if (!canEdit || (sermon.company_id !== req.user.company_id)) {
+            return res.status(403).json({ msg: 'Not authorized to edit this sermon' });
+        }
 
         await sermon.update({
             theme,
@@ -370,7 +388,7 @@ exports.updateSermon = async (req, res) => {
 
         res.json(sermon);
     } catch (err) {
-        console.error(err.message);
+        console.error('Update Sermon Error:', err.message);
         res.status(500).send('Server Error');
     }
 };

@@ -12,7 +12,7 @@ const Sermon = sequelize.define('Sermon', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: User,
+            model: 'users',
             key: 'id',
         },
     },
@@ -20,7 +20,7 @@ const Sermon = sequelize.define('Sermon', {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
-            model: require('./Company'),
+            model: 'companies',
             key: 'id',
         },
     },

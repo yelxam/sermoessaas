@@ -77,7 +77,9 @@ export default function CreateSermon() {
                     content: formData.content,
                     audience: t.createSermon.audiences[formData.audience],
                     tone: t.createSermon.tones[formData.tone],
-                    duration: formData.duration
+                    duration: formData.duration,
+                    church_name: formData.church_name,
+                    event_date: formData.event_date
                 };
                 const res = await api.post('/sermons', payload);
                 navigate(`/sermons/${res.data.id}`);
