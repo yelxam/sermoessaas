@@ -321,7 +321,13 @@ const LandingPage = () => {
                                         <li className="flex items-start gap-3 text-sm">
                                             <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
                                             <span className="text-slate-700 dark:text-slate-300">
-                                                {plan.id === 'f3' ? 'Todos os recursos liberados' : 'Criar e organizar sermões'}
+                                                <span className="font-bold">{plan.max_users === -1 ? 'Usuários Ilimitados' : `${plan.max_users} usuário(s)`}</span> na equipe
+                                            </span>
+                                        </li>
+                                        <li className="flex items-start gap-3 text-sm">
+                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                                            <span className="text-slate-700 dark:text-slate-300">
+                                                Gestão de <span className="font-bold">{plan.max_churches === -1 ? 'Igrejas Ilimitadas' : `${plan.max_churches} igreja(s)`}</span>
                                             </span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm">
