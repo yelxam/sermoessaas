@@ -35,6 +35,18 @@ const Company = sequelize.define('Company', {
     allow_ai: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
+    },
+    max_users: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
+    },
+    sermons_count_month: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+    },
+    last_reset_date: {
+        type: DataTypes.DATEONLY,
+        defaultValue: DataTypes.NOW,
     }
 }, {
     timestamps: true,

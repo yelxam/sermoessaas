@@ -25,6 +25,19 @@ const getAIClient = (company) => {
     throw new Error('No AI API Key found for this organization or system.');
 };
 
+const checkAndResetMonthlyUsage = async (company) => {
+    const now = new Date();
+    const lastReset = new Date(company.last_reset_date);
+
+    // Check if we entered a new month
+    if (now.getMonth() !== lastReset.getMonth() || now.getFullYear() !== lastReset.getFullYear()) {
+        company.sermons_count_month = 0;
+        company.last_reset_date = now;
+        await company.save();
+    }
+    return company;
+};
+
 exports.generateSermon = async (req, res) => {
     const { book, chapter, verses, theme, audience, duration, tone, language, church_name, event_date } = req.body;
 
@@ -44,7 +57,7 @@ exports.generateSermon = async (req, res) => {
         startOfMonth.setDate(1);
         startOfMonth.setHours(0, 0, 0, 0);
 
-        // A. Check User Specific Limit
+        // A. Check User Specific Limit (Use dynamic count per user for now, or add field to User if strict monotonic needed per user)
         if (user.sermon_limit !== null) {
             const userUsage = await Sermon.count({
                 where: {
@@ -61,22 +74,12 @@ exports.generateSermon = async (req, res) => {
             }
         }
 
-        // B. Check Company Limit
-        const companyLimit = user.Company.max_sermons;
-        const companyUsage = await Sermon.count({
-            include: [{
-                model: User,
-                where: { company_id: user.company_id }
-            }],
-            where: {
-                created_at: { [Op.gte]: startOfMonth }
-            }
-        });
+        // B. Check Company Limit (Monotonic Persistent Counter)
+        await checkAndResetMonthlyUsage(user.Company);
 
-        if (companyLimit !== -1 && companyUsage >= companyLimit) {
-            console.log(`Company limit reached: ${companyUsage}/${companyLimit} for company ${user.Company.name}`);
+        if (user.Company.max_sermons !== -1 && user.Company.sermons_count_month >= user.Company.max_sermons) {
             return res.status(403).json({
-                msg: `Limite da organização (${user.Company.plan}) atingido (${companyUsage}/${companyLimit}). Fale com o admin.`
+                msg: `Limite da organização (${user.Company.plan}) atingido (${user.Company.sermons_count_month}/${user.Company.max_sermons}). Fale com o admin.`
             });
         }
 
@@ -179,6 +182,9 @@ IMPORTANT: End the sermon content and start the related verses section with the 
         const sermonWithAuthor = await Sermon.findByPk(newSermon.id, {
             include: [{ model: User, attributes: ['name'] }]
         });
+
+        // Increment usage
+        await user.Company.increment('sermons_count_month');
 
         res.json(sermonWithAuthor);
 
@@ -306,16 +312,11 @@ exports.createSermon = async (req, res) => {
             }
         } else {
             // B. Check Company Limit
-            const companyUsage = await Sermon.count({
-                where: {
-                    company_id: user.company_id,
-                    created_at: { [Op.gte]: startOfMonth }
-                }
-            });
+            await checkAndResetMonthlyUsage(user.Company);
 
-            if (user.Company.max_sermons !== -1 && companyUsage >= user.Company.max_sermons) {
+            if (user.Company.max_sermons !== -1 && user.Company.sermons_count_month >= user.Company.max_sermons) {
                 return res.status(403).json({
-                    msg: `Limite mensal da organização atingido (${companyUsage}/${user.Company.max_sermons}).`
+                    msg: `Limite mensal da organização atingido (${user.Company.sermons_count_month}/${user.Company.max_sermons}).`
                 });
             }
         }
@@ -336,6 +337,11 @@ exports.createSermon = async (req, res) => {
         const sermonWithAuthor = await Sermon.findByPk(newSermon.id, {
             include: [{ model: User, attributes: ['name'] }]
         });
+
+        // Increment usage if company limit applies (or generally if we track usage for everything)
+        if (user.sermon_limit === null) {
+            await user.Company.increment('sermons_count_month');
+        }
 
         res.json(sermonWithAuthor);
     } catch (err) {

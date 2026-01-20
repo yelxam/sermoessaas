@@ -32,6 +32,11 @@ const Plan = sequelize.define('Plan', {
     allow_ai: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
+    },
+    max_users: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
+        comment: '-1 for unlimited'
     }
 }, {
     timestamps: true,

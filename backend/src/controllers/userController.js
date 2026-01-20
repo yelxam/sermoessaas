@@ -23,6 +23,13 @@ exports.createUser = async (req, res) => {
             return res.status(403).json({ msg: 'Not authorized' });
         }
 
+        const company = await (require('../models/Company')).findByPk(req.user.company_id);
+        const currentUsersCount = await User.count({ where: { company_id: req.user.company_id } });
+
+        if (company.max_users !== -1 && currentUsersCount >= company.max_users) {
+            return res.status(403).json({ msg: `Limite de usuários atingido (${currentUsersCount}/${company.max_users}). Atualize seu plano.` });
+        }
+
         let user = await User.findOne({ where: { email } });
         if (user) {
             return res.status(400).json({ msg: 'User already exists' });
