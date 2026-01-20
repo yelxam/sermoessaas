@@ -221,6 +221,7 @@ const isSuperAdmin = (email) => SUPER_ADMIN_EMAILS.includes(email);
 exports.listPendingRequests = async (req, res) => {
     try {
         if (!isSuperAdmin(req.user.email)) {
+            console.log('Access denied for:', req.user.email);
             return res.status(403).json({ msg: 'Not authorized as Super Admin' });
         }
 
@@ -229,6 +230,7 @@ exports.listPendingRequests = async (req, res) => {
                 requested_plan_id: { [require('sequelize').Op.ne]: null }
             }
         });
+        console.log(`[PendingRequests] User: ${req.user.email}, Found: ${companies.length} requests`);
 
         // We need to fetch plan details for the requested_plan_id
         // Ideally we would include Plan model if associated, but let's manual fetch for simplicity or assume FE fetches

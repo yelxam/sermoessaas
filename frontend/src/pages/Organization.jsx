@@ -17,7 +17,7 @@ export default function Organization() {
     const { t } = useLanguage();
     const currentUser = JSON.parse(localStorage.getItem('user'));
     const canEdit = currentUser?.role === 'owner' || currentUser?.role === 'admin';
-    const isSuperAdmin = currentUser?.email === 'admin@sermon.ai'; // Simple check
+    const isSuperAdmin = ['admin@sermon.ai', 'eliel@verbocast.com.br', 'financeiro@verbocast.com.br'].includes(currentUser?.email);
 
     useEffect(() => {
         fetchData();
@@ -82,7 +82,7 @@ export default function Organization() {
             setLoading(true);
             await api.put('/companies/me/plan', { planId });
             fetchData();
-            alert("Plano atualizado com sucesso!");
+            alert("Solicitação enviada com sucesso! Aguarde a aprovação do administrador.");
         } catch (err) {
             alert(err.response?.data?.msg || "Erro ao alterar plano");
         } finally {
