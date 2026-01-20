@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
-import { Menu, X, BookOpen } from 'lucide-react';
+import { Menu, X, BookOpen, MessageCircle } from 'lucide-react';
 import Logo from './Logo';
 
 export default function Layout({ children }) {
@@ -62,6 +62,21 @@ export default function Layout({ children }) {
                     {children}
                 </div>
             </main>
+
+            {/* Floating WhatsApp Button */}
+            <a
+                href="https://wa.me/558491944131"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="fixed bottom-6 right-6 z-40 bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg transition-all transform hover:scale-110 flex items-center justify-center group"
+                aria-label="Fale com o Suporte"
+                title="Suporte via WhatsApp"
+            >
+                <MessageCircle className="w-6 h-6" />
+                <span className="absolute right-full mr-3 bg-white dark:bg-slate-800 text-slate-800 dark:text-white px-3 py-1 rounded-lg text-sm font-bold shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-slate-100 dark:border-slate-700">
+                    Suporte
+                </span>
+            </a>
         </div>
     );
 }
