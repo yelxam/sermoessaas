@@ -190,8 +190,12 @@ IMPORTANT: End the sermon content and start the related verses section with the 
         res.json(sermonWithAuthor);
 
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ msg: err.message || 'AI Generation Error' });
+        console.error('AI Generation Error:', err);
+        res.status(500).json({
+            msg: 'Erro na geração por IA',
+            error: err.message,
+            stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+        });
     }
 };
 
@@ -357,8 +361,11 @@ exports.createSermon = async (req, res) => {
 
         res.json(sermonWithAuthor);
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
+        console.error('Manual Sermon Creation Error:', err);
+        res.status(500).json({
+            msg: 'Erro ao criar sermão manualmente',
+            error: err.message
+        });
     }
 };
 

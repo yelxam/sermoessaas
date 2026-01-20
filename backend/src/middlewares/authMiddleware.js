@@ -22,8 +22,15 @@ module.exports = async function (req, res, next) {
             return res.status(401).json({ msg: 'User not found' });
         }
 
-        // Merge DB user data into req.user (keeping payload data but enhancing it)
-        req.user = { ...req.user, email: userDB.email, name: userDB.name, role: userDB.role };
+        // Merge DB user data into req.user
+        req.user = {
+            ...req.user,
+            id: userDB.id,
+            email: userDB.email,
+            name: userDB.name,
+            role: userDB.role,
+            company_id: userDB.company_id
+        };
 
         // Verify if company is active
         const Company = require('../models/Company');

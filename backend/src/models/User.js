@@ -45,6 +45,7 @@ const User = sequelize.define('User', {
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: false,
+    tableName: 'users'
 });
 
 // Associations
