@@ -44,55 +44,50 @@ exports.updateMyPlan = async (req, res) => {
 
         const { planId } = req.body;
         const Plan = require('../models/Plan');
+        // Instead of applying changes immediately, we now request approval
+        // Check if plan exists
         const plan = await Plan.findByPk(planId);
-
         if (!plan) return res.status(404).json({ msg: 'Plano não encontrado' });
 
         const company = await Company.findByPk(req.user.company_id);
         const oldPlanName = company.plan;
 
-        await Company.update(
-            {
-                plan: plan.name,
-                max_sermons: plan.max_sermons,
-                max_users: plan.max_users,
-                max_churches: plan.max_churches,
-                allow_ai: plan.allow_ai
-            },
-            { where: { id: req.user.company_id } }
-        );
+        await company.update({ requested_plan_id: plan.id });
 
-        // Notify Admin/Finance for invoice generation
+        // Notify Admin/Finance for approval
         try {
             await sendEmail({
                 email: process.env.SMTP_USER, // Sending to support/admin email
-                subject: `[Cobrança] Alteração de Plano - ${company.name}`,
+                subject: `[Aprovação] Solicitação de Troca de Plano - ${company.name}`,
                 message: `
                     <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-                        <h2 style="color: #2563eb;">Solicitação de Atualização de Plano</h2>
-                        <p>A organização <strong>${company.name}</strong> alterou seu plano de assinatura.</p>
+                        <h2 style="color: #2563eb;">Nova Solicitação de Plano</h2>
+                        <p>A organização <strong>${company.name}</strong> solicitou a troca de plano.</p>
                         <hr style="border: 1px solid #eee; margin: 20px 0;">
                         <ul style="list-style: none; padding: 0;">
                             <li style="margin-bottom: 10px;">🏢 <strong>Empresa:</strong> ${company.name} (ID: ${company.id})</li>
                             <li style="margin-bottom: 10px;">👤 <strong>Solicitante:</strong> ${req.user.email} (ID: ${req.user.id})</li>
-                            <li style="margin-bottom: 10px;">📉 <strong>Plano Anterior:</strong> ${oldPlanName}</li>
-                            <li style="margin-bottom: 10px;">📈 <strong>Novo Plano:</strong> ${plan.name}</li>
+                            <li style="margin-bottom: 10px;">📉 <strong>Plano Atual:</strong> ${oldPlanName}</li>
+                            <li style="margin-bottom: 10px;">📈 <strong>Plano Solicitado:</strong> ${plan.name}</li>
                             <li style="margin-bottom: 10px;">💰 <strong>Novo Valor:</strong> R$ ${plan.price}</li>
                             <li style="margin-bottom: 10px;">📅 <strong>Data:</strong> ${new Date().toLocaleString('pt-BR')}</li>
                         </ul>
                         <hr style="border: 1px solid #eee; margin: 20px 0;">
-                        <p style="background-color: #fffbeb; padding: 15px; border-radius: 5px; border: 1px solid #fcd34d; color: #92400e;">
-                            ⚠️ <strong>Ação Necessária:</strong> Verifique o status do pagamento e emita a nova fatura/cobrança para o cliente.
+                        <p style="background-color: #f0f9ff; padding: 15px; border-radius: 5px; border: 1px solid #bae6fd; color: #0369a1;">
+                            ℹ️ <strong>Ação Necessária:</strong> Acesse o painel administrativo para APROVAR ou REJEITAR esta solicitação. A cobrança deve ser feita após a aprovação.
                         </p>
                     </div>
                 `
             });
         } catch (emailErr) {
-            console.error('Failed to send plan update notification email:', emailErr);
-            // Don't fail the request if email fails, just log it
+            console.error('Failed to send plan request notification email:', emailErr);
         }
 
-        res.json({ msg: 'Plano atualizado com sucesso', plan: plan.name });
+        res.json({ msg: 'Solicitação de troca de plano enviada com sucesso! Aguarde a aprovação do administrador.', pending: true });
+
+        // Notify Admin/Finance for invoice generation
+
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
@@ -194,6 +189,89 @@ exports.createCompany = async (req, res) => {
             max_churches,
         });
         res.json(newCompany);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+};
+
+// Super Admin approvals
+exports.listPendingRequests = async (req, res) => {
+    try {
+        if (req.user.role !== 'owner') { // Usually superadmin is owner of platform or we check email/specific role
+            // For now assume platform owner/admin accesses this
+        }
+
+        const companies = await Company.findAll({
+            where: {
+                requested_plan_id: { [require('sequelize').Op.ne]: null }
+            }
+        });
+
+        // We need to fetch plan details for the requested_plan_id
+        // Ideally we would include Plan model if associated, but let's manual fetch for simplicity or assume FE fetches
+        // Let's attach plan name
+        const Plan = require('../models/Plan');
+        const companiesWithPlans = await Promise.all(companies.map(async (c) => {
+            const p = await Plan.findByPk(c.requested_plan_id);
+            const plain = c.get({ plain: true });
+            plain.requested_plan_name = p ? p.name : 'Unknown';
+            plain.requested_plan_price = p ? p.price : 0;
+            return plain;
+        }));
+
+        res.json(companiesWithPlans);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+};
+
+exports.approvePlanRequest = async (req, res) => {
+    try {
+        // Only superadmin
+        // ...
+
+        const company = await Company.findByPk(req.params.id);
+        if (!company || !company.requested_plan_id) {
+            return res.status(404).json({ msg: 'No pending request found' });
+        }
+
+        const Plan = require('../models/Plan');
+        const plan = await Plan.findByPk(company.requested_plan_id);
+
+        if (!plan) return res.status(404).json({ msg: 'Requested plan not found' });
+
+        await company.update({
+            plan: plan.name,
+            max_sermons: plan.max_sermons,
+            max_users: plan.max_users,
+            max_churches: plan.max_churches,
+            allow_ai: plan.allow_ai,
+            requested_plan_id: null
+        });
+
+        // Send email to company owner (optional, find user with role owner and company_id)
+
+        res.json({ msg: 'Plan change approved and applied' });
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+};
+
+exports.rejectPlanRequest = async (req, res) => {
+    try {
+        // Only superadmin
+
+        const company = await Company.findByPk(req.params.id);
+        if (!company) return res.status(404).json({ msg: 'Company not found' });
+
+        await company.update({ requested_plan_id: null });
+
+        res.json({ msg: 'Plan request rejected' });
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

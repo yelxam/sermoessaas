@@ -51,6 +51,11 @@ const Company = sequelize.define('Company', {
     last_reset_date: {
         type: DataTypes.DATEONLY,
         defaultValue: DataTypes.NOW,
+    },
+    requested_plan_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: null
     }
 }, {
     timestamps: true,

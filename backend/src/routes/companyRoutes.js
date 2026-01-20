@@ -9,6 +9,11 @@ router.get('/stats', auth, companyController.getAdminStats);
 router.post('/', auth, companyController.createCompany);
 router.put('/:id', auth, companyController.updateCompany);
 
+// Plan Approval Workflow
+router.get('/requests/pending', auth, companyController.listPendingRequests);
+router.post('/requests/:id/approve', auth, companyController.approvePlanRequest);
+router.post('/requests/:id/reject', auth, companyController.rejectPlanRequest);
+
 // My Company context
 router.get('/me', auth, companyController.getMyCompany);
 router.put('/me', auth, companyController.updateMyCompany);
