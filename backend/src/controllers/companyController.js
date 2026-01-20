@@ -57,7 +57,7 @@ exports.updateMyPlan = async (req, res) => {
         // 1. Notify Admin/Finance (Internal)
         try {
             await sendEmail({
-                email: 'financeiro@verbocast.com.br',
+                email: process.env.SMTP_USER,
                 subject: `[Aprovação] Solicitação de Troca de Plano - ${company.name}`,
                 message: `
                     <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
