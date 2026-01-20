@@ -29,7 +29,7 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
         navItems.push({ path: '/organization', label: t.organization?.settings || 'Configs', icon: Settings });
     }
 
-    const superAdmins = ['admin@sermon.ai', 'eliel@verbocast.com.br'];
+    const superAdmins = ['admin@sermon.ai', 'eliel@verbocast.com.br', 'financeiro@verbocast.com.br'];
 
     if (superAdmins.includes(user.email)) {
         navItems.push({ path: '/admin', label: t.dashboard.adminTitle.split(' ')[0], icon: ShieldAlert });

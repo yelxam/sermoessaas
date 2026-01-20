@@ -57,7 +57,7 @@ exports.updateMyPlan = async (req, res) => {
         // 1. Notify Admin/Finance (Internal)
         try {
             await sendEmail({
-                email: process.env.SMTP_USER,
+                email: 'financeiro@verbocast.com.br',
                 subject: `[Aprovação] Solicitação de Troca de Plano - ${company.name}`,
                 message: `
                     <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
@@ -210,7 +210,7 @@ exports.createCompany = async (req, res) => {
 };
 
 // Super Admin approvals
-const isSuperAdmin = (email) => ['admin@sermon.ai', 'eliel@verbocast.com.br'].includes(email);
+const isSuperAdmin = (email) => ['admin@sermon.ai', 'eliel@verbocast.com.br', 'financeiro@verbocast.com.br'].includes(email);
 
 exports.listPendingRequests = async (req, res) => {
     try {
