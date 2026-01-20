@@ -4,6 +4,7 @@ const User = require('../models/User');
 const Sermon = require('../models/Sermon');
 const sequelize = require('../config/database');
 const sendEmail = require('../utils/mailer');
+const { Op } = require('sequelize');
 
 // My Organization (Tenant)
 exports.getMyCompany = async (req, res) => {
@@ -173,21 +174,24 @@ exports.createCompany = async (req, res) => {
 
 // Super Admin approvals
 const SUPER_ADMIN_EMAILS = ['admin@sermon.ai', 'eliel@verbocast.com.br', 'financeiro@verbocast.com.br'];
-const isSuperAdmin = (email) => SUPER_ADMIN_EMAILS.includes(email);
+const isSuperAdmin = (email) => SUPER_ADMIN_EMAILS.includes(email.toLowerCase());
 
 exports.listPendingRequests = async (req, res) => {
     try {
-        if (!isSuperAdmin(req.user.email)) {
-            console.log('Access denied for:', req.user.email);
+        const userEmail = req.user.email.toLowerCase();
+        if (!isSuperAdmin(userEmail)) {
+            console.log(`[PendingRequests] ACCESS DENIED: ${userEmail}`);
             return res.status(403).json({ msg: 'Not authorized as Super Admin' });
         }
 
+        console.log(`[PendingRequests] Fetching requests for SuperAdmin: ${userEmail}`);
+
         const companies = await Company.findAll({
             where: {
-                requested_plan_id: { [require('sequelize').Op.ne]: null }
+                requested_plan_id: { [Op.ne]: null }
             }
         });
-        console.log(`[PendingRequests] User: ${req.user.email}, Found: ${companies.length} requests`);
+        console.log(`[PendingRequests] Found: ${companies.length} requests`);
 
         // We need to fetch plan details for the requested_plan_id
         // Ideally we would include Plan model if associated, but let's manual fetch for simplicity or assume FE fetches
