@@ -43,73 +43,71 @@ exports.updateMyPlan = async (req, res) => {
         }
 
         const { planId } = req.body;
+        if (!planId) return res.status(400).json({ msg: 'ID do plano é obrigatório' });
+
         const Plan = require('../models/Plan');
-        // Instead of applying changes immediately, we now request approval
-        // Check if plan exists
         const plan = await Plan.findByPk(planId);
         if (!plan) return res.status(404).json({ msg: 'Plano não encontrado' });
 
         const company = await Company.findByPk(req.user.company_id);
+        if (!company) return res.status(404).json({ msg: 'Sua empresa não foi encontrada.' });
+
         const oldPlanName = company.plan;
 
+        // Perform the update
         await company.update({ requested_plan_id: plan.id });
+        console.log(`[UPDATE_MY_PLAN] SUCCESS: Company ${company.id} requested plan ${plan.name} (${plan.id})`);
 
-        // 1. Notify Admin/Finance (Internal)
-        console.log(`[UPDATE_MY_PLAN] Updating company ${company.id} request to plan ${plan.id}`);
-        try {
-            // Send to all Super Admins
-            const superAdmins = ['admin@sermon.ai', 'eliel@verbocast.com.br', 'financeiro@verbocast.com.br'];
-            const recipients = superAdmins.join(',');
-
-            await sendEmail({
-                email: recipients,
-                subject: `[Aprovação] Solicitação de Troca de Plano - ${company.name}`,
-
-                message: `
-                    <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-                        <h2 style="color: #2563eb;">Nova Solicitação de Plano</h2>
-                        <p>A organização <strong>${company.name}</strong> solicitou a troca de plano.</p>
-                        <ul>
-                            <li><strong>Empresa:</strong> ${company.name} (ID: ${company.id})</li>
-                            <li><strong>Solicitante:</strong> ${req.user.email}</li>
-                            <li><strong>De:</strong> ${oldPlanName} <strong>Para:</strong> ${plan.name}</li>
-                             <li><strong>Novo Valor:</strong> R$ ${plan.price}</li>
-                        </ul>
-                        <p>Acesse o painel administrativo para aprovar.</p>
-                    </div>
-                `
-            });
-        } catch (emailErr) {
-            console.error('Failed to send admin notification:', emailErr);
-        }
-
-        // 2. Notify Requester (External)
-        try {
-            await sendEmail({
-                email: req.user.email,
-                subject: `Solicitação de Alteração de Plano Recebida - VerboCast`,
-                message: `
-                    <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-                        <h2 style="color: #10b981;">Solicitação Recebida!</h2>
-                        <p>Olá, ${req.user.name || 'usuário'}.</p>
-                        <p>Recebemos sua solicitação para alterar o plano da <strong>${company.name}</strong> para o plano <strong>${plan.name}</strong>.</p>
-                        <p>Nossa equipe financeira irá analisar a solicitação e processar a alteração em breve. Você receberá um novo email assim que a mudança for aprovada.</p>
-                        <br>
-                        <p>Atenciosamente,<br>Equipe VerboCast</p>
-                    </div>
-                `
-            });
-        } catch (emailErr) {
-            console.error('Failed to send user confirmation:', emailErr);
-        }
-
+        // Send response immediately to avoid UI blocking
         res.json({ msg: 'Solicitação de troca de plano enviada com sucesso! Aguarde a aprovação do administrador.', pending: true });
 
-        // Notify Admin/Finance for invoice generation
+        // Background Emails
+        (async () => {
+            try {
+                // 1. Notify Super Admins
+                const superAdmins = ['admin@sermon.ai', 'eliel@verbocast.com.br', 'financeiro@verbocast.com.br'];
+                const recipients = superAdmins.join(',');
 
+                await sendEmail({
+                    email: recipients,
+                    subject: `[Aprovação] Solicitação de Troca de Plano - ${company.name}`,
+                    message: `
+                        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+                            <h2 style="color: #2563eb;">Nova Solicitação de Plano</h2>
+                            <p>A organização <strong>${company.name}</strong> solicitou a troca de plano.</p>
+                            <ul>
+                                <li><strong>Empresa:</strong> ${company.name} (ID: ${company.id})</li>
+                                <li><strong>Solicitante:</strong> ${req.user.email}</li>
+                                <li><strong>De:</strong> ${oldPlanName} <strong>Para:</strong> ${plan.name}</li>
+                                <li><strong>Novo Valor:</strong> R$ ${plan.price}</li>
+                            </ul>
+                            <p>Acesse o painel administrativo para aprovar.</p>
+                        </div>
+                    `
+                });
+
+                // 2. Notify Requester
+                await sendEmail({
+                    email: req.user.email,
+                    subject: `Solicitação de Alteração de Plano Recebida - VerboCast`,
+                    message: `
+                        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+                            <h2 style="color: #10b981;">Solicitação Recebida!</h2>
+                            <p>Olá, ${req.user.name || 'usuário'}.</p>
+                            <p>Recebemos sua solicitação para alterar o plano da <strong>${company.name}</strong> para o plano <strong>${plan.name}</strong>.</p>
+                            <p>Nossa equipe financeira irá analisar a solicitação e processar a alteração em breve. Você receberá um novo email assim que a mudança for aprovada.</p>
+                            <br>
+                            <p>Atenciosamente,<br>Equipe VerboCast</p>
+                        </div>
+                    `
+                });
+            } catch (emailErr) {
+                console.error('[UPDATE_MY_PLAN] Background Email Error:', emailErr);
+            }
+        })();
 
     } catch (err) {
-        console.error(err.message);
+        console.error('[UPDATE_MY_PLAN] ACTION FAILED:', err.message);
         res.status(500).send('Server Error');
     }
 };
