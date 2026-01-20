@@ -61,50 +61,8 @@ exports.updateMyPlan = async (req, res) => {
         // Send response immediately to avoid UI blocking
         res.json({ msg: 'Solicitação de troca de plano enviada com sucesso! Aguarde a aprovação do administrador.', pending: true });
 
-        // Background Emails
-        (async () => {
-            try {
-                // 1. Notify Super Admins
-                const superAdmins = ['admin@sermon.ai', 'eliel@verbocast.com.br', 'financeiro@verbocast.com.br'];
-                const recipients = superAdmins.join(',');
-
-                await sendEmail({
-                    email: recipients,
-                    subject: `[Aprovação] Solicitação de Troca de Plano - ${company.name}`,
-                    message: `
-                        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-                            <h2 style="color: #2563eb;">Nova Solicitação de Plano</h2>
-                            <p>A organização <strong>${company.name}</strong> solicitou a troca de plano.</p>
-                            <ul>
-                                <li><strong>Empresa:</strong> ${company.name} (ID: ${company.id})</li>
-                                <li><strong>Solicitante:</strong> ${req.user.email}</li>
-                                <li><strong>De:</strong> ${oldPlanName} <strong>Para:</strong> ${plan.name}</li>
-                                <li><strong>Novo Valor:</strong> R$ ${plan.price}</li>
-                            </ul>
-                            <p>Acesse o painel administrativo para aprovar.</p>
-                        </div>
-                    `
-                });
-
-                // 2. Notify Requester
-                await sendEmail({
-                    email: req.user.email,
-                    subject: `Solicitação de Alteração de Plano Recebida - VerboCast`,
-                    message: `
-                        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-                            <h2 style="color: #10b981;">Solicitação Recebida!</h2>
-                            <p>Olá, ${req.user.name || 'usuário'}.</p>
-                            <p>Recebemos sua solicitação para alterar o plano da <strong>${company.name}</strong> para o plano <strong>${plan.name}</strong>.</p>
-                            <p>Nossa equipe financeira irá analisar a solicitação e processar a alteração em breve. Você receberá um novo email assim que a mudança for aprovada.</p>
-                            <br>
-                            <p>Atenciosamente,<br>Equipe VerboCast</p>
-                        </div>
-                    `
-                });
-            } catch (emailErr) {
-                console.error('[UPDATE_MY_PLAN] Background Email Error:', emailErr);
-            }
-        })();
+        // Background Emails - REMOVED as per user request to debug/simplify
+        // (async () => { ... })();
 
     } catch (err) {
         console.error('[UPDATE_MY_PLAN] ACTION FAILED:', err.message);
