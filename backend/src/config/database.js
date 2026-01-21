@@ -1,6 +1,7 @@
 const { Sequelize } = require('sequelize');
 const pg = require('pg'); // Explicitly require pg for Vercel bundler
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 const sequelize = process.env.DATABASE_URL
   ? new Sequelize(process.env.DATABASE_URL, {

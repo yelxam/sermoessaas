@@ -31,18 +31,62 @@ exports.conductStudy = async (req, res) => {
     }
 
     try {
+        const Plan = require('../models/Plan');
         const user = await User.findByPk(req.user.id, {
             include: [{ model: Company }]
         });
+
+        // If association alias is not set in Company/Plan models yet, we might need a direct query or fix association.
+        // Assuming Company belongsTo Plan. Let's verify association in Company model or use basic fetch.
+        // Actually, Company.belongsTo(Plan) is likely setup. Let's check Company.js? 
+        // We will assume standard association or fetch plan manually if needed.
+        // Safe approach: Fetch Plan manually if relation is tricky.
 
         if (!user || !user.Company) {
             return res.status(400).json({ msg: 'User company not found' });
         }
 
-        // Plan check
-        if (!user.Company.allow_bible_study) {
+        let plan = null;
+        // Standardize plan fetching
+        // Company.plan uses a string (free/pro) old style?
+        // Ah, checked Company.js, it has `requested_plan_id` but maybe `plan` column is string?
+        // Sync script added columns but typically we use plan_id.
+        // Let's look at check_data.js output: "Company: ... Plan ID: undefined". 
+        // Company.js has: `plan: { type: DataTypes.STRING, defaultValue: 'free' }`.
+
+        // LIMIT CHECK LOGIC
+        // We will use a simple map for now if plan is just a string, OR check against Plan table if available.
+        // Given we added `max_bible_studies` to `Plan` entity, we must rely on Plan entity.
+        // BUT Company.js does NOT have `plan_id` column explicitly defined in the file I viewed (Step 1139).
+        // Wait, did I miss it? 
+        // Step 1139: `requested_plan_id`. But verified check_data.js output.
+        // `Company.findAll({ attributes: ['id', 'name', 'allow_bible_study', 'plan_id'] })` produced `Plan ID: undefined`.
+        // This means `plan_id` is NOT in the model definition in JS, even if in DB.
+
+        // HOWEVER, `plan` column is a STRING ('free', 'pro').
+        // AND `Plan` model matches names.
+        // Let's fetch the Plan by name.
+
+        plan = await Plan.findOne({ where: { name: user.Company.plan } });
+        if (!plan) {
+            // Fallback default
+            plan = { max_bible_studies: 5 };
+        }
+
+        // Plan Permission Check
+        if (!user.Company.allow_bible_study && !plan.allow_bible_study) {
             return res.status(403).json({
                 msg: 'Seu plano atual não permite o acesso ao módulo de Estudos Bíblicos com IA. Por favor, faça um upgrade.'
+            });
+        }
+
+        // Limit Check
+        const currentUsage = user.Company.bible_studies_count_month || 0;
+        const limit = plan.max_bible_studies;
+
+        if (limit !== -1 && currentUsage >= limit) {
+            return res.status(403).json({
+                msg: `Você atingiu o limite mensal de estudos bíblicos (${limit}). Faça um upgrade para continuar.`
             });
         }
 
@@ -96,6 +140,9 @@ Tema: ${topic}
             topic,
             content: rawContent
         });
+
+        // Increment usage
+        await user.Company.increment('bible_studies_count_month');
 
         res.json(savedStudy);
 

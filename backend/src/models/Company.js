@@ -48,6 +48,10 @@ const Company = sequelize.define('Company', {
         type: DataTypes.INTEGER,
         defaultValue: 0,
     },
+    bible_studies_count_month: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+    },
     last_reset_date: {
         type: DataTypes.DATEONLY,
         defaultValue: DataTypes.NOW,

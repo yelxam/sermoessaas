@@ -43,6 +43,11 @@ const Plan = sequelize.define('Plan', {
         defaultValue: 1,
         comment: '-1 for unlimited'
     },
+    max_bible_studies: {
+        type: DataTypes.INTEGER,
+        defaultValue: 5,
+        comment: '-1 for unlimited'
+    },
     allow_bible_study: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
