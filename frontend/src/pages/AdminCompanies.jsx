@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import Layout from '../components/Layout';
-import { Building2, Save, X, Edit3, ShieldAlert, TrendingUp, Users, FileText, PieChart as PieChartIcon, CreditCard, AlertCircle, BookOpen } from 'lucide-react';
+import { Building2, Save, X, Edit3, ShieldAlert, TrendingUp, Users, FileText, PieChart as PieChartIcon, CreditCard, AlertCircle, BookOpen, UserPlus } from 'lucide-react';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
     PieChart, Pie, Cell, AreaChart, Area, BarChart, Bar
@@ -12,7 +12,9 @@ export default function AdminCompanies() {
     const [plans, setPlans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editingCompany, setEditingCompany] = useState(null);
+    const [creatingUser, setCreatingUser] = useState(false);
     const [editForm, setEditForm] = useState({ name: '', plan: '', max_sermons: 0, active: true, allow_ai: true, allow_bible_study: true });
+    const [userForm, setUserForm] = useState({ name: '', email: '', password: '', role: 'member', company_id: '' });
     const [msg, setMsg] = useState({ type: '', text: '' });
     const [stats, setStats] = useState({
         totalCompanies: 0,
@@ -71,20 +73,43 @@ export default function AdminCompanies() {
         }
     };
 
+    const handleCreateUser = async (e) => {
+        e.preventDefault();
+        try {
+            await api.post('/admin/users', userForm);
+            setMsg({ type: 'success', text: 'Usuário criado com sucesso!' });
+            setCreatingUser(false);
+            setUserForm({ name: '', email: '', password: '', role: 'member', company_id: '' });
+            // Optionally update stats
+            setStats({ ...stats, totalUsers: stats.totalUsers + 1 });
+        } catch (err) {
+            setMsg({ type: 'error', text: err.response?.data?.msg || 'Erro ao criar usuário' });
+        }
+    };
+
     if (loading) return <div className="min-h-screen flex items-center justify-center dark:bg-slate-950"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div></div>;
 
     return (
         <Layout>
             <div className="container mx-auto px-6 py-8">
                 <div className="max-w-6xl mx-auto">
-                    <div className="flex items-center gap-4 mb-8">
-                        <div className="p-3 bg-blue-600 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-none">
-                            <ShieldAlert className="w-8 h-8 text-white" />
+                    <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center gap-4">
+                            <div className="p-3 bg-blue-600 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-none">
+                                <ShieldAlert className="w-8 h-8 text-white" />
+                            </div>
+                            <div>
+                                <h1 className="text-3xl font-bold dark:text-white">Gerenciamento do Sistema</h1>
+                                <p className="text-slate-500">Administração de Empresas e Planos</p>
+                            </div>
                         </div>
-                        <div>
-                            <h1 className="text-3xl font-bold dark:text-white">Gerenciamento do Sistema</h1>
-                            <p className="text-slate-500">Administração de Empresas e Planos</p>
-                        </div>
+                        <button
+                            onClick={() => setCreatingUser(true)}
+                            className="btn-primary flex items-center gap-2 px-6 py-3"
+                        >
+                            <UserPlus className="w-5 h-5" />
+                            <span>Novo Usuário</span>
+                        </button>
                     </div>
 
                     {msg.text && (
@@ -269,6 +294,60 @@ export default function AdminCompanies() {
                                     <button type="button" onClick={() => setEditingCompany(null)} className="flex-1 px-6 py-4 font-bold rounded-2xl border dark:border-slate-800 dark:text-white">Cancelar</button>
                                     <button type="submit" className="flex-1 btn-primary !py-4 flex items-center justify-center gap-2">
                                         <Save className="w-5 h-5" /> Salvar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
+
+                {creatingUser && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+                        <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-lg border dark:border-slate-800">
+                            <div className="p-8 pb-0 flex justify-between items-center">
+                                <h2 className="text-2xl font-black dark:text-white">Criar Novo Usuário</h2>
+                                <button onClick={() => setCreatingUser(false)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+                                    <X className="w-6 h-6" />
+                                </button>
+                            </div>
+
+                            <form onSubmit={handleCreateUser} className="p-8 space-y-5">
+                                <div>
+                                    <label className="label-text">Nome Completo</label>
+                                    <input type="text" className="input-field" value={userForm.name} onChange={(e) => setUserForm({ ...userForm, name: e.target.value })} required />
+                                </div>
+                                <div>
+                                    <label className="label-text">E-mail</label>
+                                    <input type="email" className="input-field" value={userForm.email} onChange={(e) => setUserForm({ ...userForm, email: e.target.value })} required />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="label-text">Senha</label>
+                                        <input type="password" className="input-field" value={userForm.password} onChange={(e) => setUserForm({ ...userForm, password: e.target.value })} required />
+                                    </div>
+                                    <div>
+                                        <label className="label-text">Função</label>
+                                        <select className="input-field" value={userForm.role} onChange={(e) => setUserForm({ ...userForm, role: e.target.value })}>
+                                            <option value="member">Membro</option>
+                                            <option value="admin">Admin</option>
+                                            <option value="owner">Dono (Owner)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="label-text">Organização / Igreja</label>
+                                    <select className="input-field" value={userForm.company_id} onChange={(e) => setUserForm({ ...userForm, company_id: e.target.value })} required>
+                                        <option value="">Selecione uma organização...</option>
+                                        {companies.map(c => (
+                                            <option key={c.id} value={c.id}>{c.name} (ID: {c.id})</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="pt-4 flex gap-3">
+                                    <button type="button" onClick={() => setCreatingUser(false)} className="flex-1 px-6 py-4 font-bold rounded-2xl border dark:border-slate-800 dark:text-white">Cancelar</button>
+                                    <button type="submit" className="flex-1 btn-primary !py-4 flex items-center justify-center gap-2">
+                                        <UserPlus className="w-5 h-5" /> Criar Usuário
                                     </button>
                                 </div>
                             </form>

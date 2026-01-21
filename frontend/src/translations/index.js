@@ -1,6 +1,6 @@
 export const translations = {
     pt: {
-        flags: { pt: '🇧🇷', es: '🇪🇸', en: '🇺🇸' },
+        flags: { pt: '🇧🇷', es: '🇪🇸', en: '🇺🇸', fr: '🇫🇷', de: '🇩🇪' },
         nav: {
             brand: 'VerboCast',
             home: 'Início',
@@ -205,10 +205,148 @@ export const translations = {
             copy: 'Copiar Estudo',
             newSearch: 'Nova Pesquisa',
             verseRef: 'Referências Bíblicas'
+        },
+        landing: {
+            nav: {
+                system: 'O Sistema',
+                plans: 'Planos',
+                testimonials: 'Depoimentos',
+                login: 'Entrar',
+                createAccount: 'Criar Conta'
+            },
+            hero: {
+                badge: 'A primeira IA feita para pastores e líderes',
+                title: 'Prepare sermões',
+                titleHighlight: 'poderosos',
+                titleEnd: 'em minutos.',
+                subtitle: 'Sem stress. Sem bloqueio. Sem perder tempo.',
+                desc: 'O Verbo Cast ajuda pastores e pregadores a criar, organizar, salvar e compartilhar sermões com clareza — usando tecnologia e Inteligência Artificial a favor do seu chamado.',
+                startBtn: 'Começar agora',
+                learnBtn: 'Conhecer o Sistema'
+            },
+            pain: {
+                title: 'Você não foi chamado para viver apagando incêndio todo domingo',
+                subtitle: 'Se preparar um sermão virou sinônimo de:',
+                items: [
+                    "Correr contra o tempo toda semana",
+                    "Ter boas ideias, mas não conseguir organizar",
+                    "Deixar o sermão para o último dia",
+                    "Perder mensagens antigas porque não estavam salvas",
+                    "Sentir o peso da responsabilidade antes de subir ao púlpito"
+                ],
+                conclusion1: '👉 O problema não é falta de fé. 👉 Nem falta de dedicação.',
+                conclusion2: 'É falta de um sistema simples, rápido e inteligente para o preparo da Palavra.'
+            },
+            solution: {
+                title: 'Conheça o Verbo Cast',
+                desc: 'O Verbo Cast é uma plataforma criada especialmente para pastores, pregadores e líderes que querem:',
+                items: [
+                    "Ganhar tempo no preparo dos sermões",
+                    "Ter mensagens mais claras e bem estruturadas",
+                    "Guardar tudo em um só lugar",
+                    "Compartilhar mensagens com facilidade",
+                    "Contar com IA quando a inspiração não vem"
+                ],
+                note: 'Tudo isso em um painel simples, intuitivo e feito para quem vive o ministério na prática.',
+                summaryTitle: 'Tudo o que você precisa para preparar seus sermões, em um só lugar',
+                cards: [
+                    { title: "Criador de Sermões Estruturado", desc: "Monte sermões completos com tema, texto base, introdução, desenvolvimento e conclusão." },
+                    { title: "Inteligência Artificial como apoio", desc: "Use IA para destravar ideias, gerar esboços bíblicos e organizar pensamentos." },
+                    { title: "Salvar Sermões em PDF", desc: "Tenha seus sermões sempre salvos, organizados e prontos para reutilizar." },
+                    { title: "Compartilhamento no WhatsApp", desc: "Envie mensagens para líderes, células e equipes com um clique." },
+                    { title: "Biblioteca de Sermões", desc: "Nunca mais perca uma boa mensagem preparada com dedicação." },
+                    { title: "Bíblia Online Integrada", desc: "Consulte versículos, compare traduções e estude a Palavra sem sair da plataforma." }
+                ]
+            },
+            ia: {
+                title: 'A IA não substitui o chamado.',
+                titleHighlight: 'Ela apoia o preparo.',
+                desc: 'A Inteligência Artificial do Verbo Cast foi criada para ajudar, não para pregar por você. Ela serve para:',
+                items: ["Destravar ideias", "Organizar pensamentos", "Economizar tempo"],
+                disclaimer: '👉 O conteúdo final continua sendo seu, com sua visão, sua unção e sua responsabilidade diante de Deus e da igreja.'
+            },
+            testimonials: {
+                title: 'Pastores e pregadores que já usam aprovam',
+                subtitle: 'Centenas de mensagens preparadas com mais clareza, menos pressa e muito mais organização.',
+                items: [
+                    { name: "Pastor Marcos A.", text: "Eu sempre deixava o sermão para a última hora. Com o Verbo Cast, agora consigo organizar tudo com antecedência. Mudou completamente minha rotina." },
+                    { name: "Pr. André S.", text: "A ferramenta de IA me ajuda muito quando estou sem ideias. Não substitui meu estudo, mas acelera demais o processo." },
+                    { name: "Presbítero Lucas M.", text: "Antes eu perdia meus sermões antigos. Agora tenho tudo salvo, organizado e ainda consigo compartilhar direto no WhatsApp." },
+                    { name: "Pastor João C.", text: "É uma plataforma pensada para quem vive o ministério de verdade." },
+                    { name: "Evangelista Rafael P.", text: "Vale cada centavo. Hoje preparo meus sermões com mais paz, mais clareza e menos pressão." },
+                    { name: "Pastor Daniel R.", text: "Depois que comecei a usar o Verbo Cast, parei de sentir aquele peso antes de preparar o sermão." },
+                    { name: "Missionário Felipe T.", text: "O que mais gostei foi a praticidade. Em poucos minutos consigo estruturar a mensagem." },
+                    { name: "Pastor Elias N.", text: "Uso o plano Pro e a IA ilimitada faz toda diferença." }
+                ],
+                rating: '⭐ Avaliação média: 5,0 de 5 estrelas',
+                cta: 'Quero preparar meus sermões com mais clareza'
+            },
+            plans: {
+                title: 'Escolha o plano ideal para o seu ministério',
+                titleMobile: 'Planos e Preços',
+                subtitle: 'Invista no seu ministério com ferramentas que otimizam seu tempo de estudo.',
+                loading: 'Carregando planos...',
+                recommended: 'Mais Recomendado',
+                month: '/mês',
+                unlimitedSermons: 'Sermões ILIMITADOS',
+                sermonsPerMonth: 'sermões por mês',
+                unlimitedStudies: 'Estudos Bíblicos ILIMITADOS',
+                studiesPerMonth: 'estudos bíblicos por mês',
+                aiIncluded: 'Inteligência Artificial inclusa',
+                noAi: 'Sem Inteligência Artificial',
+                unlimitedUsers: 'Usuários Ilimitados',
+                usersCount: 'usuário(s)',
+                unlimitedChurches: 'Igrejas Ilimitadas',
+                churchesCount: 'igreja(s)',
+                onTeam: 'na equipe',
+                manage: 'Gestão de',
+                pdfSave: 'Salvar sermões em PDF',
+                outlines: 'Esboços bíblicos e estudos',
+                fullBible: 'Bíblia Online COMPLETA',
+                integratedBible: 'Bíblia Online integrada',
+                whatsappShare: 'Compartilhar no WhatsApp',
+                iWant: 'Quero o',
+                basicDesc: 'Ideal para organização e praticidade. 15 sermões por mês.',
+                proDesc: 'Perfeito para sermões frequentes com IA. 40 sermões por mês.',
+                enterpriseDesc: 'Para púlpito sério. Sermões ILIMITADOS e IA.'
+            },
+            features: {
+                imagine: 'Imagine sua rotina com o Verbo Cast',
+                imagineSubtitle: 'Imagine abrir seu painel e já saber:',
+                items: [
+                    "Qual será o próximo sermão",
+                    "Onde está cada mensagem",
+                    "Ter apoio quando faltar inspiração",
+                    "Ter mais tempo para oração, estudo e cuidado pastoral"
+                ],
+                quick: 'Menos correria.',
+                organized: 'Mais clareza.',
+                consistent: 'Mais consistência no púlpito.'
+            },
+            mission: {
+                title: 'Mais do que tecnologia, uma ferramenta de ministério.',
+                p1: 'Libere tempo para o cuidado pastoral direto, deixando o Verbo Cast auxiliar na estruturação do estudo.',
+                p2: 'Encontre novas perspectivas e ilustrações para textos clássicos, renovando o interesse dos ouvintes.',
+                quote: '"O Verbo Cast nasceu para estar ao lado de quem prega. Acreditamos que a tecnologia deve servir ao Reino, facilitando o preparo intelectual para que o pastor foque no preparo espiritual."',
+                founderName: 'Pr. André Marques',
+                founderRole: 'Fundador do Verbo Cast'
+            },
+            cta: {
+                title: 'Seu próximo sermão pode começar agora',
+                desc: 'O Verbo Cast foi criado para servir o ministério, respeitar o chamado e facilitar o preparo da Palavra. Clique no botão abaixo, escolha seu plano e comece hoje mesmo.',
+                btn: 'Começar com o Verbo Cast agora'
+            },
+            footer: {
+                rights: '© 2026 Verbo Cast AI. Preparando corações para a mensagem bíblica.',
+                privacy: 'Privacidade',
+                terms: 'Termos',
+                contact: 'Contato',
+                support: 'Suporte Online'
+            }
         }
     },
     es: {
-        flags: { pt: '🇧🇷', es: '🇪🇸', en: '🇺🇸' },
+        flags: { pt: '🇧🇷', es: '🇪🇸', en: '🇺🇸', fr: '🇫🇷', de: '🇩🇪' },
         nav: {
             brand: 'VerboCast',
             home: 'Inicio',
@@ -408,10 +546,148 @@ export const translations = {
             copy: 'Copiar Estudio',
             newSearch: 'Nueva Búsqueda',
             verseRef: 'Referencias Bíblicas'
+        },
+        landing: {
+            nav: {
+                system: 'El Sistema',
+                plans: 'Planes',
+                testimonials: 'Testimonios',
+                login: 'Entrar',
+                createAccount: 'Crear Cuenta'
+            },
+            hero: {
+                badge: 'La primera IA hecha para pastores y líderes',
+                title: 'Prepara sermones',
+                titleHighlight: 'poderosos',
+                titleEnd: 'en minutos.',
+                subtitle: 'Sin estrés. Sin bloqueo. Sin perder tiempo.',
+                desc: 'Verbo Cast ayuda a pastores y predicadores a crear, organizar, guardar y compartir sermones con claridad, usando tecnología e Inteligencia Artificial a favor de su llamado.',
+                startBtn: 'Empezar ahora',
+                learnBtn: 'Conocer el Sistema'
+            },
+            pain: {
+                title: 'No fuiste llamado para vivir apagando incendios cada domingo',
+                subtitle: 'Si preparar un sermón se convirtió en sinónimo de:',
+                items: [
+                    "Correr contra el tiempo cada semana",
+                    "Tener buenas ideas, pero no lograr organizarlas",
+                    "Dejar el sermón para el último día",
+                    "Perder mensajes antiguos porque no estaban guardados",
+                    "Sentir el peso de la responsabilidad antes de subir al púlpito"
+                ],
+                conclusion1: '👉 El problema no es falta de fe. 👉 Ni falta de dedicación.',
+                conclusion2: 'Es falta de un sistema simple, rápido e inteligente para la preparación de la Palabra.'
+            },
+            solution: {
+                title: 'Conoce Verbo Cast',
+                desc: 'Verbo Cast es una plataforma creada especialmente para pastores, predicadores y líderes que quieren:',
+                items: [
+                    "Ganar tiempo en la preparación de los sermones",
+                    "Tener mensajes más claros y bien estructurados",
+                    "Guardar todo en un solo lugar",
+                    "Compartir mensajes con facilidad",
+                    "Contar con IA cuando la inspiración no llega"
+                ],
+                note: 'Todo esto en un panel simple, intuitivo y hecho para quien vive el ministerio en la práctica.',
+                summaryTitle: 'Todo lo que necesitas para preparar tus sermones, en un solo lugar',
+                cards: [
+                    { title: "Creador de Sermones Estructurado", desc: "Monta sermones completos con tema, texto base, introducción, desarrollo y conclusión." },
+                    { title: "Inteligencia Artificial como apoyo", desc: "Usa IA para desbloquear ideas, generar bosquejos bíblicos y organizar pensamientos." },
+                    { title: "Guardar Sermones en PDF", desc: "Ten tus sermones siempre guardados, organizados y listos para reutilizar." },
+                    { title: "Compartir en WhatsApp", desc: "Envía mensajes para líderes, células y equipos con un clic." },
+                    { title: "Biblioteca de Sermones", desc: "Nunca más pierdas un buen mensaje preparado con dedicación." },
+                    { title: "Biblia Online Integrada", desc: "Consulta versículos, compara traducciones y estudia la Palabra sin salir de la plataforma." }
+                ]
+            },
+            ia: {
+                title: 'La IA no reemplaza el llamado.',
+                titleHighlight: 'Ella apoya la preparación.',
+                desc: 'La Inteligencia Artificial de Verbo Cast fue creada para ayudar, no para predicar por ti. Sirve para:',
+                items: ["Desbloquear ideas", "Organizar pensamientos", "Ahorrar tiempo"],
+                disclaimer: '👉 El contenido final sigue siendo tuyo, con tu visión, tu unción y tu responsabilidad ante Dios y la iglesia.'
+            },
+            testimonials: {
+                title: 'Pastores y predicadores que ya usan aprueban',
+                subtitle: 'Cientos de mensajes preparados con más claridad, menos prisa y mucha más organización.',
+                items: [
+                    { name: "Pastor Marcos A.", text: "Siempre dejaba el sermón para última hora. Con Verbo Cast, ahora logro organizar todo con anticipación. Cambió completamente mi rutina." },
+                    { name: "Pr. André S.", text: "La herramienta de IA me ayuda mucho cuando estoy sin ideas. No reemplaza mi estudio, pero acelera demasiado el proceso." },
+                    { name: "Presbítero Lucas M.", text: "Antes perdía mis sermones antiguos. Ahora tengo todo guardado, organizado y aún logro compartir directo en WhatsApp." },
+                    { name: "Pastor João C.", text: "Es una plataforma pensada para quien vive el ministerio de verdad." },
+                    { name: "Evangelista Rafael P.", text: "Vale cada centavo. Hoy preparo mis sermones con más paz, más claridad y menos presión." },
+                    { name: "Pastor Daniel R.", text: "Después de que empecé a usar Verbo Cast, dejé de sentir ese peso antes de preparar el sermón." },
+                    { name: "Misionero Felipe T.", text: "Lo que más me gustó fue la practicidad. En pocos minutos logro estructurar el mensaje." },
+                    { name: "Pastor Elias N.", text: "Uso el plan Pro y la IA ilimitada hace toda la diferencia." }
+                ],
+                rating: '⭐ Evaluación media: 5,0 de 5 estrellas',
+                cta: 'Quiero preparar mis sermones con más claridad'
+            },
+            plans: {
+                title: 'Elige el plan ideal para tu ministerio',
+                titleMobile: 'Planes y Precios',
+                subtitle: 'Invierte en tu ministerio con herramientas que optimizan tu tiempo de estudio.',
+                loading: 'Cargando planes...',
+                recommended: 'Más Recomendado',
+                month: '/mes',
+                unlimitedSermons: 'Sermones ILIMITADOS',
+                sermonsPerMonth: 'sermones por mes',
+                unlimitedStudies: 'Estudios Bíblicos ILIMITADOS',
+                studiesPerMonth: 'estudios bíblicos por mes',
+                aiIncluded: 'Inteligencia Artificial incluida',
+                noAi: 'Sin Inteligencia Artificial',
+                unlimitedUsers: 'Usuarios Ilimitados',
+                usersCount: 'usuario(s)',
+                unlimitedChurches: 'Iglesias Ilimitadas',
+                churchesCount: 'iglesia(s)',
+                onTeam: 'en el equipo',
+                manage: 'Gestión de',
+                pdfSave: 'Guardar sermones en PDF',
+                outlines: 'Bosquejos bíblicos y estudios',
+                fullBible: 'Biblia Online COMPLETA',
+                integratedBible: 'Biblia Online integrada',
+                whatsappShare: 'Compartir en WhatsApp',
+                iWant: 'Quiero el',
+                basicDesc: 'Ideal para organización y practicidad. 15 sermones por mes.',
+                proDesc: 'Perfecto para sermones frecuentes con IA. 40 sermones por mes.',
+                enterpriseDesc: 'Para púlpito serio. Sermones ILIMITADOS e IA.'
+            },
+            features: {
+                imagine: 'Imagina tu rutina con Verbo Cast',
+                imagineSubtitle: 'Imagina abrir tu panel y ya saber:',
+                items: [
+                    "Cuál será el próximo sermón",
+                    "Dónde está cada mensaje",
+                    "Tener apoyo cuando falte inspiración",
+                    "Tener más tiempo para oración, estudio y cuidado pastoral"
+                ],
+                quick: 'Menos prisa.',
+                organized: 'Más claridad.',
+                consistent: 'Más consistencia en el púlpito.'
+            },
+            mission: {
+                title: 'Más que tecnología, una herramienta de ministerio.',
+                p1: 'Libera tiempo para el cuidado pastoral directo, dejando que Verbo Cast auxilie en la estructuración del estudio.',
+                p2: 'Encuentra nuevas perspectivas e ilustraciones para textos clásicos, renovando el interés de los oyentes.',
+                quote: '"Verbo Cast nació para estar al lado de quien predica. Creemos que la tecnología debe servir al Reino, facilitando la preparación intelectual para que el pastor se enfoque en la preparación espiritual."',
+                founderName: 'Pr. André Marques',
+                founderRole: 'Fundador de Verbo Cast'
+            },
+            cta: {
+                title: 'Tu próximo sermón puede comenzar ahora',
+                desc: 'Verbo Cast fue creado para servir el ministerio, respetar el llamado y facilitar la preparación de la Palabra. Haz clic en el botón de abajo, elige tu plan y comienza hoy mismo.',
+                btn: 'Comenzar con Verbo Cast ahora'
+            },
+            footer: {
+                rights: '© 2026 Verbo Cast AI. Preparando corazones para el mensaje bíblico.',
+                privacy: 'Privacidad',
+                terms: 'Términos',
+                contact: 'Contacto',
+                support: 'Soporte Online'
+            }
         }
     },
     en: {
-        flags: { pt: '🇧🇷', es: '🇪🇸', en: '🇺🇸' },
+        flags: { pt: '🇧🇷', es: '🇪🇸', en: '🇺🇸', fr: '🇫🇷', de: '🇩🇪' },
         nav: {
             brand: 'VerboCast',
             home: 'Home',
@@ -615,6 +891,144 @@ export const translations = {
             copy: 'Copy Study',
             newSearch: 'New Search',
             verseRef: 'Biblical References'
+        },
+        landing: {
+            nav: {
+                system: 'The System',
+                plans: 'Plans',
+                testimonials: 'Testimonials',
+                login: 'Login',
+                createAccount: 'Sign Up'
+            },
+            hero: {
+                badge: 'The first AI made for pastors and leaders',
+                title: 'Prepare',
+                titleHighlight: 'powerful',
+                titleEnd: 'sermons in minutes.',
+                subtitle: 'No stress. No writers block. No wasted time.',
+                desc: 'Verbo Cast helps pastors and preachers create, organize, save, and share sermons clearly — using technology and Artificial Intelligence to favor your calling.',
+                startBtn: 'Start now',
+                learnBtn: 'Learn about the System'
+            },
+            pain: {
+                title: 'You were not called to live putting out fires every Sunday',
+                subtitle: 'If preparing a sermon became synonymous with:',
+                items: [
+                    "Racing against time every week",
+                    "Having good ideas but not being able to organize them",
+                    "Leaving the sermon for the last day",
+                    "Losing old messages because they weren't saved",
+                    "Feeling the weight of responsibility before going up to the pulpit"
+                ],
+                conclusion1: '👉 The problem is not lack of faith. 👉 Nor lack of dedication.',
+                conclusion2: 'It is the lack of a simple, fast, and intelligent system for preparing the Word.'
+            },
+            solution: {
+                title: 'Meet Verbo Cast',
+                desc: 'Verbo Cast is a platform created especially for pastors, preachers, and leaders who want:',
+                items: [
+                    "To save time in sermon preparation",
+                    "To have clearer and well-structured messages",
+                    "To keep everything in one place",
+                    "To share messages easily",
+                    "To rely on AI when inspiration doesn't come"
+                ],
+                note: 'All this in a simple, intuitive dashboard made for those who live ministry in practice.',
+                summaryTitle: 'Everything you need to prepare your sermons, in one place',
+                cards: [
+                    { title: "Structured Sermon Creator", desc: "Build complete sermons with theme, base text, introduction, development, and conclusion." },
+                    { title: "Artificial Intelligence support", desc: "Use AI to unlock ideas, generate biblical outlines, and organize thoughts." },
+                    { title: "Save Sermons as PDF", desc: "Keep your sermons always saved, organized, and ready to reuse." },
+                    { title: "WhatsApp Sharing", desc: "Send messages to leaders, cells, and teams with one click." },
+                    { title: "Sermon Library", desc: "Never lose a good message prepared with dedication again." },
+                    { title: "Integrated Online Bible", desc: "Consult verses, compare translations, and study the Word without leaving the platform." }
+                ]
+            },
+            ia: {
+                title: 'AI does not replace the calling.',
+                titleHighlight: 'It supports preparation.',
+                desc: 'Verbo Cast Artificial Intelligence was created to help, not to preach for you. It serves to:',
+                items: ["Unlock ideas", "Organize thoughts", "Save time"],
+                disclaimer: '👉 The final content remains yours, with your vision, your anointing, and your responsibility before God and the church.'
+            },
+            testimonials: {
+                title: 'Pastores and preachers who already use it approve',
+                subtitle: 'Hundreds of messages prepared with more clarity, less haste, and much more organization.',
+                items: [
+                    { name: "Pastor Marcos A.", text: "I always left the sermon for the last minute. With Verbo Cast, now I can organize everything in advance. It completely changed my routine." },
+                    { name: "Pr. André S.", text: "The AI tool helps me a lot when I run out of ideas. It doesn't replace my study, but it speeds up the process a lot." },
+                    { name: "Elder Lucas M.", text: "Before I lost my old sermons. Now I have everything saved, organized, and I can even share directly on WhatsApp." },
+                    { name: "Pastor João C.", text: "It is a platform designed for those who truly live the ministry." },
+                    { name: "Evangelist Rafael P.", text: "Worth every penny. Today I prepare my sermons with more peace, more clarity, and less pressure." },
+                    { name: "Pastor Daniel R.", text: "After I started using Verbo Cast, I stopped feeling that weight before preparing the sermon." },
+                    { name: "Missionary Felipe T.", text: "What I liked most was the practicality. In a few minutes I can structure the message." },
+                    { name: "Pastor Elias N.", text: "I use the Pro plan and the unlimited AI makes all the difference." }
+                ],
+                rating: '⭐ Average rating: 5.0 out of 5 stars',
+                cta: 'I want to prepare my sermons with more clarity'
+            },
+            plans: {
+                title: 'Choose the ideal plan for your ministry',
+                titleMobile: 'Plans & Pricing',
+                subtitle: 'Invest in your ministry with tools that optimize your study time.',
+                loading: 'Loading plans...',
+                recommended: 'Most Recommended',
+                month: '/month',
+                unlimitedSermons: 'UNLIMITED Sermons',
+                sermonsPerMonth: 'sermons per month',
+                unlimitedStudies: 'UNLIMITED Bible Studies',
+                studiesPerMonth: 'bible studies per month',
+                aiIncluded: 'Artificial Intelligence included',
+                noAi: 'No Artificial Intelligence',
+                unlimitedUsers: 'Unlimited Users',
+                usersCount: 'user(s)',
+                unlimitedChurches: 'Unlimited Churches',
+                churchesCount: 'church(es)',
+                onTeam: 'on team',
+                manage: 'Manage',
+                pdfSave: 'Save sermons as PDF',
+                outlines: 'Biblical outlines and studies',
+                fullBible: 'COMPLETE Online Bible',
+                integratedBible: 'Integrated Online Bible',
+                whatsappShare: 'Share on WhatsApp',
+                iWant: 'I want the',
+                basicDesc: 'Ideal for organization and practicality. 15 sermons per month.',
+                proDesc: 'Perfect for frequent sermons with AI. 40 sermons per month.',
+                enterpriseDesc: 'For serious pulpit. UNLIMITED Sermons and AI.'
+            },
+            features: {
+                imagine: 'Imagine your routine with Verbo Cast',
+                imagineSubtitle: 'Imagine opening your dashboard and already knowing:',
+                items: [
+                    "What the next sermon will be",
+                    "Where each message is",
+                    "Having support when inspiration is lacking",
+                    "Having more time for prayer, study, and pastoral care"
+                ],
+                quick: 'Less haste.',
+                organized: 'More clarity.',
+                consistent: 'More consistency in the pulpit.'
+            },
+            mission: {
+                title: 'More than technology, a ministry tool.',
+                p1: 'Free up time for direct pastoral care, letting Verbo Cast assist in structuring the study.',
+                p2: 'Find new perspectives and illustrations for classic texts, renewing listeners interest.',
+                quote: '"Verbo Cast was born to be alongside those who preach. We believe that technology should serve the Kingdom, facilitating intellectual preparation so the pastor can focus on spiritual preparation."',
+                founderName: 'Pr. André Marques',
+                founderRole: 'Founder of Verbo Cast'
+            },
+            cta: {
+                title: 'Your next sermon can start now',
+                desc: 'Verbo Cast was created to serve the ministry, respect the calling, and facilitate the preparation of the Word. Click the button below, choose your plan, and start today.',
+                btn: 'Start with Verbo Cast now'
+            },
+            footer: {
+                rights: '© 2026 Verbo Cast AI. Preparing hearts for the biblical message.',
+                privacy: 'Privacy',
+                terms: 'Terms',
+                contact: 'Contact',
+                support: 'Online Support'
+            }
         }
     },
     fr: {
@@ -810,7 +1224,145 @@ export const translations = {
             results: 'Résultat de l\'Étude',
             copy: 'Copier l\'Étude',
             newSearch: 'Nouvelle Recherche',
-            verseRef: 'Références Bibliques'
+            verseRef: 'Referencias Bíblicas'
+        },
+        landing: {
+            nav: {
+                system: 'Le Système',
+                plans: 'Plans',
+                testimonials: 'Témoignages',
+                login: 'Connexion',
+                createAccount: 'Créer un compte'
+            },
+            hero: {
+                badge: 'La première IA conçue pour les pasteurs et les leaders',
+                title: 'Préparez des sermons',
+                titleHighlight: 'puissants',
+                titleEnd: 'en quelques minutes.',
+                subtitle: 'Sans stress. Sans blocage. Sans perte de temps.',
+                desc: 'Verbo Cast aide les pasteurs et les prédicateurs à créer, organiser, enregistrer et partager des sermons avec clarté — en utilisant la technologie et l\'Intelligence Artificielle en faveur de votre appel.',
+                startBtn: 'Commencer maintenant',
+                learnBtn: 'Découvrir le Système'
+            },
+            pain: {
+                title: 'Vous n\'avez pas été appelé pour vivre à éteindre des incendies chaque dimanche',
+                subtitle: 'Si préparer un sermon est devenu synonyme de :',
+                items: [
+                    "Courir contre la montre chaque semaine",
+                    "Avoir de bonnes idées, mais ne pas réussir à les organiser",
+                    "Laisser le sermon pour le dernier jour",
+                    "Perdre des messages anciens parce qu'ils n'étaient pas enregistrés",
+                    "Sentir le poids de la responsabilité avant de monter en chaire"
+                ],
+                conclusion1: '👉 Le problème n\'est pas le manque de foi. 👉 Ni le manque de dévouement.',
+                conclusion2: 'C\'est le manque d\'un système simple, rapide et intelligent pour la préparation de la Parole.'
+            },
+            solution: {
+                title: 'Découvrez Verbo Cast',
+                desc: 'Verbo Cast est une plateforme créée spécialement pour les pasteurs, prédicateurs et leaders qui veulent :',
+                items: [
+                    "Gagner du temps dans la préparation des sermons",
+                    "Avoir des messages plus clairs et bien structurés",
+                    "Tout garder au même endroit",
+                    "Partager des messages facilement",
+                    "Compter sur l'IA quand l'inspiration ne vient pas"
+                ],
+                note: 'Tout cela dans un tableau de bord simple, intuitif et fait pour ceux qui vivent le ministère dans la pratique.',
+                summaryTitle: 'Tout ce dont vous avez besoin pour préparer vos sermons, en un seul endroit',
+                cards: [
+                    { title: "Créateur de Sermons Structuré", desc: "Montez des sermons complets avec thème, texte de base, introduction, développement et conclusion." },
+                    { title: "Intelligence Artificielle comme soutien", desc: "Utilisez l'IA pour débloquer des idées, générer des plans bibliques et organiser vos pensées." },
+                    { title: "Enregistrer les Sermons en PDF", desc: "Ayez vos sermons toujours enregistrés, organisés et prêts à être réutilisés." },
+                    { title: "Partage sur WhatsApp", desc: "Envoyez des messages aux leaders, cellules et équipes en un clic." },
+                    { title: "Bibliothèque de Sermons", desc: "Ne perdez plus jamais un bon message préparé avec dévouement." },
+                    { title: "Bible en Ligne Intégrée", desc: "Consultez des versets, comparez des traductions et étudiez la Parole sans quitter la plateforme." }
+                ]
+            },
+            ia: {
+                title: 'L\'IA ne remplace pas l\'appel.',
+                titleHighlight: 'Elle soutient la préparation.',
+                desc: 'L\'Intelligence Artificielle de Verbo Cast a été créée pour aider, pas pour prêcher à votre place. Elle sert à :',
+                items: ["Débloquer des idées", "Organiser les pensées", "Gagner du temps"],
+                disclaimer: '👉 Le contenu final reste le vôtre, avec votre vision, votre onction et votre responsabilité devant Dieu et l\'église.'
+            },
+            testimonials: {
+                title: 'Les pasteurs et prédicateurs qui l\'utilisent déjà approuvent',
+                subtitle: 'Des centaines de messages préparés avec plus de clarté, moins de précipitation et beaucoup plus d\'organisation.',
+                items: [
+                    { name: "Pasteur Marcos A.", text: "Je laissais toujours le sermon pour la dernière minute. Avec Verbo Cast, j'arrive maintenant à tout organiser à l'avance. Cela a complètement changé ma routine." },
+                    { name: "Pr. André S.", text: "L'outil d'IA m'aide beaucoup quand je suis à court d'idées. Il ne remplace pas mon étude, mais il accélère énormément le processus." },
+                    { name: "Ancien Lucas M.", text: "Avant, je perdais mes anciens sermons. Maintenant, j'ai tout enregistré, organisé et je peux même partager directement sur WhatsApp." },
+                    { name: "Pasteur João C.", text: "C'est une plateforme pensée pour ceux qui vivent vraiment le ministère." },
+                    { name: "Évangéliste Rafael P.", text: "Vaut chaque centime. Aujourd'hui, je prépare mes sermons avec plus de paix, plus de clarté et moins de pression." },
+                    { name: "Pasteur Daniel R.", text: "Après avoir commencé à utiliser Verbo Cast, j'ai cessé de ressentir ce poids avant de préparer le sermon." },
+                    { name: "Missionnaire Felipe T.", text: "Ce que j'ai le plus aimé, c'est la praticité. En quelques minutes, j'arrive à structurer le message." },
+                    { name: "Pasteur Elias N.", text: "J'utilise le plan Pro et l'IA illimitée fait toute la différence." }
+                ],
+                rating: '⭐ Note moyenne : 5,0 sur 5 étoiles',
+                cta: 'Je veux préparer mes sermons avec plus de clarté'
+            },
+            plans: {
+                title: 'Choisissez le plan idéal pour votre ministère',
+                titleMobile: 'Plans et Prix',
+                subtitle: 'Investissez dans votre ministère avec des outils qui optimisent votre temps d\'étude.',
+                loading: 'Chargement des plans...',
+                recommended: 'Le Plus Recommandé',
+                month: '/mois',
+                unlimitedSermons: 'Sermons ILLIMITÉS',
+                sermonsPerMonth: 'sermons par mois',
+                unlimitedStudies: 'Études Bibliques ILLIMITÉES',
+                studiesPerMonth: 'études bibliques par mois',
+                aiIncluded: 'Intelligence Artificielle incluse',
+                noAi: 'Sans Intelligence Artificielle',
+                unlimitedUsers: 'Utilisateurs Illimités',
+                usersCount: 'utilisateur(s)',
+                unlimitedChurches: 'Églises Illimitées',
+                churchesCount: 'église(s)',
+                onTeam: 'dans l\'équipe',
+                manage: 'Gestion de',
+                pdfSave: 'Enregistrer les sermons en PDF',
+                outlines: 'Plans bibliques et études',
+                fullBible: 'Bible en Ligne COMPLÈTE',
+                integratedBible: 'Bible en Ligne intégrée',
+                whatsappShare: 'Partager sur WhatsApp',
+                iWant: 'Je veux le',
+                basicDesc: 'Idéal pour l\'organisation et la praticité. 15 sermons par mois.',
+                proDesc: 'Parfait pour des sermons fréquents avec IA. 40 sermons par mois.',
+                enterpriseDesc: 'Pour la chaire sérieuse. Sermons ILLIMITÉS et IA.'
+            },
+            features: {
+                imagine: 'Imaginez votre routine avec Verbo Cast',
+                imagineSubtitle: 'Imaginez ouvrir votre tableau de bord et déjà savoir :',
+                items: [
+                    "Quel sera le prochain sermon",
+                    "Où se trouve chaque message",
+                    "Avoir du soutien quand l'inspiration manque",
+                    "Avoir plus de temps pour la prière, l'étude et le soin pastoral"
+                ],
+                quick: 'Moins de précipitation.',
+                organized: 'Plus de clarté.',
+                consistent: 'Plus de cohérence à la chaire.'
+            },
+            mission: {
+                title: 'Plus que de la technologie, un outil de ministère.',
+                p1: 'Libérez du temps pour le soin pastoral direct, en laissant Verbo Cast aider à la structuration de l\'étude.',
+                p2: 'Trouvez de nouvelles perspectives et illustrations pour des textes classiques, renouvelant l\'intérêt des auditeurs.',
+                quote: '"Verbo Cast est né pour être aux côtés de ceux qui prêchent. Nous croyons que la technologie doit servir le Royaume, facilitant la préparation intellectuelle pour que le pasteur se concentre sur la préparation spirituelle."',
+                founderName: 'Pr. André Marques',
+                founderRole: 'Fondateur de Verbo Cast'
+            },
+            cta: {
+                title: 'Votre prochain sermon peut commencer maintenant',
+                desc: 'Verbo Cast a été créé pour servir le ministère, respecter l\'appel et faciliter la préparation de la Parole. Cliquez sur le bouton ci-dessous, choisissez votre plan et commencez dès aujourd\'hui.',
+                btn: 'Commencer avec Verbo Cast maintenant'
+            },
+            footer: {
+                rights: '© 2026 Verbo Cast AI. Préparer les cœurs pour le message biblique.',
+                privacy: 'Confidentialité',
+                terms: 'Conditions',
+                contact: 'Contact',
+                support: 'Support en Ligne'
+            }
         }
     },
     de: {
@@ -1011,6 +1563,144 @@ export const translations = {
             copy: 'Studium kopieren',
             newSearch: 'Neue Suche',
             verseRef: 'Biblische Referenzen'
+        },
+        landing: {
+            nav: {
+                system: 'Das System',
+                plans: 'Preise',
+                testimonials: 'Referenzen',
+                login: 'Anmelden',
+                createAccount: 'Konto erstellen'
+            },
+            hero: {
+                badge: 'Die erste KI speziell für Pastoren und Leiter',
+                title: 'Bereiten Sie',
+                titleHighlight: 'mächtige',
+                titleEnd: 'Predigten in Minuten vor.',
+                subtitle: 'Kein Stress. Keine Blockaden. Keine Zeitverschwendung.',
+                desc: 'Verbo Cast hilft Pastoren und Predigern, Predigten klar zu erstellen, zu organisieren, zu speichern und zu teilen — unter Nutzung von Technologie und Künstlicher Intelligenz für Ihre Berufung.',
+                startBtn: 'Jetzt starten',
+                learnBtn: 'System kennenlernen'
+            },
+            pain: {
+                title: 'Sie wurden nicht berufen, um jeden Sonntag Brände zu löschen',
+                subtitle: 'Wenn die Vorbereitung einer Predigt zum Synonym wurde für:',
+                items: [
+                    "Jede Woche gegen die Zeit rennen",
+                    "Gute Ideen haben, aber sie nicht organisieren können",
+                    "Die Predigt auf den letzten Tag schieben",
+                    "Alte Botschaften verlieren, weil sie nicht gespeichert waren",
+                    "Das Gewicht der Verantwortung spüren, bevor man auf die Kanzel geht"
+                ],
+                conclusion1: '👉 Das Problem ist kein Mangel an Glauben. 👉 Noch Mangel an Hingabe.',
+                conclusion2: 'Es fehlt ein einfaches, schnelles und intelligentes System zur Vorbereitung des Wortes.'
+            },
+            solution: {
+                title: 'Lernen Sie Verbo Cast kennen',
+                desc: 'Verbo Cast ist eine Plattform, die speziell für Pastoren, Prediger und Leiter entwickelt wurde, die:',
+                items: [
+                    "Zeit bei der Predigtvorbereitung sparen wollen",
+                    "Klarere und gut strukturierte Botschaften haben wollen",
+                    "Alles an einem Ort aufbewahren wollen",
+                    "Botschaften einfach teilen wollen",
+                    "Sich auf KI verlassen wollen, wenn die Inspiration fehlt"
+                ],
+                note: 'All dies in einem einfachen, intuitiven Dashboard für diejenigen, die den Dienst in der Praxis leben.',
+                summaryTitle: 'Alles, was Sie für die Vorbereitung Ihrer Predigten benötigen, an einem Ort',
+                cards: [
+                    { title: "Strukturierter Predigt-Ersteller", desc: "Erstellen Sie vollständige Predigten mit Thema, Basistext, Einleitung, Hauptteil und Schluss." },
+                    { title: "Künstliche Intelligenz als Unterstützung", desc: "Nutzen Sie KI, um Ideen freizusetzen, biblische Gliederungen zu erstellen und Gedanken zu ordnen." },
+                    { title: "Predigten als PDF speichern", desc: "Haben Sie Ihre Predigten immer gespeichert, organisiert und bereit zur Wiederverwendung." },
+                    { title: "Teilen auf WhatsApp", desc: "Senden Sie Nachrichten an Leiter, Zellen und Teams mit einem Klick." },
+                    { title: "Predigtbibliothek", desc: "Verlieren Sie nie wieder eine gute Botschaft, die mit Hingabe vorbereitet wurde." },
+                    { title: "Integrierte Online-Bibel", desc: "Konsultieren Sie Verse, vergleichen Sie Übersetzungen und studieren Sie das Wort, ohne die Plattform zu verlassen." }
+                ]
+            },
+            ia: {
+                title: 'Die KI ersetzt nicht die Berufung.',
+                titleHighlight: 'Sie unterstützt die Vorbereitung.',
+                desc: 'Die Künstliche Intelligenz von Verbo Cast wurde geschaffen, um zu helfen, nicht um für Sie zu predigen. Sie dient dazu:',
+                items: ["Ideen freizusetzen", "Gedanken zu ordnen", "Zeit zu sparen"],
+                disclaimer: '👉 Der endgültige Inhalt bleibt Ihrer, mit Ihrer Vision, Ihrer Salbung und Ihrer Verantwortung vor Gott und der Gemeinde.'
+            },
+            testimonials: {
+                title: 'Pastoren und Prediger, die es bereits nutzen, empfehlen es',
+                subtitle: 'Hunderte von Botschaften mit mehr Klarheit, weniger Eile und viel mehr Organisation vorbereitet.',
+                items: [
+                    { name: "Pastor Marcos A.", text: "Ich habe die Predigt immer bis zur letzten Minute aufgeschoben. Mit Verbo Cast kann ich jetzt alles im Voraus organisieren. Es hat meine Routine komplett verändert." },
+                    { name: "Pr. André S.", text: "Das KI-Tool hilft mir sehr, wenn mir die Ideen ausgehen. Es ersetzt nicht mein Studium, aber es beschleunigt den Prozess enorm." },
+                    { name: "Ältester Lucas M.", text: "Früher habe ich meine alten Predigten verloren. Jetzt habe ich alles gespeichert, organisiert und kann sogar direkt auf WhatsApp teilen." },
+                    { name: "Pastor João C.", text: "Es ist eine Plattform, die für diejenigen gedacht ist, die den Dienst wirklich leben." },
+                    { name: "Evangelist Rafael P.", text: "Jeden Cent wert. Heute bereite ich meine Predigten mit mehr Frieden, mehr Klarheit und weniger Druck vor." },
+                    { name: "Pastor Daniel R.", text: "Nachdem ich angefangen habe, Verbo Cast zu nutzen, habe ich aufgehört, dieses Gewicht vor der Predigtvorbereitung zu spüren." },
+                    { name: "Missionar Felipe T.", text: "Was mir am besten gefallen hat, war die Praktikabilität. In wenigen Minuten kann ich die Botschaft strukturieren." },
+                    { name: "Pastor Elias N.", text: "Ich nutze den Pro-Plan und die unbegrenzte KI macht den ganzen Unterschied." }
+                ],
+                rating: '⭐ Durchschnittliche Bewertung: 5,0 von 5 Sternen',
+                cta: 'Ich möchte meine Predigten mit mehr Klarheit vorbereiten'
+            },
+            plans: {
+                title: 'Wählen Sie den idealen Plan für Ihren Dienst',
+                titleMobile: 'Preise und Pläne',
+                subtitle: 'Investieren Sie in Ihren Dienst mit Werkzeugen, die Ihre Studienzeit optimieren.',
+                loading: 'Pläne laden...',
+                recommended: 'Meist empfohlen',
+                month: '/Monat',
+                unlimitedSermons: 'UNBEGRENZTE Predigten',
+                sermonsPerMonth: 'Predigten pro Monat',
+                unlimitedStudies: 'UNBEGRENZTE Bibelstudien',
+                studiesPerMonth: 'Bibelstudien pro Monat',
+                aiIncluded: 'Künstliche Intelligenz inklusive',
+                noAi: 'Keine Künstliche Intelligenz',
+                unlimitedUsers: 'Unbegrenzte Benutzer',
+                usersCount: 'Benutzer',
+                unlimitedChurches: 'Unbegrenzte Kirchen',
+                churchesCount: 'Kirche(n)',
+                onTeam: 'im Team',
+                manage: 'Verwaltung von',
+                pdfSave: 'Predigten als PDF speichern',
+                outlines: 'Biblische Gliederungen und Studien',
+                fullBible: 'VOLLSTÄNDIGE Online-Bibel',
+                integratedBible: 'Integrierte Online-Bibel',
+                whatsappShare: 'Auf WhatsApp teilen',
+                iWant: 'Ich möchte den',
+                basicDesc: 'Ideal für Organisation und Praktikabilität. 15 Predigten pro Monat.',
+                proDesc: 'Perfekt für häufige Predigten mit KI. 40 Predigten pro Monat.',
+                enterpriseDesc: 'Für ernsthafte Kanzeln. UNBEGRENZTE Predigten und KI.'
+            },
+            features: {
+                imagine: 'Stellen Sie sich Ihre Routine mit Verbo Cast vor',
+                imagineSubtitle: 'Stellen Sie sich vor, Sie öffnen Ihr Dashboard und wissen bereits:',
+                items: [
+                    "Was die nächste Predigt sein wird",
+                    "Wo jede Botschaft ist",
+                    "Unterstützung zu haben, wenn Inspiration fehlt",
+                    "Mehr Zeit für Gebet, Studium und Seelsorge zu haben"
+                ],
+                quick: 'Weniger Eile.',
+                organized: 'Mehr Klarheit.',
+                consistent: 'Mehr Konsistenz auf der Kanzel.'
+            },
+            mission: {
+                title: 'Mehr als Technologie, ein Werkzeug für den Dienst.',
+                p1: 'Setzen Sie Zeit für die direkte Seelsorge frei, indem Sie Verbo Cast bei der Strukturierung des Studiums helfen lassen.',
+                p2: 'Finden Sie neue Perspektiven und Illustrationen für klassische Texte und erneuern Sie das Interesse der Zuhörer.',
+                quote: '"Verbo Cast wurde geboren, um an der Seite derer zu stehen, die predigen. Wir glauben, dass Technologie dem Reich Gottes dienen sollte, indem sie die intellektuelle Vorbereitung erleichtert, damit sich der Pastor auf die geistliche Vorbereitung konzentrieren kann."',
+                founderName: 'Pr. André Marques',
+                founderRole: 'Gründer von Verbo Cast'
+            },
+            cta: {
+                title: 'Ihre nächste Predigt kann jetzt beginnen',
+                desc: 'Verbo Cast wurde geschaffen, um dem Dienst zu dienen, die Berufung zu respektieren und die Vorbereitung des Wortes zu erleichtern. Klicken Sie auf die Schaltfläche unten, wählen Sie Ihren Plan und beginnen Sie noch heute.',
+                btn: 'Jetzt mit Verbo Cast beginnen'
+            },
+            footer: {
+                rights: '© 2026 Verbo Cast AI. Herzen auf die biblische Botschaft vorbereiten.',
+                privacy: 'Datenschutz',
+                terms: 'AGB',
+                contact: 'Kontakt',
+                support: 'Online-Support'
+            }
         }
     }
 };

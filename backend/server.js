@@ -38,6 +38,8 @@ app.use('/plans', require('./src/routes/planRoutes'));
 app.use('/webhooks', require('./src/routes/webhookRoutes'));
 app.use('/bible-study', require('./src/routes/bibleStudyRoutes'));
 
+app.use('/admin', require('./src/routes/adminRoutes'));
+
 // Database connection
 sequelize.authenticate()
     .then(() => console.log('Database connected'))
