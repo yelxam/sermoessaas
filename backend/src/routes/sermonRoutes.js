@@ -12,5 +12,7 @@ router.put('/:id', auth, sermonController.updateSermon);
 router.delete('/:id', auth, sermonController.deleteSermon);
 router.post('/:id/translate', auth, sermonController.translateSermon);
 router.post('/study', auth, require('../controllers/bibleStudyController').conductStudy);
+router.get('/study', auth, require('../controllers/bibleStudyController').getStudies);
+router.delete('/study/:id', auth, require('../controllers/bibleStudyController').deleteStudy);
 
 module.exports = router;

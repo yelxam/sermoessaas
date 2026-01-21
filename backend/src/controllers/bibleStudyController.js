@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Company = require('../models/Company');
+const BibleStudy = require('../models/BibleStudy');
 const Groq = require('groq-sdk');
 require('dotenv').config();
 
@@ -36,6 +37,13 @@ exports.conductStudy = async (req, res) => {
 
         if (!user || !user.Company) {
             return res.status(400).json({ msg: 'User company not found' });
+        }
+
+        // Plan check
+        if (!user.Company.allow_bible_study) {
+            return res.status(403).json({
+                msg: 'Seu plano atual não permite o acesso ao módulo de Estudos Bíblicos com IA. Por favor, faça um upgrade.'
+            });
         }
 
         const systemInstruction = `Você é um tutor teológico acadêmico e pastoral, especializado em exegese e hermenêutica bíblica.
@@ -81,7 +89,15 @@ Tema: ${topic}
             rawContent = completion.choices[0].message.content;
         }
 
-        res.json({ content: rawContent });
+        // Save study
+        const savedStudy = await BibleStudy.create({
+            user_id: req.user.id,
+            company_id: user.company_id,
+            topic,
+            content: rawContent
+        });
+
+        res.json(savedStudy);
 
     } catch (err) {
         console.error('Bible Study Error:', err);
@@ -89,5 +105,33 @@ Tema: ${topic}
             msg: 'Erro ao realizar estudo bíblico',
             error: err.message
         });
+    }
+};
+
+exports.getStudies = async (req, res) => {
+    try {
+        const studies = await BibleStudy.findAll({
+            where: { company_id: req.user.company_id },
+            order: [['created_at', 'DESC']]
+        });
+        res.json(studies);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+};
+
+exports.deleteStudy = async (req, res) => {
+    try {
+        const study = await BibleStudy.findOne({
+            where: { id: req.params.id, company_id: req.user.company_id }
+        });
+        if (!study) return res.status(404).json({ msg: 'Estudo não encontrado' });
+
+        await study.destroy();
+        res.json({ msg: 'Estudo deletado com sucesso' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
     }
 };

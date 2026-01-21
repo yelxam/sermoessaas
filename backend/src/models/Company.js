@@ -56,6 +56,10 @@ const Company = sequelize.define('Company', {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: null
+    },
+    allow_bible_study: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 }, {
     timestamps: true,

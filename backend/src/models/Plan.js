@@ -42,6 +42,10 @@ const Plan = sequelize.define('Plan', {
         type: DataTypes.INTEGER,
         defaultValue: 1,
         comment: '-1 for unlimited'
+    },
+    allow_bible_study: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 }, {
     timestamps: true,

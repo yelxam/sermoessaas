@@ -27,6 +27,7 @@ require('./src/models/Company');
 require('./src/models/User');
 require('./src/models/Sermon');
 require('./src/models/Church');
+require('./src/models/BibleStudy');
 
 // Routes
 app.use('/auth', require('./src/routes/authRoutes'));
