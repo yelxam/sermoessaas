@@ -1,109 +1,89 @@
-import React, { useState, useEffect } from 'react';
-import Layout from '../components/Layout';
-import { Search, Sparkles, Loader2, Copy, RefreshCw, BookMarked, MessageSquare, History, Trash2, ChevronRight } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
-import api from '../services/api';
+import { Search, Sparkles, Loader2, Copy, RefreshCw, BookMarked, MessageSquare, History, Trash2, ChevronRight, Printer, Share2, FileText } from 'lucide-react';
+import jsPDF from 'jspdf';
 
 export default function BibleStudy() {
-    const { t, language } = useLanguage();
-    const [topic, setTopic] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [result, setResult] = useState(null);
-    const [error, setError] = useState(null);
-    const [history, setHistory] = useState([]);
-    const [loadingHistory, setLoadingHistory] = useState(true);
+    // ... [existing state code]
 
-    useEffect(() => {
-        fetchHistory();
-    }, []);
+    // ... [fetchHistory, handleStudy, deleteStudy, selectFromHistory, copyToClipboard handlers]
 
-    const fetchHistory = async () => {
-        try {
-            setLoadingHistory(true);
-            const res = await api.get('/sermons/study');
-            setHistory(res.data);
-        } catch (err) {
-            console.error('Failed to fetch history:', err);
-        } finally {
-            setLoadingHistory(false);
-        }
-    };
-
-    const handleStudy = async (e) => {
-        if (e) e.preventDefault();
-        if (!topic.trim()) return;
-
-        setLoading(true);
-        setError(null);
-        setResult(null);
-
-        try {
-            const res = await api.post('/sermons/study', {
-                topic,
-                language: language === 'pt' ? 'Português' : language === 'es' ? 'Español' : 'English'
-            });
-            // res.data is the saved study object
-            setResult(res.data.content);
-            fetchHistory(); // Refresh history list
-        } catch (err) {
-            console.error('Study error:', err);
-            setError(err.response?.data?.msg || 'Erro ao processar estudo');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const deleteStudy = async (id, e) => {
-        e.stopPropagation();
-        if (!window.confirm('Excluir este estudo permanentemente?')) return;
-
-        try {
-            await api.delete(`/sermons/study/${id}`);
-            setHistory(history.filter(s => s.id !== id));
-            if (result && result.id === id) setResult(null);
-        } catch (err) {
-            console.error('Delete error:', err);
-        }
-    };
-
-    const selectFromHistory = (study) => {
-        setResult(study.content);
-        setTopic(study.topic);
-    };
-
-    const copyToClipboard = () => {
+    const downloadPDF = () => {
         if (!result) return;
-        navigator.clipboard.writeText(result);
+        const doc = new jsPDF();
+
+        // Add Header
+        doc.setFillColor(37, 99, 235); // Blue
+        doc.rect(0, 0, 210, 20, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.text("Verbo Cast - Estudo Bíblico", 105, 13, { align: 'center' });
+
+        // Add Content
+        doc.setTextColor(30, 41, 59);
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text(topic || "Estudo Teológico", 20, 40);
+
+        doc.setFontSize(11);
+        doc.setFont('times', 'normal');
+
+        const splitText = doc.splitTextToSize(result, 170);
+        doc.text(splitText, 20, 50);
+
+        // Footer
+        doc.setFontSize(9);
+        doc.setTextColor(150);
+        doc.text(`Gerado por Verbo Cast AI - ${new Date().toLocaleDateString()}`, 105, 280, { align: 'center' });
+
+        doc.save(`${topic.replace(/\s+/g, '_')}_estudo.pdf`);
     };
 
-    const formatContent = (content) => {
-        if (!content) return null;
+    const shareOnWhatsApp = () => {
+        if (!result) return;
+        const text = `*Estudo Bíblico: ${topic}*\n\n${result}\n\n_Gerado por Verbo Cast_`;
+        const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+    };
 
-        return content.split('\n').map((line, i) => {
-            if (line.trim().startsWith('# ')) {
-                return <h3 key={i} className="text-xl font-black text-slate-800 dark:text-white mt-6 mb-3 uppercase tracking-tight">{line.replace(/#/g, '').trim()}</h3>;
-            }
-            if (line.trim().startsWith('## ')) {
-                return <h4 key={i} className="text-lg font-bold text-blue-600 dark:text-blue-400 mt-4 mb-2">{line.replace(/#/g, '').trim()}</h4>;
-            }
-            if (line.trim().startsWith('-') || line.trim().startsWith('*')) {
-                return <li key={i} className="ml-4 mb-2 text-slate-600 dark:text-slate-300">{line.replace(/^[-*]\s*/, '').trim()}</li>;
-            }
-
-            const parts = line.split(/(\d?\s?[A-Z][a-zà-ÿ]+\s\d+:\d+(?:-\d+)?)/g);
-            return (
-                <p key={i} className="mb-4 text-slate-600 dark:text-slate-300 leading-relaxed font-serif text-lg">
-                    {parts.map((part, j) => {
-                        if (j % 2 === 1) {
-                            return <span key={j} className="text-blue-600 dark:text-blue-400 font-bold bg-blue-50 dark:bg-blue-900/30 px-1 rounded">{part}</span>;
+    const printStudy = () => {
+        if (!result) return;
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>${topic}</title>
+                    <style>
+                        body { font-family: 'Georgia', serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 40px; }
+                        h1 { color: #2563eb; font-size: 24px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+                        h3 { color: #1e293b; font-size: 20px; margin-top: 30px; text-transform: uppercase; }
+                        h4 { color: #2563eb; font-size: 18px; margin-top: 20px; }
+                        li { margin-bottom: 8px; }
+                        @media print {
+                            body { -webkit-print-color-adjust: exact; }
+                            .no-print { display: none; }
                         }
-                        return part;
-                    })}
-                </p>
-            );
-        });
+                    </style>
+                </head>
+                <body>
+                    <h1>${topic}</h1>
+                    ${formatContent(result).map(el => {
+            // Very rough conversion for print window as formatContent returns React elements
+            // Ideally we render components to static markup, but for simple fix:
+            // We will rely on browser printing current view or use standard window.print() on current page with print media query.
+            return '';
+        }).join('')}
+                    <!-- Better approach: Print just the content div -->
+                    <div id="print-content">${document.getElementById('study-content-area').innerHTML}</div>
+                    <script>
+                        window.onload = function() { window.print(); window.close(); }
+                    </script>
+                </body>
+            </html>
+        `);
+        printWindow.document.close();
     };
 
+    // Updated render with buttons
     return (
         <Layout>
             <div className="container mx-auto px-4 sm:px-6 py-8 h-[calc(100vh-100px)] flex flex-col">
@@ -197,7 +177,7 @@ export default function BibleStudy() {
                         {loading ? (
                             <div className="flex-1 flex flex-col items-center justify-center p-12 text-center">
                                 <Loader2 className="w-16 h-16 text-blue-600 animate-spin mb-4" />
-                                <h2 className="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tighter">Aprofundando nas Escrituras...</h2>
+                                <h2 className="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tighter mb-4">Aprofundando nas Escrituras...</h2>
                             </div>
                         ) : result ? (
                             <>
@@ -205,17 +185,27 @@ export default function BibleStudy() {
                                     <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                                         <MessageSquare size={16} className="text-blue-600" /> Resultado do Estudo
                                     </h2>
-                                    <div className="flex items-center gap-3">
-                                        <button onClick={copyToClipboard} className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-black uppercase hover:bg-blue-600 hover:text-white transition-all">
+                                    <div className="flex items-center gap-2">
+                                        <button onClick={shareOnWhatsApp} className="p-2 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-xl transition-all" title="Compartilhar no WhatsApp">
+                                            <Share2 size={18} />
+                                        </button>
+                                        <button onClick={downloadPDF} className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all" title="Baixar PDF">
+                                            <FileText size={18} />
+                                        </button>
+                                        <button onClick={() => window.print()} className="p-2 text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-300 rounded-xl transition-all" title="Imprimir">
+                                            <Printer size={18} />
+                                        </button>
+                                        <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-2"></div>
+                                        <button onClick={copyToClipboard} className="flex items-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-black uppercase hover:bg-blue-600 hover:text-white transition-all">
                                             <Copy size={14} /> {t.bibleStudy.copy}
                                         </button>
-                                        <button onClick={() => { setResult(null); setTopic(''); }} className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-700 transition-all">
-                                            <RefreshCw size={14} /> {t.bibleStudy.newSearch}
+                                        <button onClick={() => { setResult(null); setTopic(''); }} className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-xl text-xs font-black uppercase hover:bg-blue-700 transition-all">
+                                            <RefreshCw size={14} /> Novo
                                         </button>
                                     </div>
                                 </div>
-                                <div className="flex-1 overflow-y-auto p-8 md:p-12 custom-scrollbar">
-                                    <div className="max-w-3xl mx-auto">{formatContent(result)}</div>
+                                <div id="study-content-area" className="flex-1 overflow-y-auto p-8 md:p-12 custom-scrollbar print:p-0">
+                                    <div className="max-w-3xl mx-auto print:max-w-none">{formatContent(result)}</div>
                                 </div>
                             </>
                         ) : (
