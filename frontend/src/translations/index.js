@@ -9,7 +9,8 @@ export const translations = {
             team: 'Equipe',
             logout: 'Sair',
             hello: 'Olá',
-            bible: 'Bíblia'
+            bible: 'Bíblia',
+            bibleStudy: 'Estudo Bíblico'
         },
         auth: {
             welcomeUser: 'Bem-vindo de volta',
@@ -51,7 +52,10 @@ export const translations = {
             bibleAction: 'Acessar Bíblia',
             adminTitle: 'Painel de Administração',
             adminDesc: 'Gerenciar todas as empresas e planos.',
-            adminAction: 'Acessar Admin'
+            adminAction: 'Acessar Admin',
+            studyTitle: 'Pesquisa Teológica IA',
+            studyDesc: 'Realize estudos e consultas bíblicas aprofundadas com nossa IA.',
+            studyAction: 'Iniciar Estudo'
         },
         createSermon: {
             title: 'Gerador de Sermões AI',
@@ -190,6 +194,17 @@ export const translations = {
             errorVerses: 'Não foi possível carregar os versículos. Tente outra versão.',
             tryAgain: 'Tentar Novamente',
             back: 'Voltar para os livros'
+        },
+        bibleStudy: {
+            title: 'Pesquisa Teológica IA',
+            subtitle: 'Realize consultas e estudos aprofundados com o auxílio da nossa Inteligência Artificial.',
+            placeholder: 'Sobre o que você deseja estudar hoje? (ex: O amor de Deus, Oração, Fé)',
+            search: 'Pesquisar Tema',
+            searching: 'Consultando a IA...',
+            results: 'Resultado do Estudo',
+            copy: 'Copiar Estudo',
+            newSearch: 'Nova Pesquisa',
+            verseRef: 'Referências Bíblicas'
         }
     },
     es: {
@@ -202,7 +217,8 @@ export const translations = {
             team: 'Equipo',
             logout: 'Salir',
             hello: 'Hola',
-            bible: 'Biblia'
+            bible: 'Biblia',
+            bibleStudy: 'Estudio Bíblico'
         },
         auth: {
             welcomeUser: 'Bienvenido de nuevo',
@@ -243,7 +259,10 @@ export const translations = {
             bibleAction: 'Acceder a la Biblia',
             adminTitle: 'Panel de Administración',
             adminDesc: 'Gestionar todas las empresas y planes.',
-            adminAction: 'Acceder a Admin'
+            adminAction: 'Acceder a Admin',
+            studyTitle: 'Investigación Teológica IA',
+            studyDesc: 'Realice estudios y consultas bíblicas profundas con nuestra IA.',
+            studyAction: 'Iniciar Estudio'
         },
         createSermon: {
             title: 'Generador de Sermones IA',
@@ -378,6 +397,17 @@ export const translations = {
             errorVerses: 'No se pudieron cargar os versículos. Intente con otra versión.',
             tryAgain: 'Intentar de Nuevo',
             back: 'Volver a los libros'
+        },
+        bibleStudy: {
+            title: 'Investigación Teológica IA',
+            subtitle: 'Realice consultas y estudios profundos con la ayuda de nuestra Inteligencia Artificial.',
+            placeholder: '¿Sobre qué quieres estudiar hoy? (ej: El amor de Dios, Oración, Fe)',
+            search: 'Buscar Tema',
+            searching: 'Consultando a la IA...',
+            results: 'Resultado del Estudio',
+            copy: 'Copiar Estudio',
+            newSearch: 'Nueva Búsqueda',
+            verseRef: 'Referencias Bíblicas'
         }
     },
     en: {
@@ -390,7 +420,8 @@ export const translations = {
             team: 'Team',
             logout: 'Logout',
             hello: 'Hello',
-            bible: 'Bible'
+            bible: 'Bible',
+            bibleStudy: 'Bible Study'
         },
         auth: {
             welcomeUser: 'Welcome back',
@@ -431,7 +462,10 @@ export const translations = {
             bibleAction: 'Access Bible',
             adminTitle: 'Admin Dashboard',
             adminDesc: 'Manage all companies and plans.',
-            adminAction: 'Access Admin'
+            adminAction: 'Access Admin',
+            studyTitle: 'AI Theological Research',
+            studyDesc: 'Conduct deep biblical studies and inquiries with our AI.',
+            studyAction: 'Start Study'
         },
         createSermon: {
             title: 'AI Sermon Generator',
@@ -570,6 +604,17 @@ export const translations = {
             errorVerses: 'Could not load verses. Try another version.',
             tryAgain: 'Try Again',
             back: 'Back to books'
+        },
+        bibleStudy: {
+            title: 'AI Theological Research',
+            subtitle: 'Conduct deep inquiries and studies with the help of our Artificial Intelligence.',
+            placeholder: 'What do you want to study today? (e.g., God\'s Love, Prayer, Faith)',
+            search: 'Search Topic',
+            searching: 'Consulting AI...',
+            results: 'Study Result',
+            copy: 'Copy Study',
+            newSearch: 'New Search',
+            verseRef: 'Biblical References'
         }
     },
     fr: {

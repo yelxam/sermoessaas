@@ -13,6 +13,7 @@ import LandingPage from './pages/LandingPage';
 import AdminCompanies from './pages/AdminCompanies';
 import AdminRequests from './pages/AdminRequests';
 import Bible from './pages/Bible';
+import BibleStudy from './pages/BibleStudy';
 
 const ProtectedRoute = ({ children }) => {
     const token = localStorage.getItem('token');
@@ -29,7 +30,7 @@ function App() {
     return (
         <ThemeProvider>
             <LanguageProvider>
-                <Router>
+                <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                     <Routes>
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
@@ -43,6 +44,12 @@ function App() {
                         <Route path="/bible" element={
                             <ProtectedRoute>
                                 <Bible />
+                            </ProtectedRoute>
+                        } />
+
+                        <Route path="/bible-study" element={
+                            <ProtectedRoute>
+                                <BibleStudy />
                             </ProtectedRoute>
                         } />
 

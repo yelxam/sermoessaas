@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { Link } from 'react-router-dom';
-import { PlusCircle, FileText, ChevronRight, BookOpen } from 'lucide-react';
+import { PlusCircle, FileText, ChevronRight, BookOpen, Sparkles } from 'lucide-react';
 import api from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -75,6 +75,20 @@ export default function Dashboard() {
                         </div>
                         <div className="mt-4 flex items-center font-medium">
                             {t.dashboard.startNow} <ChevronRight className="ml-2 w-4 h-4" />
+                        </div>
+                    </Link>
+
+                    {/* Bible Study Quick Link */}
+                    <Link to="/bible-study" className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:shadow-2xl transition transform hover:-translate-y-1 overflow-hidden relative group">
+                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                            <Sparkles size={100} />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-semibold mb-2">{t.dashboard.studyTitle}</h3>
+                            <p className="text-indigo-50 text-sm">{t.dashboard.studyDesc}</p>
+                        </div>
+                        <div className="mt-4 flex items-center font-medium">
+                            {t.dashboard.studyAction} <ChevronRight className="ml-2 w-4 h-4" />
                         </div>
                     </Link>
 

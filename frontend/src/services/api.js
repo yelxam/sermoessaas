@@ -2,7 +2,7 @@ import axios from 'axios';
 import { config as appConfig } from '../config';
 
 const api = axios.create({
-    baseURL: appConfig.apiUrl,
+    baseURL: appConfig.apiUrl.endsWith('/') ? appConfig.apiUrl.slice(0, -1) : appConfig.apiUrl,
 });
 
 // Interceptor to add token

@@ -35,6 +35,7 @@ app.use('/users', require('./src/routes/userRoutes'));
 app.use('/companies', require('./src/routes/companyRoutes'));
 app.use('/plans', require('./src/routes/planRoutes'));
 app.use('/webhooks', require('./src/routes/webhookRoutes'));
+app.use('/bible-study', require('./src/routes/bibleStudyRoutes'));
 
 // Database connection
 sequelize.authenticate()

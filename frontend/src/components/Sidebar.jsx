@@ -2,7 +2,8 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
     BookOpen, Home, List, Plus, Users, Settings, CreditCard, LogOut,
-    ChevronLeft, ChevronRight, Globe, Sun, Moon, ShieldAlert, AlertCircle
+    ChevronLeft, ChevronRight, Globe, Sun, Moon, ShieldAlert, AlertCircle,
+    Search
 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
@@ -20,6 +21,7 @@ export default function Sidebar({ collapsed, setCollapsed, onNavigate }) {
     const navItems = [
         { path: '/dashboard', label: t.nav.home, icon: Home },
         { path: '/bible', label: t.nav.bible, icon: BookOpen },
+        { path: '/bible-study', label: t.nav.bibleStudy || 'Estudo Bíblico', icon: Search },
         { path: '/sermons', label: t.nav.mySermons, icon: List },
         { path: '/sermons/new', label: t.nav.newSermon, icon: Plus },
         { path: '/team', label: t.nav.team, icon: Users },
