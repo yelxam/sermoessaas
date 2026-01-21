@@ -1,10 +1,109 @@
+import React, { useState, useEffect } from 'react';
+import Layout from '../components/Layout';
 import { Search, Sparkles, Loader2, Copy, RefreshCw, BookMarked, MessageSquare, History, Trash2, ChevronRight, Printer, Share2, FileText } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
+import api from '../services/api';
 import jsPDF from 'jspdf';
 
 export default function BibleStudy() {
-    // ... [existing state code]
+    const { t, language } = useLanguage();
+    const [topic, setTopic] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [result, setResult] = useState(null);
+    const [error, setError] = useState(null);
+    const [history, setHistory] = useState([]);
+    const [loadingHistory, setLoadingHistory] = useState(true);
 
-    // ... [fetchHistory, handleStudy, deleteStudy, selectFromHistory, copyToClipboard handlers]
+    useEffect(() => {
+        fetchHistory();
+    }, []);
+
+    const fetchHistory = async () => {
+        try {
+            setLoadingHistory(true);
+            const res = await api.get('/sermons/study');
+            setHistory(res.data);
+        } catch (err) {
+            console.error('Failed to fetch history:', err);
+        } finally {
+            setLoadingHistory(false);
+        }
+    };
+
+    const handleStudy = async (e) => {
+        if (e) e.preventDefault();
+        if (!topic.trim()) return;
+
+        setLoading(true);
+        setError(null);
+        setResult(null);
+
+        try {
+            const res = await api.post('/sermons/study', {
+                topic,
+                language: language === 'pt' ? 'Português' : language === 'es' ? 'Español' : 'English'
+            });
+            // res.data is the saved study object
+            setResult(res.data.content);
+            fetchHistory(); // Refresh history list
+        } catch (err) {
+            console.error('Study error:', err);
+            setError(err.response?.data?.msg || 'Erro ao processar estudo');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const deleteStudy = async (id, e) => {
+        e.stopPropagation();
+        if (!window.confirm('Excluir este estudo permanentemente?')) return;
+
+        try {
+            await api.delete(`/sermons/study/${id}`);
+            setHistory(history.filter(s => s.id !== id));
+            if (result && result.id === id) setResult(null);
+        } catch (err) {
+            console.error('Delete error:', err);
+        }
+    };
+
+    const selectFromHistory = (study) => {
+        setResult(study.content);
+        setTopic(study.topic);
+    };
+
+    const copyToClipboard = () => {
+        if (!result) return;
+        navigator.clipboard.writeText(result);
+    };
+
+    const formatContent = (content) => {
+        if (!content) return null;
+
+        return content.split('\n').map((line, i) => {
+            if (line.trim().startsWith('# ')) {
+                return <h3 key={i} className="text-xl font-black text-slate-800 dark:text-white mt-6 mb-3 uppercase tracking-tight">{line.replace(/#/g, '').trim()}</h3>;
+            }
+            if (line.trim().startsWith('## ')) {
+                return <h4 key={i} className="text-lg font-bold text-blue-600 dark:text-blue-400 mt-4 mb-2">{line.replace(/#/g, '').trim()}</h4>;
+            }
+            if (line.trim().startsWith('-') || line.trim().startsWith('*')) {
+                return <li key={i} className="ml-4 mb-2 text-slate-600 dark:text-slate-300">{line.replace(/^[-*]\s*/, '').trim()}</li>;
+            }
+
+            const parts = line.split(/(\d?\s?[A-Z][a-zà-ÿ]+\s\d+:\d+(?:-\d+)?)/g);
+            return (
+                <p key={i} className="mb-4 text-slate-600 dark:text-slate-300 leading-relaxed font-serif text-lg">
+                    {parts.map((part, j) => {
+                        if (j % 2 === 1) {
+                            return <span key={j} className="text-blue-600 dark:text-blue-400 font-bold bg-blue-50 dark:bg-blue-900/30 px-1 rounded">{part}</span>;
+                        }
+                        return part;
+                    })}
+                </p>
+            );
+        });
+    };
 
     const downloadPDF = () => {
         if (!result) return;
