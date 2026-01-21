@@ -17,7 +17,7 @@ exports.getAllPlans = async (req, res) => {
 // Create a new plan
 exports.createPlan = async (req, res) => {
     try {
-        const { name, max_sermons, max_users, max_churches, price, description, allow_ai, allow_bible_study } = req.body;
+        const { name, max_sermons, max_users, max_churches, price, description, allow_ai, allow_bible_study, max_bible_studies } = req.body;
 
         // Only admin/owner can create plans (usually super admin)
         if (req.user.role !== 'owner' && req.user.role !== 'admin') {
@@ -32,7 +32,8 @@ exports.createPlan = async (req, res) => {
             price,
             description,
             allow_ai: allow_ai !== undefined ? allow_ai : true,
-            allow_bible_study: allow_bible_study !== undefined ? allow_bible_study : true
+            allow_bible_study: allow_bible_study !== undefined ? allow_bible_study : true,
+            max_bible_studies: max_bible_studies !== undefined ? max_bible_studies : 5
         });
 
         res.json(newPlan);
@@ -46,7 +47,7 @@ exports.createPlan = async (req, res) => {
 exports.updatePlan = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, max_sermons, max_users, max_churches, price, description, active, allow_ai, allow_bible_study } = req.body;
+        const { name, max_sermons, max_users, max_churches, price, description, active, allow_ai, allow_bible_study, max_bible_studies } = req.body;
 
         if (req.user.role !== 'owner' && req.user.role !== 'admin') {
             return res.status(403).json({ msg: 'Not authorized' });
@@ -56,7 +57,7 @@ exports.updatePlan = async (req, res) => {
         if (!plan) return res.status(404).json({ msg: 'Plan not found' });
 
         const oldPlanName = plan.name;
-        await plan.update({ name, max_sermons, max_users, max_churches, price, description, active, allow_ai, allow_bible_study });
+        await plan.update({ name, max_sermons, max_users, max_churches, price, description, active, allow_ai, allow_bible_study, max_bible_studies });
 
         // Sync with companies that use this plan
         const Company = require('../models/Company');

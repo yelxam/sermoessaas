@@ -13,6 +13,7 @@ export default function Plans() {
         max_sermons: '',
         max_users: 1,
         max_churches: 1,
+        max_bible_studies: 5,
         price: '',
         description: '',
         allow_ai: true,
@@ -42,7 +43,7 @@ export default function Plans() {
                 await api.post('/plans', form);
             }
             setShowModal(false);
-            setForm({ id: null, name: '', max_sermons: '', max_users: 1, max_churches: 1, price: '', description: '', allow_ai: true, allow_bible_study: true });
+            setForm({ id: null, name: '', max_sermons: '', max_users: 1, max_churches: 1, max_bible_studies: 5, price: '', description: '', allow_ai: true, allow_bible_study: true });
             fetchPlans();
         } catch (err) {
             alert(t.plans?.saveError || 'Erro ao salvar plano');
@@ -54,6 +55,7 @@ export default function Plans() {
             ...plan,
             max_users: plan.max_users !== undefined ? plan.max_users : 1,
             max_churches: plan.max_churches !== undefined ? plan.max_churches : 1,
+            max_bible_studies: plan.max_bible_studies !== undefined ? plan.max_bible_studies : 5,
             allow_ai: plan.allow_ai !== undefined ? plan.allow_ai : true,
             allow_bible_study: plan.allow_bible_study !== undefined ? plan.allow_bible_study : true
         });
@@ -79,7 +81,7 @@ export default function Plans() {
                         <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">{t.plans?.title || 'Gerenciar Planos'}</h1>
                         <p className="text-gray-500 dark:text-gray-400 mt-1">{t.plans?.subtitle || 'Configure os planos e limites do sistema.'}</p>
                     </div>
-                    <button onClick={() => { setForm({ id: null, name: '', max_sermons: '', max_users: 1, max_churches: 1, price: '', description: '', allow_ai: true, allow_bible_study: true }); setShowModal(true); }} className="btn-primary flex items-center space-x-2">
+                    <button onClick={() => { setForm({ id: null, name: '', max_sermons: '', max_users: 1, max_churches: 1, max_bible_studies: 5, price: '', description: '', allow_ai: true, allow_bible_study: true }); setShowModal(true); }} className="btn-primary flex items-center space-x-2">
                         <PlusCircle className="w-4 h-4" />
                         <span>{t.plans?.newPlan || 'Novo Plano'}</span>
                     </button>
@@ -107,6 +109,10 @@ export default function Plans() {
                                 <div className="flex items-center text-gray-600 dark:text-gray-300 text-sm">
                                     <CreditCard className="w-4 h-4 mr-2 text-blue-400" />
                                     {plan.max_sermons === -1 ? (t.plans?.unlimited || 'Sermões Ilimitados') : `${plan.max_sermons} ${(t.plans?.sermonsMonth || 'sermões/mês')}`}
+                                </div>
+                                <div className="flex items-center text-gray-600 dark:text-gray-300 text-sm">
+                                    <span className="w-4 h-4 flex items-center justify-center mr-2 text-blue-400 font-bold">📖</span>
+                                    {plan.max_bible_studies === -1 || !plan.max_bible_studies ? 'Estudos Ilimitados' : `${plan.max_bible_studies} estudos/mês`}
                                 </div>
                                 <div className="flex items-center text-gray-600 dark:text-gray-300 text-sm">
                                     <span className="w-4 h-4 flex items-center justify-center mr-2 text-blue-400 font-bold">👥</span>
@@ -147,11 +153,17 @@ export default function Plans() {
                                         <input required type="number" step="0.01" className="input-field" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} />
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-3 gap-4">
+                                <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="label-text">Sermões/Mês</label>
                                         <input required type="number" className="input-field" value={form.max_sermons} onChange={e => setForm({ ...form, max_sermons: e.target.value })} />
                                     </div>
+                                    <div>
+                                        <label className="label-text">Estudos/Mês</label>
+                                        <input required type="number" className="input-field" value={form.max_bible_studies} onChange={e => setForm({ ...form, max_bible_studies: e.target.value })} />
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="label-text">Usuários</label>
                                         <input required type="number" className="input-field" value={form.max_users} onChange={e => setForm({ ...form, max_users: e.target.value })} />
