@@ -800,6 +800,17 @@ export const translations = {
             errorVerses: 'Impossible de charger les versets. Essayez une autre version.',
             tryAgain: 'Réessayer',
             back: 'Retour aux livres'
+        },
+        bibleStudy: {
+            title: 'Recherche Théologique IA',
+            subtitle: 'Effectuez des recherches approfondies avec l\'aide de notre Intelligence Artificielle.',
+            placeholder: 'Que souhaitez-vous étudier aujourd\'hui ? (ex: L\'amour de Dieu, Prière, Foi)',
+            search: 'Rechercher un Thème',
+            searching: 'Consultation de l\'IA...',
+            results: 'Résultat de l\'Étude',
+            copy: 'Copier l\'Étude',
+            newSearch: 'Nouvelle Recherche',
+            verseRef: 'Références Bibliques'
         }
     },
     de: {
@@ -812,7 +823,8 @@ export const translations = {
             team: 'Team',
             logout: 'Abmelden',
             hello: 'Hallo',
-            bible: 'Bibel'
+            bible: 'Bibel',
+            bibleStudy: 'Bibelstudium'
         },
         auth: {
             welcomeUser: 'Willkommen zurück',
@@ -849,7 +861,10 @@ export const translations = {
             bibleAction: 'Bibel aufrufen',
             adminTitle: 'Admin-Dashboard',
             adminDesc: 'Alle Unternehmen und Pläne verwalten.',
-            adminAction: 'Admin-Bereich'
+            adminAction: 'Admin-Bereich',
+            studyTitle: 'Theologische KI-Forschung',
+            studyDesc: 'Führen Sie tiefgehende Bibelstudien mit unserer KI durch.',
+            studyAction: 'Studium starten'
         },
         createSermon: {
             title: 'KI Predigt Generator',
@@ -985,6 +1000,17 @@ export const translations = {
             errorVerses: 'Verse konnten nicht geladen werden. Versuchen Sie eine andere Version.',
             tryAgain: 'Erneut versuchen',
             back: 'Zurück zu den Büchern'
+        },
+        bibleStudy: {
+            title: 'Theologische KI-Forschung',
+            subtitle: 'Führen Sie tiefgehende Studien und Abfragen mit Hilfe unserer Künstlichen Intelligenz durch.',
+            placeholder: 'Was möchten Sie heute studieren? (z.B. Die Liebe Gottes, Gebet, Glaube)',
+            search: 'Thema suchen',
+            searching: 'KI wird konsultiert...',
+            results: 'Studienergebnis',
+            copy: 'Studium kopieren',
+            newSearch: 'Neue Suche',
+            verseRef: 'Biblische Referenzen'
         }
     }
 };

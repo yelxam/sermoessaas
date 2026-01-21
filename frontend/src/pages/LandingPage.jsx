@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
 import api from '../services/api';
 import {
     BookOpen,
@@ -17,6 +18,7 @@ import {
 import Logo from '../components/Logo';
 
 const LandingPage = () => {
+    const { t, language, setLanguage } = useLanguage();
     const [plans, setPlans] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -67,11 +69,29 @@ const LandingPage = () => {
                     </div>
 
                     <div className="flex items-center gap-3">
+                        <div className="relative group">
+                            <button className="flex items-center gap-1 px-3 py-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors text-sm font-medium">
+                                <span className="text-lg">{t.flags[language]}</span>
+                                <span className="uppercase">{language}</span>
+                            </button>
+                            <div className="absolute right-0 top-full mt-2 w-32 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all transform origin-top-right">
+                                {Object.keys(t.flags).map((lang) => (
+                                    <button
+                                        key={lang}
+                                        onClick={() => setLanguage(lang)}
+                                        className={`w-full text-left px-4 py-3 text-sm flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors first:rounded-t-xl last:rounded-b-xl ${language === lang ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600' : 'text-slate-600 dark:text-slate-300'}`}
+                                    >
+                                        <span className="text-lg">{t.flags[lang]}</span>
+                                        <span className="uppercase font-semibold">{lang}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
                         <Link to="/login" className="px-4 py-2 text-blue-600 font-semibold text-sm hover:bg-blue-50 dark:hover:bg-slate-900 rounded-lg transition-all">
-                            Entrar
+                            {t.auth?.login || 'Entrar'}
                         </Link>
                         <button onClick={() => scrollToSection('planos')} className="btn-primary !px-4 !py-2 !text-sm">
-                            Criar Conta
+                            {t.auth?.createAccount || 'Criar Conta'}
                         </button>
                     </div>
                 </div>
