@@ -63,14 +63,27 @@ exports.conductStudy = async (req, res) => {
         // `Company.findAll({ attributes: ['id', 'name', 'allow_bible_study', 'plan_id'] })` produced `Plan ID: undefined`.
         // This means `plan_id` is NOT in the model definition in JS, even if in DB.
 
-        // HOWEVER, `plan` column is a STRING ('free', 'pro').
-        // AND `Plan` model matches names.
-        // Let's fetch the Plan by name.
+        // MAPPING LOGIC
+        // Map legacy 'plan' string to Plan Entry in DB
+        let planName = user.Company.plan;
+        if (planName) {
+            if (planName.toLowerCase() === 'free') planName = 'Básico';
+            if (planName.toLowerCase() === 'pro') planName = 'Pro';
+            // Add more mappings if needed
+        }
 
-        plan = await Plan.findOne({ where: { name: user.Company.plan } });
+        // Try to find plan by mapped name, or exact name, or case-insensitive search
+        const { Op } = require('sequelize');
+        // iLike is Postgres only. Use like for MySQL fallback or just match if standardizing.
+        // Since we know names are 'Básico' and 'Pro' in DB, exact match on planName (which we just mapped) should work.
+
+        plan = await Plan.findOne({ where: { name: planName } });
+
+        // Fallback if not found in DB
         if (!plan) {
-            // Fallback default
-            plan = { max_bible_studies: 5 };
+            // Default limits if plan not found
+            console.warn(`Plan '${planName}' not found in DB, using defaults.`);
+            plan = { max_bible_studies: 5, allow_bible_study: true };
         }
 
         // Plan Permission Check
