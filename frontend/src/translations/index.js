@@ -216,128 +216,183 @@ export const translations = {
             },
             hero: {
                 badge: 'A primeira IA feita para pastores e líderes',
-                title: 'Prepare sermões',
-                titleHighlight: 'poderosos',
-                titleEnd: 'em minutos.',
-                subtitle: 'Sem stress. Sem bloqueio. Sem perder tempo.',
-                desc: 'O Verbo Cast ajuda pastores e pregadores a criar, organizar, salvar e compartilhar sermões com clareza — usando tecnologia e Inteligência Artificial a favor do seu chamado.',
-                startBtn: 'Começar agora',
+                title: 'Seu sermão não nasce na tecnologia.',
+                titleHighlight: 'Ele nasce em Deus.',
+                titleEnd: '',
+                subtitle: 'O VerboCast não cria mensagens, não substitui oração e não interfere na direção do Espírito Santo.',
+                desc: 'Ele existe para guardar, organizar, estudar e preservar aquilo que Deus já confiou a você. \n\nChega de anotações soltas, mensagens perdidas e correria antes do culto. \n\nSeu ministério merece ordem, clareza e continuidade.',
+                startBtn: '👉 Começar agora com o VerboCast',
                 learnBtn: 'Conhecer o Sistema'
             },
-            pain: {
-                title: 'Você não foi chamado para viver apagando incêndio todo domingo',
-                subtitle: 'Se preparar um sermão virou sinônimo de:',
-                items: [
-                    "Correr contra o tempo toda semana",
-                    "Ter boas ideias, mas não conseguir organizar",
-                    "Deixar o sermão para o último dia",
-                    "Perder mensagens antigas porque não estavam salvas",
-                    "Sentir o peso da responsabilidade antes de subir ao púlpito"
+            objection: {
+                title: 'Antes de continuar, precisamos deixar algo muito claro:',
+                negative: [
+                    "O VerboCast não prega por você",
+                    "Não substitui oração, estudo bíblico ou jejum",
+                    "Não gera revelação espiritual"
                 ],
-                conclusion1: '👉 O problema não é falta de fé. 👉 Nem falta de dedicação.',
-                conclusion2: 'É falta de um sistema simples, rápido e inteligente para o preparo da Palavra.'
+                positive: [
+                    "Ele organiza o que Deus já revelou",
+                    "Registra mensagens para que nada se perca",
+                    "Auxilia nos estudos teológicos com base bíblica",
+                    "Traz ordem e paz ao preparo do púlpito"
+                ],
+                conclusion: 'O chamado é seu. A revelação é sua. O VerboCast cuida da organização e do estudo.'
+            },
+            pain: {
+                title: 'O problema não é falta de unção. É falta de estrutura.',
+                subtitle: 'Quantas mensagens Deus já te deu… e quantas se perderam com o tempo?',
+                items: [
+                    "Sermões espalhados em cadernos, blocos e WhatsApp",
+                    "Ideias que não viram séries por falta de registro",
+                    "Dificuldade para aprofundar estudos por tema",
+                    "Cansaço mental antes de cada culto"
+                ],
+                conclusion1: '👉 Isso não é espiritual.',
+                conclusion2: 'É organizacional.'
             },
             solution: {
-                title: 'Conheça o Verbo Cast',
-                desc: 'O Verbo Cast é uma plataforma criada especialmente para pastores, pregadores e líderes que querem:',
+                title: 'O VerboCast é um arquivo ministerial digital com apoio teológico por IA',
+                desc: 'Criado exclusivamente para pastores, líderes e pregadores. Um único lugar para:',
                 items: [
-                    "Ganhar tempo no preparo dos sermões",
-                    "Ter mensagens mais claras e bem estruturadas",
-                    "Guardar tudo em um só lugar",
-                    "Compartilhar mensagens com facilidade",
-                    "Contar com IA quando a inspiração não vem"
+                    "Registrar sermões e mensagens",
+                    "Organizar por tema, texto ou série",
+                    "Acessar de qualquer dispositivo",
+                    "Compartilhar com a equipe",
+                    "Construir um acervo ministerial",
+                    "Realizar pesquisas teológicas aprofundadas",
+                    "Consultar temas bíblicos com apoio da IA"
                 ],
-                note: 'Tudo isso em um painel simples, intuitivo e feito para quem vive o ministério na prática.',
+                note: 'O VerboCast não cria a Palavra. Ele honra, organiza e aprofunda a Palavra que já foi gerada.',
                 summaryTitle: 'Tudo o que você precisa para preparar seus sermões, em um só lugar',
                 cards: [
-                    { title: "Criador de Sermões Estruturado", desc: "Monte sermões completos com tema, texto base, introdução, desenvolvimento e conclusão." },
-                    { title: "Inteligência Artificial como apoio", desc: "Use IA para destravar ideias, gerar esboços bíblicos e organizar pensamentos." },
-                    { title: "Salvar Sermões em PDF", desc: "Tenha seus sermões sempre salvos, organizados e prontos para reutilizar." },
-                    { title: "Compartilhamento no WhatsApp", desc: "Envie mensagens para líderes, células e equipes com um clique." },
-                    { title: "Biblioteca de Sermões", desc: "Nunca mais perca uma boa mensagem preparada com dedicação." },
-                    { title: "Bíblia Online Integrada", desc: "Consulte versículos, compare traduções e estude a Palavra sem sair da plataforma." }
+                    { title: "Arquivo Ministerial Digital", desc: "Centralize todas as suas mensagens e estudos em um ambiente seguro e organizado." },
+                    { title: "Apoio Teológico por IA", desc: "Use a tecnologia para organizar o conhecimento bíblico e aprofundar seus estudos." },
+                    { title: "Organização Temática", desc: "Separe suas mensagens por séries, temas ou textos bíblicos facilitando a consulta futura." },
+                    { title: "Acesso Mobile", desc: "Tenha seu acervo sempre à mão, no celular, tablet ou computador, onde quer que esteja." },
+                    { title: "Compartilhamento", desc: "Envie esboços e estudos para sua equipe ministerial de forma rápida e profissional." },
+                    { title: "Biblioteca Pessoal", desc: "Construa um legado ministerial preservando cada revelação que Deus te confiou." }
                 ]
             },
             ia: {
-                title: 'A IA não substitui o chamado.',
-                titleHighlight: 'Ela apoia o preparo.',
-                desc: 'A Inteligência Artificial do Verbo Cast foi criada para ajudar, não para pregar por você. Ela serve para:',
-                items: ["Destravar ideias", "Organizar pensamentos", "Economizar tempo"],
-                disclaimer: '👉 O conteúdo final continua sendo seu, com sua visão, sua unção e sua responsabilidade diante de Deus e da igreja.'
+                title: 'Pesquisa Teológica com IA',
+                titleHighlight: '(Nova Função)',
+                desc: 'Agora você também pode realizar estudos aprofundados com apoio da nossa Inteligência Artificial:',
+                items: [
+                    "Estudos teológicos por tema (Fé, Oração, Amor, Salvação)",
+                    "Análises bíblicas aprofundadas",
+                    "Consultas rápidas para preparação de mensagens",
+                    "Histórico de estudos salvos automaticamente"
+                ],
+                note: 'Tudo com linguagem respeitosa e fidelidade às Escrituras.',
+                disclaimer: 'A IA não substitui o Espírito. Ela apenas organiza o conhecimento bíblico.'
+            },
+            technology: {
+                title: 'Tecnologia a serviço do chamado',
+                desc: 'A tecnologia no VerboCast não ocupa o lugar de Deus. Ela apenas remove a desordem para que você tenha:',
+                items: [
+                    "Mais clareza",
+                    "Mais tempo",
+                    "Mais profundidade nos estudos",
+                    "Mais paz no preparo do púlpito"
+                ],
+                conclusion: 'A revelação continua vindo do Senhor. O VerboCast apenas ajuda você a cuidar melhor dela.'
             },
             testimonials: {
-                title: 'Pastores e pregadores que já usam aprovam',
-                subtitle: 'Centenas de mensagens preparadas com mais clareza, menos pressa e muito mais organização.',
+                title: 'Pastores e líderes que já usam aprovam:',
+                subtitle: 'Centenas de líderes já encontraram mais clareza e paz no seu ministério.',
                 items: [
-                    { name: "Pastor Marcos A.", text: "Eu sempre deixava o sermão para a última hora. Com o Verbo Cast, agora consigo organizar tudo com antecedência. Mudou completamente minha rotina." },
-                    { name: "Pr. André S.", text: "A ferramenta de IA me ajuda muito quando estou sem ideias. Não substitui meu estudo, mas acelera demais o processo." },
-                    { name: "Presbítero Lucas M.", text: "Antes eu perdia meus sermões antigos. Agora tenho tudo salvo, organizado e ainda consigo compartilhar direto no WhatsApp." },
-                    { name: "Pastor João C.", text: "É uma plataforma pensada para quem vive o ministério de verdade." },
-                    { name: "Evangelista Rafael P.", text: "Vale cada centavo. Hoje preparo meus sermões com mais paz, mais clareza e menos pressão." },
-                    { name: "Pastor Daniel R.", text: "Depois que comecei a usar o Verbo Cast, parei de sentir aquele peso antes de preparar o sermão." },
-                    { name: "Missionário Felipe T.", text: "O que mais gostei foi a praticidade. Em poucos minutos consigo estruturar a mensagem." },
-                    { name: "Pastor Elias N.", text: "Uso o plano Pro e a IA ilimitada faz toda diferença." }
+                    { name: "Pastor Marcos A.", text: "Antes eu vivia correndo contra o relógio. Hoje preparo minhas mensagens com antecedência e ministro com mais tranquilidade." },
+                    { name: "Pr. André S.", text: "O VerboCast não faz o sermão por mim. Ele organiza aquilo que Deus já falou comigo." },
+                    { name: "Presbítero Lucas M.", text: "Eu perdia mensagens antigas e séries inteiras. Agora tenho tudo salvo e fácil de acessar, até no celular." },
+                    { name: "Pastor João C.", text: "A pesquisa teológica me ajuda a aprofundar sem perder a fidelidade bíblica." },
+                    { name: "Evangelista Rafael P.", text: "Depois que comecei a usar o VerboCast, aquele peso antes de preparar o sermão desapareceu." }
                 ],
                 rating: '⭐ Avaliação média: 5,0 de 5 estrelas',
-                cta: 'Quero preparar meus sermões com mais clareza'
+                cta: '👉 Quero preparar meus sermões com mais clareza'
             },
             plans: {
                 title: 'Escolha o plano ideal para o seu ministério',
                 titleMobile: 'Planos e Preços',
-                subtitle: 'Invista no seu ministério com ferramentas que otimizam seu tempo de estudo.',
+                subtitle: 'Todos os planos respeitam o chamado pastoral. A diferença está no nível de apoio e organização.',
                 loading: 'Carregando planos...',
                 recommended: 'Mais Recomendado',
                 month: '/mês',
-                unlimitedSermons: 'Sermões ILIMITADOS',
-                sermonsPerMonth: 'sermões por mês',
-                unlimitedStudies: 'Estudos Bíblicos ILIMITADOS',
-                studiesPerMonth: 'estudos bíblicos por mês',
-                aiIncluded: 'Inteligência Artificial inclusa',
-                noAi: 'Sem Inteligência Artificial',
-                unlimitedUsers: 'Usuários Ilimitados',
-                usersCount: 'usuário(s)',
-                unlimitedChurches: 'Igrejas Ilimitadas',
-                churchesCount: 'igreja(s)',
-                onTeam: 'na equipe',
-                manage: 'Gestão de',
-                pdfSave: 'Salvar sermões em PDF',
-                outlines: 'Esboços bíblicos e estudos',
-                fullBible: 'Bíblia Online COMPLETA',
-                integratedBible: 'Bíblia Online integrada',
-                whatsappShare: 'Compartilhar no WhatsApp',
-                iWant: 'Quero o',
-                basicDesc: 'Ideal para organização e praticidade. 15 sermões por mês.',
-                proDesc: 'Perfeito para sermões frequentes com IA. 40 sermões por mês.',
-                enterpriseDesc: 'Para púlpito sério. Sermões ILIMITADOS e IA.'
+                iWant: 'Quero o Plano',
+                basic: {
+                    name: 'Básico', // Changed to match image casing if needed, but 'BÁSICO' is fine. kept as per previous style or image? Image says 'Básico'. Let's use 'Básico'.
+                    desc: 'Plano básico',
+                    features: [
+                        "10 sermões por mês",
+                        "2 estudos bíblicos por mês",
+                        "Sem Inteligência Artificial",
+                        "1 usuário(s) na equipe",
+                        "Gestão de 1 igreja(s)",
+                        "Esboços bíblicos e estudos",
+                        "Bíblia Online integrada",
+                        "Compartilhar no WhatsApp"
+                    ]
+                },
+                pro: {
+                    name: 'Pro',
+                    desc: 'Para pastores ativos',
+                    features: [
+                        "30 sermões por mês",
+                        "5 estudos bíblicos por mês",
+                        "Inteligência Artificial inclusa",
+                        "2 usuário(s) na equipe",
+                        "Gestão de 2 igreja(s)",
+                        "Esboços bíblicos e estudos",
+                        "Bíblia Online integrada",
+                        "Compartilhar no WhatsApp"
+                    ]
+                },
+                enterprise: {
+                    name: 'Enterprise',
+                    desc: 'Ilimitado para grandes igrejas',
+                    features: [
+                        "Sermões ILIMITADOS",
+                        "Estudos Bíblicos ILIMITADOS",
+                        "Inteligência Artificial inclusa",
+                        "3 usuário(s) na equipe",
+                        "Gestão de 2 igreja(s)",
+                        "Esboços bíblicos e estudos",
+                        "Bíblia Online integrada",
+                        "Compartilhar no WhatsApp"
+                    ]
+                }
+            },
+            security: {
+                title: 'Segurança Espiritual',
+                desc: 'Se você tem receio de qualquer ferramenta tecnológica, fique em paz. O VerboCast:',
+                items: [
+                    "Não decide o que você vai pregar",
+                    "Não substitui o estudo bíblico",
+                    "Não ocupa o lugar do Espírito Santo"
+                ],
+                conclusion: 'Ele apenas ajuda você a ser um bom mordomo daquilo que Deus já confiou.'
             },
             features: {
-                imagine: 'Imagine sua rotina com o Verbo Cast',
-                imagineSubtitle: 'Imagine abrir seu painel e já saber:',
+                imagine: 'Imagine abrir seu painel e já saber:',
+                imagineSubtitle: 'Visualize sua rotina transformada:',
                 items: [
                     "Qual será o próximo sermão",
                     "Onde está cada mensagem",
-                    "Ter apoio quando faltar inspiração",
-                    "Ter mais tempo para oração, estudo e cuidado pastoral"
+                    "Como aprofundar seus estudos",
+                    "Ter mais tempo para oração",
+                    "Ter clareza para ministrar"
                 ],
                 quick: 'Menos correria.',
                 organized: 'Mais clareza.',
-                consistent: 'Mais consistência no púlpito.'
-            },
-            mission: {
-                title: 'Mais do que tecnologia, uma ferramenta de ministério.',
-                p1: 'Libere tempo para o cuidado pastoral direto, deixando o Verbo Cast auxiliar na estruturação do estudo.',
-                p2: 'Encontre novas perspectivas e ilustrações para textos clássicos, renovando o interesse dos ouvintes.',
-                quote: '"O Verbo Cast nasceu para estar ao lado de quem prega. Acreditamos que a tecnologia deve servir ao Reino, facilitando o preparo intelectual para que o pastor foque no preparo espiritual."',
-                founderName: 'Pr. André Marques',
-                founderRole: 'Fundador do Verbo Cast'
+                consistent: 'Mais fidelidade ao chamado.'
             },
             cta: {
-                title: 'Seu próximo sermão pode começar agora',
-                desc: 'O Verbo Cast foi criado para servir o ministério, respeitar o chamado e facilitar o preparo da Palavra. Clique no botão abaixo, escolha seu plano e comece hoje mesmo.',
-                btn: 'Começar com o Verbo Cast agora'
+                title: 'O VerboCast não substitui o chamado. Ele organiza aquilo que Deus já confiou às suas mãos.',
+                desc: 'Seu ministério merece organização à altura do propósito.',
+                btn: '👉 Comece agora com o VerboCast'
             },
             footer: {
-                rights: '© 2026 Verbo Cast AI. Preparando corações para a mensagem bíblica.',
+                rights: '© 2026 VerboCast AI. Preparando corações para a mensagem bíblica.',
                 privacy: 'Privacidade',
                 terms: 'Termos',
                 contact: 'Contato',
@@ -649,7 +704,36 @@ export const translations = {
                 iWant: 'Quiero el',
                 basicDesc: 'Ideal para organización y practicidad. 15 sermones por mes.',
                 proDesc: 'Perfecto para sermones frecuentes con IA. 40 sermones por mes.',
-                enterpriseDesc: 'Para púlpito serio. Sermones ILIMITADOS e IA.'
+                enterpriseDesc: 'Para púlpito serio. Sermones ILIMITADOS e IA.',
+                basic: {
+                    features: [
+                        "Crear y guardar sermones",
+                        "Biblioteca personal",
+                        "Organización por temas y series",
+                        "Acceso en cualquier dispositivo",
+                        "Compartir básico",
+                        "Biblia Online integrada"
+                    ]
+                },
+                pro: {
+                    features: [
+                        "Todo lo de Básico",
+                        "Investigación teológica con IA (limitada)",
+                        "Organización de bosquejos",
+                        "Estructuración de ideas",
+                        "Apoyo para estudios bíblicos",
+                        "Sin creación automática de sermones"
+                    ]
+                },
+                enterprise: {
+                    features: [
+                        "Todos los recursos desbloqueados",
+                        "Investigación teológica ilimitada",
+                        "Organización profunda del acervo",
+                        "Apoyo completo para estudios y series",
+                        "Alta productividad con sensibilidad espiritual"
+                    ]
+                }
             },
             features: {
                 imagine: 'Imagina tu rutina con Verbo Cast',
@@ -994,7 +1078,36 @@ export const translations = {
                 iWant: 'I want the',
                 basicDesc: 'Ideal for organization and practicality. 15 sermons per month.',
                 proDesc: 'Perfect for frequent sermons with AI. 40 sermons per month.',
-                enterpriseDesc: 'For serious pulpit. UNLIMITED Sermons and AI.'
+                enterpriseDesc: 'For serious pulpit. UNLIMITED Sermons and AI.',
+                basic: {
+                    features: [
+                        "Create and save sermons",
+                        "Personal library",
+                        "Organization by themes and series",
+                        "Access on any device",
+                        "Basic sharing",
+                        "Integrated Online Bible"
+                    ]
+                },
+                pro: {
+                    features: [
+                        "Everything in Basic",
+                        "AI Theological Research (limited)",
+                        "Outline organization",
+                        "Idea structuring",
+                        "Bible study support",
+                        "No automatic sermon creation"
+                    ]
+                },
+                enterprise: {
+                    features: [
+                        "All features unlocked",
+                        "Unlimited theological research",
+                        "Deep archive organization",
+                        "Complete support for studies and series",
+                        "High productivity with spiritual sensitivity"
+                    ]
+                }
             },
             features: {
                 imagine: 'Imagine your routine with Verbo Cast',
@@ -1328,7 +1441,36 @@ export const translations = {
                 iWant: 'Je veux le',
                 basicDesc: 'Idéal pour l\'organisation et la praticité. 15 sermons par mois.',
                 proDesc: 'Parfait pour des sermons fréquents avec IA. 40 sermons par mois.',
-                enterpriseDesc: 'Pour la chaire sérieuse. Sermons ILLIMITÉS et IA.'
+                enterpriseDesc: 'Pour la chaire sérieuse. Sermons ILLIMITÉS et IA.',
+                basic: {
+                    features: [
+                        "Créer et sauvegarder des sermons",
+                        "Bibliothèque personnelle",
+                        "Organisation par thèmes et séries",
+                        "Accès sur tout appareil",
+                        "Partage de base",
+                        "Bible en ligne intégrée"
+                    ]
+                },
+                pro: {
+                    features: [
+                        "Tout du Basique",
+                        "Recherche théologique IA (limitée)",
+                        "Organisation de plans",
+                        "Structuration d'idées",
+                        "Soutien pour études bibliques",
+                        "Pas de création automatique de sermons"
+                    ]
+                },
+                enterprise: {
+                    features: [
+                        "Toutes les fonctionnalités débloquées",
+                        "Recherche théologique illimitée",
+                        "Organisation profonde des archives",
+                        "Soutien complet pour études et séries",
+                        "Haute productivité avec sensibilité spirituelle"
+                    ]
+                }
             },
             features: {
                 imagine: 'Imaginez votre routine avec Verbo Cast',
@@ -1666,7 +1808,36 @@ export const translations = {
                 iWant: 'Ich möchte den',
                 basicDesc: 'Ideal für Organisation und Praktikabilität. 15 Predigten pro Monat.',
                 proDesc: 'Perfekt für häufige Predigten mit KI. 40 Predigten pro Monat.',
-                enterpriseDesc: 'Für ernsthafte Kanzeln. UNBEGRENZTE Predigten und KI.'
+                enterpriseDesc: 'Für ernsthafte Kanzeln. UNBEGRENZTE Predigten und KI.',
+                basic: {
+                    features: [
+                        "Predigten erstellen und speichern",
+                        "Persönliche Bibliothek",
+                        "Organisation nach Themen und Serien",
+                        "Zugriff auf jedem Gerät",
+                        "Grundlegendes Teilen",
+                        "Integrierte Online-Bibel"
+                    ]
+                },
+                pro: {
+                    features: [
+                        "Alles aus Basic",
+                        "Theologische KI-Forschung (begrenzt)",
+                        "Gliederungsorganisation",
+                        "Ideenstrukturierung",
+                        "Unterstützung für Bibelstudien",
+                        "Keine automatische Predigterstellung"
+                    ]
+                },
+                enterprise: {
+                    features: [
+                        "Alle Funktionen freigeschaltet",
+                        "Unbegrenzte theologische Forschung",
+                        "Tiefe Archivorganisation",
+                        "Komplette Unterstützung für Studien und Serien",
+                        "Hohe Produktivität mit geistlicher Sensibilität"
+                    ]
+                }
             },
             features: {
                 imagine: 'Stellen Sie sich Ihre Routine mit Verbo Cast vor',

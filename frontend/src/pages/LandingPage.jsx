@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import api from '../services/api';
@@ -31,9 +31,9 @@ const LandingPage = () => {
                 console.error("Erro ao carregar planos", err);
                 // Fallback translations for plans descriptions
                 setPlans([
-                    { id: 'f1', name: 'Plano Básico', price: 67.90, max_sermons: 15, max_bible_studies: 2, allow_ai: false, description: t.landing?.plans?.basicDesc || 'Ideal para organização e praticidade. 15 sermões por mês.', checkout_url: 'https://pay.kiwify.com.br/O3NseBN' },
-                    { id: 'f2', name: 'Plano Pro', price: 147.90, max_sermons: 40, max_bible_studies: -1, allow_ai: true, description: t.landing?.plans?.proDesc || 'Perfeito para sermões frequentes com IA. 40 sermões por mês.', checkout_url: 'https://pay.kiwify.com.br/RjHvRsU' },
-                    { id: 'f3', name: 'Plano Enterprise', price: 247.00, max_sermons: -1, max_bible_studies: -1, allow_ai: true, description: t.landing?.plans?.enterpriseDesc || 'Para púlpito sério. Sermões ILIMITADOS e IA.', checkout_url: 'https://pay.kiwify.com.br/AKaukS4' }
+                    { id: 'f1', name: 'Plano Básico', price: 67.90, max_sermons: 10, max_bible_studies: 2, allow_ai: false, description: t.landing?.plans?.basicDesc || 'Plano básico', checkout_url: 'https://pay.kiwify.com.br/O3NseBN' },
+                    { id: 'f2', name: 'Plano Pro', price: 147.00, max_sermons: 30, max_bible_studies: 5, allow_ai: true, description: t.landing?.plans?.proDesc || 'Para pastores ativos', checkout_url: 'https://pay.kiwify.com.br/RjHvRsU' },
+                    { id: 'f3', name: 'Plano Enterprise', price: 247.00, max_sermons: -1, max_bible_studies: -1, allow_ai: true, description: t.landing?.plans?.enterpriseDesc || 'Ilimitado para grandes igrejas', checkout_url: 'https://pay.kiwify.com.br/AKaukS4' }
                 ]);
             } finally {
                 setLoading(false);
@@ -46,7 +46,7 @@ const LandingPage = () => {
         const name = planName?.toLowerCase() || '';
         if (name.includes('enterprise') || index === 2) return 'https://pay.kiwify.com.br/AKaukS4';
         if (name.includes('pro') || index === 1) return 'https://pay.kiwify.com.br/RjHvRsU';
-        return 'https://pay.kiwify.com.br/O3NseBN'; // Default to Básico
+        return 'https://pay.kiwify.com.br/O3NseBN'; // Default to BÃ¡sico
     };
 
     const scrollToSection = (id) => {
@@ -94,10 +94,10 @@ const LandingPage = () => {
                             </button>
                             <div className="absolute right-0 top-full mt-2 w-40 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all transform origin-top-right z-50">
                                 {[
-                                    { code: 'pt', label: 'Português', flag: 'https://flagcdn.com/w40/br.png' },
-                                    { code: 'es', label: 'Español', flag: 'https://flagcdn.com/w40/es.png' },
+                                    { code: 'pt', label: 'PortuguÃªs', flag: 'https://flagcdn.com/w40/br.png' },
+                                    { code: 'es', label: 'EspaÃ±ol', flag: 'https://flagcdn.com/w40/es.png' },
                                     { code: 'en', label: 'English', flag: 'https://flagcdn.com/w40/us.png' },
-                                    { code: 'fr', label: 'Français', flag: 'https://flagcdn.com/w40/fr.png' },
+                                    { code: 'fr', label: 'FranÃ§ais', flag: 'https://flagcdn.com/w40/fr.png' },
                                     { code: 'de', label: 'Deutsch', flag: 'https://flagcdn.com/w40/de.png' }
                                 ].map((lang) => (
                                     <button
@@ -121,7 +121,8 @@ const LandingPage = () => {
                 </div>
             </nav>
 
-            {/* Hero Section - Seção 1 */}
+            {/* Hero Section - SeÃ§Ã£o 1 */}
+            {/* Hero Section - SeÃ§Ã£o 1 */}
             <section className="pt-32 pb-20 relative overflow-hidden">
                 <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-gradient-to-l from-blue-50 to-transparent dark:from-blue-950/20 opacity-50 blur-3xl"></div>
                 <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
@@ -133,10 +134,10 @@ const LandingPage = () => {
                         <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6 text-slate-900 dark:text-white">
                             {t.landing.hero.title} <span className="text-blue-600">{t.landing.hero.titleHighlight}</span> {t.landing.hero.titleEnd}
                         </h1>
-                        <p className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+                        <p className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4 whitespace-pre-line">
                             {t.landing.hero.subtitle}
                         </p>
-                        <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-lg">
+                        <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-lg whitespace-pre-line">
                             {t.landing.hero.desc}
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
@@ -166,7 +167,41 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* Pain Points - Seção 2 */}
+            {/* Objection Section - SeÃ§Ã£o 2 */}
+            <section className="py-20 bg-white dark:bg-slate-950 border-y border-slate-100 dark:border-slate-800">
+                <div className="container mx-auto px-6">
+                    <div className="max-w-4xl mx-auto">
+                        <h2 className="text-3xl font-bold text-center mb-12 text-slate-900 dark:text-white">{t.landing.objection?.title}</h2>
+
+                        <div className="grid md:grid-cols-2 gap-12 mb-12">
+                            <div className="space-y-4">
+                                {t.landing.objection?.negative?.map((item, idx) => (
+                                    <div key={idx} className="flex items-start gap-4 p-4 bg-red-50 dark:bg-red-900/10 rounded-xl border border-red-100 dark:border-red-900/20">
+                                        <X className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                                        <span className="text-slate-700 dark:text-slate-300 font-medium">{item}</span>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="space-y-4">
+                                {t.landing.objection?.positive?.map((item, idx) => (
+                                    <div key={idx} className="flex items-start gap-4 p-4 bg-green-50 dark:bg-green-900/10 rounded-xl border border-green-100 dark:border-green-900/20">
+                                        <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                                        <span className="text-slate-700 dark:text-slate-300 font-medium">{item}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="text-center">
+                            <p className="text-xl font-bold text-blue-600 dark:text-blue-400">
+                                {t.landing.objection?.conclusion}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Pain Points - SeÃ§Ã£o 2 */}
             <section id="problema" className="py-20 bg-slate-50 dark:bg-slate-900/50 border-y border-slate-100 dark:border-slate-800">
                 <div className="container mx-auto px-6">
                     <div className="max-w-4xl mx-auto text-center mb-16">
@@ -190,7 +225,7 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* Solution & Benefits - Seção 3 & 4 */}
+            {/* Solution & Benefits - SeÃ§Ã£o 3 & 4 */}
             <section id="solucao" className="py-24 bg-white dark:bg-slate-950 overflow-hidden">
                 <div className="container mx-auto px-6">
                     <div className="max-w-3xl mx-auto text-center mb-20">
@@ -233,12 +268,13 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* IA Support - Seção 5 */}
+            {/* IA Support - SeÃ§Ã£o 5 */}
+            {/* IA Support - SeÃ§Ã£o 5 */}
             <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
                 <div className="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center max-w-5xl">
                     <div className="relative">
                         <div className="rounded-3xl overflow-hidden shadow-2xl">
-                            <img src="./hero-banner.png" alt="IA e Bíblia" className="w-full h-auto" />
+                            <img src="./hero-banner.png" alt="IA e BÃ­blia" className="w-full h-auto" />
                         </div>
                     </div>
                     <div>
@@ -253,6 +289,9 @@ const LandingPage = () => {
                                 </li>
                             ))}
                         </ul>
+                        {t.landing.ia.note && (
+                            <p className="text-sm text-slate-500 mb-6 italic">{t.landing.ia.note}</p>
+                        )}
                         <p className="text-lg font-bold text-slate-900 dark:text-white border-l-4 border-blue-600 pl-6 italic bg-white dark:bg-slate-900 p-4 rounded-r-xl shadow-sm">
                             {t.landing.ia.disclaimer}
                         </p>
@@ -260,7 +299,28 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* Testimonials - Seção 6 */}
+            {/* Technology Section - SeÃ§Ã£o 6 */}
+            <section className="py-24 bg-white dark:bg-slate-950">
+                <div className="container mx-auto px-6 max-w-4xl text-center">
+                    <h2 className="text-4xl font-bold mb-8 text-slate-900 dark:text-white">{t.landing.technology?.title}</h2>
+                    <p className="text-lg text-slate-600 dark:text-slate-400 mb-12">{t.landing.technology?.desc}</p>
+                    <div className="grid md:grid-cols-2 gap-8 text-left mb-16">
+                        {t.landing.technology?.items?.map((item, idx) => (
+                            <div key={idx} className="flex items-center gap-4 bg-slate-50 dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-800">
+                                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600">
+                                    <Check className="w-6 h-6" />
+                                </div>
+                                <span className="text-lg font-bold text-slate-800 dark:text-slate-200">{item}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                        {t.landing.technology?.conclusion}
+                    </p>
+                </div>
+            </section>
+
+            {/* Testimonials - SeÃ§Ã£o 6 */}
             <section id="depoimentos" className="py-24 bg-white dark:bg-slate-950">
                 <div className="container mx-auto px-6 text-center">
                     <div className="flex justify-center gap-1 mb-6 text-yellow-400">
@@ -273,7 +333,7 @@ const LandingPage = () => {
                         {t.landing.testimonials.items.map((test, tidx) => (
                             <div key={tidx} className="glass-panel p-6 bg-slate-50 dark:bg-slate-900/50">
                                 <p className="text-slate-600 dark:text-slate-300 italic mb-6 leading-relaxed">"{test.text}"</p>
-                                <div className="font-bold text-slate-900 dark:text-white">— {test.name}</div>
+                                <div className="font-bold text-slate-900 dark:text-white">â€” {test.name}</div>
                             </div>
                         ))}
                     </div>
@@ -286,7 +346,7 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* Plans Section - Seção 7 */}
+            {/* Plans Section - SeÃ§Ã£o 7 */}
             <section id="planos" className="py-24 bg-slate-50 dark:bg-slate-900/50">
                 <div className="container mx-auto px-6">
                     <div className="text-center mb-16">
@@ -327,56 +387,23 @@ const LandingPage = () => {
                                     </p>
 
                                     <ul className="space-y-4 mb-8 flex-1 border-t border-slate-100 dark:border-slate-800 pt-6">
-                                        <li className="flex items-start gap-3 text-sm">
-                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span className="text-slate-700 dark:text-slate-300 font-bold">
-                                                {plan.max_sermons === -1 ? t.landing.plans.unlimitedSermons : `${plan.max_sermons} ${t.landing.plans.sermonsPerMonth}`}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm">
-                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span className="text-slate-700 dark:text-slate-300 font-bold">
-                                                {plan.max_bible_studies === -1 || !plan.max_bible_studies ? t.landing.plans.unlimitedStudies : `${plan.max_bible_studies} ${t.landing.plans.studiesPerMonth}`}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm">
-                                            {plan.allow_ai ? (
-                                                <Check className="w-5 h-5 text-blue-500 flex-shrink-0" />
-                                            ) : (
-                                                <X className="w-5 h-5 text-red-500 flex-shrink-0" />
-                                            )}
-                                            <span className={`font-bold ${plan.allow_ai ? 'text-blue-600' : 'text-slate-400 line-through'}`}>
-                                                {plan.allow_ai ? t.landing.plans.aiIncluded : t.landing.plans.noAi}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm">
-                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span className="text-slate-700 dark:text-slate-300">
-                                                <span className="font-bold">{plan.max_users === -1 ? t.landing.plans.unlimitedUsers : `${plan.max_users} ${t.landing.plans.usersCount}`}</span> {t.landing.plans.onTeam}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm">
-                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span className="text-slate-700 dark:text-slate-300">
-                                                {t.landing.plans.manage} <span className="font-bold">{plan.max_churches === -1 ? t.landing.plans.unlimitedChurches : `${plan.max_churches} ${t.landing.plans.churchesCount}`}</span>
-                                            </span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm">
-                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span className="text-slate-700 dark:text-slate-300">
-                                                {plan.id === 'f1' ? t.landing.plans.pdfSave : t.landing.plans.outlines}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm">
-                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span className="text-slate-700 dark:text-slate-300">
-                                                {plan.id === 'f3' ? t.landing.plans.fullBible : t.landing.plans.integratedBible}
-                                            </span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm">
-                                            <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                            <span className="text-slate-700 dark:text-slate-300">{t.landing.plans.whatsappShare}</span>
-                                        </li>
+                                        {(idx === 0 ? t.landing.plans.basic?.features : idx === 1 ? t.landing.plans.pro?.features : t.landing.plans.enterprise?.features)?.map((feature, fidx) => {
+                                            const isNegative = feature.includes("Sem Inteligência Artificial") || feature.startsWith("No ") || feature.startsWith("Sans ") || feature.startsWith("Keine ");
+                                            const isAi = feature.includes("Inteligência Artificial inclusa") || feature.includes("Artificial Intelligence included") || feature.includes("Intelligence Artificielle incluse") || feature.includes("Künstliche Intelligenz inklusive");
+
+                                            return (
+                                                <li key={fidx} className="flex items-center gap-3 text-sm">
+                                                    {isNegative ? (
+                                                        <X className="w-5 h-5 text-red-500 flex-shrink-0" />
+                                                    ) : (
+                                                        <Check className={`w-5 h-5 flex-shrink-0 ${isAi ? 'text-blue-500' : 'text-green-500'}`} />
+                                                    )}
+                                                    <span className={`font-bold ${isNegative ? 'text-slate-400 line-through' : isAi ? 'text-blue-600 dark:text-blue-400' : 'text-slate-700 dark:text-slate-300'}`}>
+                                                        {feature}
+                                                    </span>
+                                                </li>
+                                            );
+                                        })}
                                     </ul>
 
                                     <a
@@ -388,7 +415,7 @@ const LandingPage = () => {
                                             : idx === 2 ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-green-600 text-white hover:bg-green-700'
                                             }`}
                                     >
-                                        {t.landing.plans.iWant} {plan.name}
+                                        {t.landing.plans.iWant} {idx === 0 ? t.landing.plans.basic?.name : idx === 1 ? t.landing.plans.pro?.name : t.landing.plans.enterprise?.name}
                                     </a>
                                 </div>
                             ))}
@@ -397,13 +424,37 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* Transformation - Seção 8 */}
+            {/* Security Section - SeÃ§Ã£o 9 */}
+            <section className="py-24 bg-white dark:bg-slate-950 border-y border-slate-100 dark:border-slate-800">
+                <div className="container mx-auto px-6 max-w-3xl text-center">
+                    <div className="w-20 h-20 bg-blue-50 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 mx-auto mb-8">
+                        <ShieldCheck className="w-12 h-12" />
+                    </div>
+                    <h2 className="text-4xl font-bold mb-6 text-slate-900 dark:text-white">{t.landing.security?.title}</h2>
+                    <p className="text-lg text-slate-600 dark:text-slate-400 mb-10">
+                        {t.landing.security?.desc}
+                    </p>
+                    <div className="grid gap-4 text-left max-w-lg mx-auto mb-10">
+                        {t.landing.security?.items?.map((item, idx) => (
+                            <div key={idx} className="flex items-center gap-4 p-4 border border-slate-100 dark:border-slate-800 rounded-xl">
+                                <Check className="w-5 h-5 text-blue-500 flex-shrink-0" />
+                                <span className="font-bold text-slate-700 dark:text-slate-300">{item}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <p className="text-xl font-bold text-blue-600">
+                        {t.landing.security?.conclusion}
+                    </p>
+                </div>
+            </section>
+
+            {/* Transformation - Seção 10 */}
             <section className="py-24 bg-white dark:bg-slate-950">
                 <div className="container mx-auto px-6 max-w-4xl text-center">
-                    <h2 className="text-4xl font-bold mb-8 text-slate-900 dark:text-white">{t.landing.features.imagine}</h2>
-                    <p className="text-lg text-slate-600 dark:text-slate-400 mb-12">{t.landing.features.imagineSubtitle}</p>
+                    <h2 className="text-4xl font-bold mb-8 text-slate-900 dark:text-white">{t.landing.features?.imagine}</h2>
+                    <p className="text-lg text-slate-600 dark:text-slate-400 mb-12">{t.landing.features?.imagineSubtitle}</p>
                     <div className="grid md:grid-cols-2 gap-6 text-left mb-16">
-                        {t.landing.features.items.map((txt, tid) => (
+                        {t.landing.features?.items?.map((txt, tid) => (
                             <div key={tid} className="flex items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
                                 <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                                 <span className="text-lg font-medium text-slate-700 dark:text-slate-300">{txt}</span>
@@ -411,9 +462,9 @@ const LandingPage = () => {
                         ))}
                     </div>
                     <div className="space-y-2 text-2xl font-bold text-slate-900 dark:text-white">
-                        <p>{t.landing.features.quick}</p>
-                        <p>{t.landing.features.organized}</p>
-                        <p className="text-blue-600">{t.landing.features.consistent}</p>
+                        <p>{t.landing.features?.quick}</p>
+                        <p>{t.landing.features?.organized}</p>
+                        <p className="text-blue-600">{t.landing.features?.consistent}</p>
                     </div>
                 </div>
             </section>
@@ -422,31 +473,31 @@ const LandingPage = () => {
             <section id="missao" className="py-20 bg-slate-50 dark:bg-slate-900/50">
                 <div className="container mx-auto px-6">
                     <div className="max-w-4xl mx-auto text-center">
-                        <h2 className="text-4xl font-bold mb-8 text-slate-900 dark:text-white">{t.landing.mission.title}</h2>
+                        <h2 className="text-4xl font-bold mb-8 text-slate-900 dark:text-white">{t.landing.mission?.title}</h2>
                         <div className="grid md:grid-cols-2 gap-12 text-left">
                             <div className="space-y-4">
                                 <div className="flex items-start gap-4">
                                     <div className="mt-1 w-6 h-6 bg-blue-600 rounded-full flex-shrink-0 flex items-center justify-center text-white text-[10px]">1</div>
                                     <p className="text-slate-600 dark:text-slate-400 text-sm">
-                                        {t.landing.mission.p1}
+                                        {t.landing.mission?.p1}
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-4">
                                     <div className="mt-1 w-6 h-6 bg-blue-600 rounded-full flex-shrink-0 flex items-center justify-center text-white text-[10px]">2</div>
                                     <p className="text-slate-600 dark:text-slate-400 text-sm">
-                                        {t.landing.mission.p2}
+                                        {t.landing.mission?.p2}
                                     </p>
                                 </div>
                             </div>
                             <div className="space-y-4 text-slate-600 dark:text-slate-400">
                                 <p className="text-sm italic leading-relaxed">
-                                    {t.landing.mission.quote}
+                                    {t.landing.mission?.quote}
                                 </p>
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center text-blue-600 font-bold">AM</div>
                                     <div>
-                                        <p className="font-bold text-slate-900 dark:text-white text-sm">{t.landing.mission.founderName}</p>
-                                        <p className="text-xs text-slate-500">{t.landing.mission.founderRole}</p>
+                                        <p className="font-bold text-slate-900 dark:text-white text-sm">{t.landing.mission?.founderName}</p>
+                                        <p className="text-xs text-slate-500">{t.landing.mission?.founderRole}</p>
                                     </div>
                                 </div>
                             </div>
@@ -455,18 +506,18 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* CTA Final - Seção 9 */}
+            {/* CTA Final - Seção 11 */}
             <section className="py-20 bg-white dark:bg-slate-950">
                 <div className="container mx-auto px-6 text-center">
                     <div className="bg-gradient-to-r from-blue-600 to-sky-700 rounded-[3rem] p-12 text-center text-white relative overflow-hidden shadow-2xl max-w-5xl mx-auto">
                         <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-                        <h2 className="text-4xl font-bold mb-6 relative z-10">{t.landing.cta.title}</h2>
+                        <h2 className="text-4xl font-bold mb-6 relative z-10">{t.landing.cta?.title}</h2>
                         <p className="text-blue-100 mb-8 max-w-xl mx-auto relative z-10">
-                            {t.landing.cta.desc}
+                            {t.landing.cta?.desc}
                         </p>
                         <div className="relative z-10">
                             <button onClick={() => scrollToSection('planos')} className="px-10 py-5 bg-green-600 text-white font-bold rounded-2xl hover:bg-green-700 transition-all shadow-xl inline-flex items-center gap-2">
-                                {t.landing.cta.btn} <ArrowRight className="w-5 h-5" />
+                                {t.landing.cta?.btn} <ArrowRight className="w-5 h-5" />
                             </button>
                         </div>
                     </div>
@@ -499,7 +550,7 @@ const LandingPage = () => {
                     {t.landing.footer.support}
                 </span>
             </a>
-        </div>
+        </div >
     );
 };
 
